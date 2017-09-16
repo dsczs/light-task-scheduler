@@ -26,7 +26,7 @@ public class JSON {
 
     public static final <T> T parse(String json, TypeReference<T> typeReference) {
         try {
-            if(StringUtils.isEmpty(json)){
+            if (StringUtils.isEmpty(json)) {
                 return null;
             }
             return adapter.parse(json, typeReference.getType());

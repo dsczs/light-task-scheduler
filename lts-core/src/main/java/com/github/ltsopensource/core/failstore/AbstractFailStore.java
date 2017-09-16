@@ -17,12 +17,10 @@ import java.util.List;
 public abstract class AbstractFailStore implements FailStore {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FailStore.class);
-
-    protected FileLock fileLock;
-
-    private String home;
-    protected File dbPath;
     private static final String dbLockName = "___db.lock";
+    protected FileLock fileLock;
+    protected File dbPath;
+    private String home;
 
     public AbstractFailStore(File dbPath, boolean needLock) {
         try {

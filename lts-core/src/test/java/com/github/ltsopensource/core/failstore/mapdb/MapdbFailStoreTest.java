@@ -3,12 +3,12 @@ package com.github.ltsopensource.core.failstore.mapdb;
 import com.github.ltsopensource.core.cluster.Config;
 import com.github.ltsopensource.core.cluster.NodeType;
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
-import com.github.ltsopensource.core.json.JSON;
 import com.github.ltsopensource.core.constant.Constants;
 import com.github.ltsopensource.core.domain.Job;
 import com.github.ltsopensource.core.domain.Pair;
 import com.github.ltsopensource.core.failstore.FailStore;
 import com.github.ltsopensource.core.failstore.FailStoreException;
+import com.github.ltsopensource.core.json.JSON;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,8 +19,8 @@ import java.util.List;
  */
 public class MapdbFailStoreTest {
 
-    private String key = "23412x";
     FailStore failStore;
+    private String key = "23412x";
 
     @Before
     public void setup() throws FailStoreException {

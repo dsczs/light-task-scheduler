@@ -12,8 +12,8 @@ import java.util.TreeMap;
  */
 public class ConsistentHashSelector<S> { // S类封装了机器节点的信息
 
-    private TreeMap<Long, S> nodes; // 虚拟节点
     private final int NODE_NUM = 100; // 每个机器节点关联的虚拟节点个数
+    private TreeMap<Long, S> nodes; // 虚拟节点
 
     public ConsistentHashSelector(List<S> shards) {
         super();

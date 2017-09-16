@@ -15,15 +15,15 @@ public class IoFuture implements Future {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IoFuture.class);
     private static final long DEAD_LOCK_CHECK_INTERVAL = 5000L;
+    /**
+     * A lock used by the wait() method
+     */
+    private final Object lock = this;
     private boolean success = false;
     private Throwable cause;
     private String msg;
     private List<IoFutureListener> listeners;
     private boolean done = false;
-    /**
-     * A lock used by the wait() method
-     */
-    private final Object lock = this;
 
     public boolean isSuccess() {
         return success;

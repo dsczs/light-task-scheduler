@@ -53,7 +53,7 @@ public class MysqlBackendNodeOnOfflineLogAccess extends MysqlAbstractJdbcAccess 
                     nodeOnOfflineLog.getThreads(),
                     nodeOnOfflineLog.getIdentity(),
                     nodeOnOfflineLog.getHttpCmdPort()
-                    );
+            );
         }
         insertSql.doBatchInsert();
     }
@@ -93,7 +93,7 @@ public class MysqlBackendNodeOnOfflineLogAccess extends MysqlAbstractJdbcAccess 
                 .doDelete();
     }
 
-    private WhereSql buildWhereSql(NodeOnOfflineLogPaginationReq request){
+    private WhereSql buildWhereSql(NodeOnOfflineLogPaginationReq request) {
         return new WhereSql()
                 .andOnNotEmpty("identity = ?", request.getIdentity())
                 .andOnNotEmpty("group = ?", request.getGroup())

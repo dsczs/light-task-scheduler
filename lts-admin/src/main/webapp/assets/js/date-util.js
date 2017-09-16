@@ -54,7 +54,7 @@
         },
 
         formatMD: function (date) {
-            if(!data){
+            if (!data) {
                 return date;
             }
             return this.format(date, 'MM-dd');
@@ -241,7 +241,7 @@
          * @returns {*}
          */
         clone: function (date) {
-            if (date instanceof  Date) {
+            if (date instanceof Date) {
                 var copy = new Date();
                 copy.setTime(date.getTime());
                 return copy;
@@ -255,7 +255,7 @@
          * @returns {Date}
          */
         parse: function (date) {
-            if (date instanceof  Date) {
+            if (date instanceof Date) {
                 return date;
             } else if (typeof date == 'number') {
                 return new Date(date);

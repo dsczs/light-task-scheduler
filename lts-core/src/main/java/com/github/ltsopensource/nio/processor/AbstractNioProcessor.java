@@ -30,15 +30,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class AbstractNioProcessor implements NioProcessor {
     protected static final Logger LOGGER = LoggerFactory.getLogger(NioProcessor.class);
-    private NioHandler eventHandler;
     protected NioSelectorLoop selectorLoop;
+    protected IdleDetector idleDetector;
+    protected ChannelInitializer channelInitializer;
+    private NioHandler eventHandler;
     private Executor executor;
     private ConcurrentMap<NioChannel, WriteQueue> QUEUE_MAP = new ConcurrentHashMap<NioChannel, WriteQueue>();
     //    protected NioSelectorLoopPool readWriteSelectorPool;
     private AtomicBoolean started = new AtomicBoolean(false);
-
-    protected IdleDetector idleDetector;
-    protected ChannelInitializer channelInitializer;
 
     public AbstractNioProcessor(NioHandler eventHandler, ChannelInitializer channelInitializer) {
         this.eventHandler = eventHandler;
@@ -53,7 +52,7 @@ public abstract class AbstractNioProcessor implements NioProcessor {
 
     public Futures.WriteFuture writeAndFlush(NioChannel channel, Object msg) {
         SelectionKey key = channel.socketChannel().keyFor(selectorLoop.selector());
-        if(key != null && key.isValid()){
+        if (key != null && key.isValid()) {
             key.interestOps(SelectionKey.OP_WRITE);
         }
         return write(channel, msg, true);
@@ -147,7 +146,7 @@ public abstract class AbstractNioProcessor implements NioProcessor {
                     }
 
                     SelectionKey key = channel.socketChannel().keyFor(selectorLoop.selector());
-                    if(key != null && key.isValid()){
+                    if (key != null && key.isValid()) {
                         key.interestOps(SelectionKey.OP_READ);
                     }
                 } finally {

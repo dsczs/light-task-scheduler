@@ -25,10 +25,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class BeanCopierFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BeanCopierFactory.class);
-
-    private static Compiler COMPILER = AbstractCompiler.getCompiler();
     private static final AtomicInteger SEQ = new AtomicInteger(0);
     private static final ConcurrentMap<Integer, Map<String, PropConverter<?, ?>>> SEQ_PROP_CVT_MAP = new ConcurrentHashMap<Integer, Map<String, PropConverter<?, ?>>>();
+    private static Compiler COMPILER = AbstractCompiler.getCompiler();
 
     public static <Source, Target> BeanCopier<Source, Target> createCopier(
             Class<?> sourceClass, Class<?> targetClass) {

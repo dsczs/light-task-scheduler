@@ -5,7 +5,7 @@ import com.github.ltsopensource.core.cluster.NodeType;
 
 /**
  * @author Robert HG (254963746@qq.com) on 7/23/14.
- * Job Tracker 节点
+ *         Job Tracker 节点
  */
 public class JobTrackerNode extends Node {
 

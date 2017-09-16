@@ -33,14 +33,17 @@ public class HeartBeatMonitor {
 
     // 用来定时发送心跳
     private final ScheduledExecutorService PING_EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1, new NamedThreadFactory("LTS-HeartBeat-Ping", true));
-    private ScheduledFuture<?> pingScheduledFuture;
     // 当没有可用的JobTracker的时候，启动这个来快速的检查（小间隔）
     private final ScheduledExecutorService FAST_PING_EXECUTOR = Executors.newScheduledThreadPool(1, new NamedThreadFactory("LTS-HeartBeat-Fast-Ping", true));
+    private ScheduledFuture<?> pingScheduledFuture;
     private ScheduledFuture<?> fastPingScheduledFuture;
 
     private RemotingClientDelegate remotingClient;
     private AppContext appContext;
     private EventSubscriber jobTrackerUnavailableEventSubscriber;
+    private AtomicBoolean pingStart = new AtomicBoolean(false);
+    private AtomicBoolean fastPingStart = new AtomicBoolean(false);
+    private AtomicBoolean running = new AtomicBoolean(false);
 
     public HeartBeatMonitor(RemotingClientDelegate remotingClient, AppContext appContext) {
         this.remotingClient = remotingClient;
@@ -69,9 +72,6 @@ public class HeartBeatMonitor {
             }
         }), EcTopic.NODE_ADD);
     }
-
-    private AtomicBoolean pingStart = new AtomicBoolean(false);
-    private AtomicBoolean fastPingStart = new AtomicBoolean(false);
 
     public void start() {
         startFastPing();
@@ -151,8 +151,6 @@ public class HeartBeatMonitor {
             LOGGER.error("Stop fast ping failed.", t);
         }
     }
-
-    private AtomicBoolean running = new AtomicBoolean(false);
 
     private void ping() {
         try {

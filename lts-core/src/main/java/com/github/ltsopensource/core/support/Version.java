@@ -12,14 +12,12 @@ import java.util.Set;
 
 /**
  * 参考dubbo
+ *
  * @author Robert HG (254963746@qq.com) on 5/19/15.
  */
 public final class Version {
 
-    private Version() {}
-
     private static final Logger LOGGER = LoggerFactory.getLogger(Version.class);
-
     private static final String VERSION = getVersion(Version.class, "1.7.1-SNAPSHOT");
 
     static {
@@ -27,7 +25,10 @@ public final class Version {
         Version.checkDuplicate(Version.class);
     }
 
-    public static String getVersion(){
+    private Version() {
+    }
+
+    public static String getVersion() {
         return VERSION;
     }
 
@@ -41,10 +42,9 @@ public final class Version {
             if (version == null || version.length() == 0) {
                 // 如果规范中没有版本号，基于jar包名获取版本号
                 CodeSource codeSource = cls.getProtectionDomain().getCodeSource();
-                if(codeSource == null) {
+                if (codeSource == null) {
                     LOGGER.info("No codeSource for class " + cls.getName() + " when getVersion, use default version " + defaultVersion);
-                }
-                else {
+                } else {
                     String file = codeSource.getLocation().getFile();
                     if (file != null && file.length() > 0 && file.endsWith(".jar")) {
                         file = file.substring(0, file.length() - 4);
@@ -56,7 +56,7 @@ public final class Version {
                         if (i >= 0) {
                             file = file.substring(i + 1);
                         }
-                        while (file.length() > 0 && ! Character.isDigit(file.charAt(0))) {
+                        while (file.length() > 0 && !Character.isDigit(file.charAt(0))) {
                             i = file.indexOf("-");
                             if (i >= 0) {
                                 file = file.substring(i + 1);

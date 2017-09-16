@@ -13,10 +13,10 @@ import java.util.regex.Pattern;
  */
 public final class StringUtils {
 
+    private static final Pattern INT_PATTERN = Pattern.compile("^\\d+$");
+
     private StringUtils() {
     }
-
-    private static final Pattern INT_PATTERN = Pattern.compile("^\\d+$");
 
     public static boolean isEmpty(String s) {
         return s == null || s.trim().equals("");
@@ -168,6 +168,7 @@ public final class StringUtils {
      * Capitalize a {@code String}, changing the first letter to
      * upper case as per {@link Character#toUpperCase(char)}.
      * No other letters are changed.
+     *
      * @param str the {@code String} to capitalize, may be {@code null}
      * @return the capitalized {@code String}, or {@code null} if the supplied
      * string is {@code null}
@@ -180,6 +181,7 @@ public final class StringUtils {
      * Uncapitalize a {@code String}, changing the first letter to
      * lower case as per {@link Character#toLowerCase(char)}.
      * No other letters are changed.
+     *
      * @param str the {@code String} to uncapitalize, may be {@code null}
      * @return the uncapitalized {@code String}, or {@code null} if the supplied
      * string is {@code null}
@@ -195,8 +197,7 @@ public final class StringUtils {
         StringBuilder sb = new StringBuilder(str.length());
         if (capitalize) {
             sb.append(Character.toUpperCase(str.charAt(0)));
-        }
-        else {
+        } else {
             sb.append(Character.toLowerCase(str.charAt(0)));
         }
         sb.append(str.substring(1));

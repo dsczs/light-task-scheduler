@@ -10,7 +10,6 @@ import com.github.ltsopensource.admin.web.AbstractMVC;
 import com.github.ltsopensource.admin.web.vo.RestfulResponse;
 import com.github.ltsopensource.core.cluster.Node;
 import com.github.ltsopensource.core.cluster.NodeType;
-import com.github.ltsopensource.core.commons.utils.CollectionUtils;
 import com.github.ltsopensource.core.domain.NodeGroupGetReq;
 import com.github.ltsopensource.queue.domain.NodeGroupPo;
 import org.springframework.beans.factory.annotation.Autowired;

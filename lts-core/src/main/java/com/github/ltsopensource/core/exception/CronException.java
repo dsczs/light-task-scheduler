@@ -5,9 +5,9 @@ package com.github.ltsopensource.core.exception;
  */
 public class CronException extends RuntimeException {
 
-	private static final long serialVersionUID = -5252237483450100864L;
+    private static final long serialVersionUID = -5252237483450100864L;
 
-	public CronException() {
+    public CronException() {
         super();
     }
 

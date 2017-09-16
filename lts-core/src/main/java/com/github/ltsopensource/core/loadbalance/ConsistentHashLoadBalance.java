@@ -13,7 +13,7 @@ public class ConsistentHashLoadBalance extends AbstractLoadBalance {
 
     @Override
     protected <S> S doSelect(List<S> shards, String seed) {
-        if(seed == null || seed.length() == 0){
+        if (seed == null || seed.length() == 0) {
             seed = "HASH-".concat(String.valueOf(ThreadLocalRandom.current().nextInt()));
         }
         ConsistentHashSelector<S> selector = new ConsistentHashSelector<S>(shards);

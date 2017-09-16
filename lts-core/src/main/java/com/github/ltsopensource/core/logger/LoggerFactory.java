@@ -19,12 +19,8 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class LoggerFactory {
 
-    private LoggerFactory() {
-    }
-
-    private static volatile LoggerAdapter LOGGER_ADAPTER;
-
     private static final ConcurrentMap<String, FailsafeLogger> LOGGERS = new ConcurrentHashMap<String, FailsafeLogger>();
+    private static volatile LoggerAdapter LOGGER_ADAPTER;
 
     // 查找常用的日志框架
     static {
@@ -58,6 +54,9 @@ public class LoggerFactory {
                 }
             }
         }
+    }
+
+    private LoggerFactory() {
     }
 
     public static void setLoggerAdapter(String loggerAdapter) {
@@ -113,21 +112,21 @@ public class LoggerFactory {
     }
 
     /**
-     * 动态设置输出日志级别
-     *
-     * @param level 日志级别
-     */
-    public static void setLevel(Level level) {
-        LOGGER_ADAPTER.setLevel(level);
-    }
-
-    /**
      * 获取日志级别
      *
      * @return 日志级别
      */
     public static Level getLevel() {
         return LOGGER_ADAPTER.getLevel();
+    }
+
+    /**
+     * 动态设置输出日志级别
+     *
+     * @param level 日志级别
+     */
+    public static void setLevel(Level level) {
+        LOGGER_ADAPTER.setLevel(level);
     }
 
     /**

@@ -21,6 +21,10 @@ public class RegistryStatMonitor {
         this.appContext = appContext;
     }
 
+    public boolean isAvailable() {
+        return this.available.get();
+    }
+
     public void setAvailable(boolean available) {
         this.available.set(available);
 
@@ -30,10 +34,6 @@ public class RegistryStatMonitor {
         // 发布事件
         appContext.getEventCenter().publishAsync(new EventInfo(
                 available ? EcTopic.REGISTRY_AVAILABLE : EcTopic.REGISTRY_UN_AVAILABLE));
-    }
-
-    public boolean isAvailable() {
-        return this.available.get();
     }
 
 }

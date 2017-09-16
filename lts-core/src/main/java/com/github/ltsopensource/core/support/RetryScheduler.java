@@ -54,6 +54,8 @@ public abstract class RetryScheduler<T> {
 
     private ReentrantLock lock = new ReentrantLock();
     private AppContext appContext;
+    private AtomicBoolean checkSelfRunnerStart = new AtomicBoolean(false);
+    private AtomicBoolean checkDeadFailStoreRunnerStart = new AtomicBoolean(false);
 
     public RetryScheduler(String name, final AppContext appContext, String storePath) {
         this.name = name;
@@ -161,7 +163,29 @@ public abstract class RetryScheduler<T> {
         }
     }
 
-    private AtomicBoolean checkSelfRunnerStart = new AtomicBoolean(false);
+    public void inSchedule(String key, T value) {
+        try {
+            lock.tryLock();
+            failStore.put(key, value);
+            LOGGER.info("{} RetryScheduler, local files save success, identity=[{}], {}", name, appContext.getConfig().getIdentity(), JSON.toJSONString(value));
+        } catch (FailStoreException e) {
+            LOGGER.error("{} RetryScheduler in schedule error, identity=[{}]", name, e, appContext.getConfig().getIdentity());
+        } finally {
+            if (lock.isHeldByCurrentThread()) {
+                lock.unlock();
+            }
+        }
+    }
+
+    /**
+     * 远程连接是否可用
+     */
+    protected abstract boolean isRemotingEnable();
+
+    /**
+     * 重试
+     */
+    protected abstract boolean retry(List<T> list);
 
     /**
      * 定时检查 提交失败任务的Runnable
@@ -218,8 +242,6 @@ public abstract class RetryScheduler<T> {
             }
         }
     }
-
-    private AtomicBoolean checkDeadFailStoreRunnerStart = new AtomicBoolean(false);
 
     /**
      * 定时检查 已经down掉的机器的FailStore目录
@@ -280,30 +302,5 @@ public abstract class RetryScheduler<T> {
             }
         }
     }
-
-    public void inSchedule(String key, T value) {
-        try {
-            lock.tryLock();
-            failStore.put(key, value);
-            LOGGER.info("{} RetryScheduler, local files save success, identity=[{}], {}", name, appContext.getConfig().getIdentity(), JSON.toJSONString(value));
-        } catch (FailStoreException e) {
-            LOGGER.error("{} RetryScheduler in schedule error, identity=[{}]", name, e, appContext.getConfig().getIdentity());
-        } finally {
-            if (lock.isHeldByCurrentThread()) {
-                lock.unlock();
-            }
-        }
-    }
-
-
-    /**
-     * 远程连接是否可用
-     */
-    protected abstract boolean isRemotingEnable();
-
-    /**
-     * 重试
-     */
-    protected abstract boolean retry(List<T> list);
 
 }

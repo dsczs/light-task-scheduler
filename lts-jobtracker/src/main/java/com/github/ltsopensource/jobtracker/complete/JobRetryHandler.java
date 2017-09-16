@@ -87,8 +87,8 @@ public class JobRetryHandler {
                             nextRetryTriggerTime = nexTriggerTime;
                             jobPo = repeatJobPo;
                         } else {
-                            if(jobPo.getRetryTimes() < repeatJobPo.getMaxRetryTimes()) { //最后一次重试时，这个参数不能设置，为了在finishHandler时能执行到incRepeatedCount
-                               jobPo.setInternalExtParam(Constants.IS_RETRY_JOB, Boolean.TRUE.toString());
+                            if (jobPo.getRetryTimes() < repeatJobPo.getMaxRetryTimes()) { //最后一次重试时，这个参数不能设置，为了在finishHandler时能执行到incRepeatedCount
+                                jobPo.setInternalExtParam(Constants.IS_RETRY_JOB, Boolean.TRUE.toString());
                             }
                         }
                     }

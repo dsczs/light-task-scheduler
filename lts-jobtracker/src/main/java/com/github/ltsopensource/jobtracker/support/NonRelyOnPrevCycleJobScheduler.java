@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 仅用于不依赖上一周期的任务生成器
+ *
  * @author Robert HG (254963746@qq.com) on 4/2/16.
  */
 public class NonRelyOnPrevCycleJobScheduler {

@@ -7,8 +7,8 @@ import com.github.ltsopensource.core.exception.JobSubmitException;
  */
 public class JobSubmitProtectException extends JobSubmitException {
 
-	private static final long serialVersionUID = -5502779460920973581L;
-	int concurrentSize;
+    private static final long serialVersionUID = -5502779460920973581L;
+    int concurrentSize;
 
     public JobSubmitProtectException(int concurrentSize) {
         super();

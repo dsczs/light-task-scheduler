@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author Robert HG (254963746@qq.com) on 12/19/15.
  */
-public class Entry<K, V> implements Serializable{
+public class Entry<K, V> implements Serializable {
 
     private K key;
     private V value;

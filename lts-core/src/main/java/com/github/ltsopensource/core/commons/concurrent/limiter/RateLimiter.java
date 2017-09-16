@@ -16,13 +16,13 @@ package com.github.ltsopensource.core.commons.concurrent.limiter;
  * limitations under the License.
  */
 
+import com.github.ltsopensource.core.commons.concurrent.limiter.SmoothRateLimiter.SmoothBursty;
+import com.github.ltsopensource.core.commons.concurrent.limiter.SmoothRateLimiter.SmoothWarmingUp;
 import com.github.ltsopensource.core.commons.utils.Assert;
 import com.github.ltsopensource.core.commons.utils.StringUtils;
 
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import com.github.ltsopensource.core.commons.concurrent.limiter.SmoothRateLimiter.SmoothBursty;
-import com.github.ltsopensource.core.commons.concurrent.limiter.SmoothRateLimiter.SmoothWarmingUp;
 
 import static java.lang.Math.max;
 import static java.util.concurrent.TimeUnit.*;
@@ -87,6 +87,19 @@ import static java.util.concurrent.TimeUnit.*;
 // TODO(user): switch to nano precision. A natural unit of cost is "bytes", and a micro precision
 //     would mean a maximum rate of "1MB/s", which might be small in some cases.
 public abstract class RateLimiter {
+    /**
+     * The underlying timer; used both to measure elapsed time and sleep as necessary. A separate
+     * object to facilitate testing.
+     */
+    private final SleepingStopwatch stopwatch;
+    // Can't be initialized in the constructor because mocks don't call the constructor.
+    private volatile Object mutexDoNotUseDirectly;
+
+    RateLimiter(SleepingStopwatch stopwatch) {
+        Assert.notNull(stopwatch);
+        this.stopwatch = stopwatch;
+    }
+
     /**
      * Creates a {@code RateLimiter} with the specified stable throughput, given as
      * "permits per second" (commonly referred to as <i>QPS</i>, queries per second).
@@ -170,14 +183,32 @@ public abstract class RateLimiter {
         return rateLimiter;
     }
 
-    /**
-     * The underlying timer; used both to measure elapsed time and sleep as necessary. A separate
-     * object to facilitate testing.
-     */
-    private final SleepingStopwatch stopwatch;
+    private static void sleepUninterruptibly(long sleepFor, TimeUnit unit) {
+        boolean interrupted = false;
+        try {
+            long remainingNanos = unit.toNanos(sleepFor);
+            long end = System.nanoTime() + remainingNanos;
+            while (true) {
+                try {
+                    // TimeUnit.sleep() treats negative timeouts just like zero.
+                    NANOSECONDS.sleep(remainingNanos);
+                    return;
+                } catch (InterruptedException e) {
+                    interrupted = true;
+                    remainingNanos = end - System.nanoTime();
+                }
+            }
+        } finally {
+            if (interrupted) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
 
-    // Can't be initialized in the constructor because mocks don't call the constructor.
-    private volatile Object mutexDoNotUseDirectly;
+    private static int checkPermits(int permits) {
+        Assert.isTrue(permits > 0, StringUtils.format("Requested permits ({}) must be positive", permits));
+        return permits;
+    }
 
     private Object mutex() {
         Object mutex = mutexDoNotUseDirectly;
@@ -192,9 +223,19 @@ public abstract class RateLimiter {
         return mutex;
     }
 
-    RateLimiter(SleepingStopwatch stopwatch) {
-        Assert.notNull(stopwatch);
-        this.stopwatch = stopwatch;
+    abstract void doSetRate(double permitsPerSecond, long nowMicros);
+
+    /**
+     * Returns the stable rate (as {@code permits per seconds}) with which this
+     * {@code RateLimiter} is configured with. The initial value of this is the same as
+     * the {@code permitsPerSecond} argument passed in the factory method that produced
+     * this {@code RateLimiter}, and it is only updated after invocations
+     * to {@linkplain #setRate}.
+     */
+    public final double getRate() {
+        synchronized (mutex()) {
+            return doGetRate();
+        }
     }
 
     /**
@@ -221,21 +262,6 @@ public abstract class RateLimiter {
                 permitsPerSecond > 0.0 && !Double.isNaN(permitsPerSecond), "rate must be positive");
         synchronized (mutex()) {
             doSetRate(permitsPerSecond, stopwatch.readMicros());
-        }
-    }
-
-    abstract void doSetRate(double permitsPerSecond, long nowMicros);
-
-    /**
-     * Returns the stable rate (as {@code permits per seconds}) with which this
-     * {@code RateLimiter} is configured with. The initial value of this is the same as
-     * the {@code permitsPerSecond} argument passed in the factory method that produced
-     * this {@code RateLimiter}, and it is only updated after invocations
-     * to {@linkplain #setRate}.
-     */
-    public final double getRate() {
-        synchronized (mutex()) {
-            return doGetRate();
         }
     }
 
@@ -393,15 +419,6 @@ public abstract class RateLimiter {
     }
 
     abstract static class SleepingStopwatch {
-        /*
-         * We always hold the mutex when calling this. TODO(cpovirk): Is that important? Perhaps we need
-         * to guarantee that each call to reserveEarliestAvailable, etc. sees a value >= the previous?
-         * Also, is it OK that we don't hold the mutex when sleeping?
-         */
-        abstract long readMicros();
-
-        abstract void sleepMicrosUninterruptibly(long micros);
-
         static final SleepingStopwatch createFromSystemTimer() {
             return new SleepingStopwatch() {
                 final Stopwatch stopwatch = Stopwatch.createStarted();
@@ -419,32 +436,14 @@ public abstract class RateLimiter {
                 }
             };
         }
-    }
 
-    private static void sleepUninterruptibly(long sleepFor, TimeUnit unit) {
-        boolean interrupted = false;
-        try {
-            long remainingNanos = unit.toNanos(sleepFor);
-            long end = System.nanoTime() + remainingNanos;
-            while (true) {
-                try {
-                    // TimeUnit.sleep() treats negative timeouts just like zero.
-                    NANOSECONDS.sleep(remainingNanos);
-                    return;
-                } catch (InterruptedException e) {
-                    interrupted = true;
-                    remainingNanos = end - System.nanoTime();
-                }
-            }
-        } finally {
-            if (interrupted) {
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
+        /*
+         * We always hold the mutex when calling this. TODO(cpovirk): Is that important? Perhaps we need
+         * to guarantee that each call to reserveEarliestAvailable, etc. sees a value >= the previous?
+         * Also, is it OK that we don't hold the mutex when sleeping?
+         */
+        abstract long readMicros();
 
-    private static int checkPermits(int permits) {
-        Assert.isTrue(permits > 0, StringUtils.format("Requested permits ({}) must be positive", permits));
-        return permits;
+        abstract void sleepMicrosUninterruptibly(long micros);
     }
 }

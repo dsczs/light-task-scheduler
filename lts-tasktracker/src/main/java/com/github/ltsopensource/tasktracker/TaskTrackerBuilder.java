@@ -14,13 +14,6 @@ import java.util.Map;
  */
 public class TaskTrackerBuilder extends AbstractNodeBuilder<TaskTracker, TaskTrackerBuilder> {
 
-    @Override
-    protected TaskTracker build0() {
-
-        TaskTrackerProperties properties = PropertiesConfigurationFactory.createPropertiesConfiguration(TaskTrackerProperties.class, locations);
-        return buildByProperties(properties);
-    }
-
     @SuppressWarnings("unchecked")
     public static TaskTracker buildByProperties(TaskTrackerProperties properties) {
         TaskTracker taskTracker = new TaskTracker();
@@ -56,5 +49,12 @@ public class TaskTrackerBuilder extends AbstractNodeBuilder<TaskTracker, TaskTra
         }
 
         return taskTracker;
+    }
+
+    @Override
+    protected TaskTracker build0() {
+
+        TaskTrackerProperties properties = PropertiesConfigurationFactory.createPropertiesConfiguration(TaskTrackerProperties.class, locations);
+        return buildByProperties(properties);
     }
 }

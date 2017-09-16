@@ -1,5 +1,6 @@
 package com.github.ltsopensource.queue.mysql;
 
+import com.github.ltsopensource.admin.request.JobQueueReq;
 import com.github.ltsopensource.core.cluster.Config;
 import com.github.ltsopensource.core.support.JobQueueUtils;
 import com.github.ltsopensource.queue.SuspendJobQueue;
@@ -7,7 +8,6 @@ import com.github.ltsopensource.queue.domain.JobPo;
 import com.github.ltsopensource.queue.mysql.support.RshHolder;
 import com.github.ltsopensource.store.jdbc.builder.DeleteSql;
 import com.github.ltsopensource.store.jdbc.builder.SelectSql;
-import com.github.ltsopensource.admin.request.JobQueueReq;
 
 /**
  * @author bug (357693306@qq.com) on 3/4/16.

@@ -20,16 +20,16 @@ public class CronExpressionTest {
         exec(cronExpression, new Date());
     }
 
-    private Date exec(CronExpression cronExpression, Date date){
+    private Date exec(CronExpression cronExpression, Date date) {
 
         Date nextDate = cronExpression.getTimeAfter(date);
 
-        if(nextDate != null){
+        if (nextDate != null) {
             System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(nextDate));
 
             nextDate.setTime(nextDate.getTime() + 100);
             exec(cronExpression, nextDate);
-        }else{
+        } else {
             System.out.println("执行完成");
         }
 

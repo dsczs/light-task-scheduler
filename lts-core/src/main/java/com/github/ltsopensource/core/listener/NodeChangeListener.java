@@ -18,6 +18,7 @@ public interface NodeChangeListener {
 
     /**
      * 移除节点
+     *
      * @param nodes 节点列表
      */
     public void removeNodes(List<Node> nodes);

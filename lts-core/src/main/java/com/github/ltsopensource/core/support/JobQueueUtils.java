@@ -5,6 +5,12 @@ package com.github.ltsopensource.core.support;
  */
 public class JobQueueUtils {
 
+    public static final String CRON_JOB_QUEUE = "lts_cron_job_queue";
+    public static final String REPEAT_JOB_QUEUE = "lts_repeat_job_queue";
+    public static final String EXECUTING_JOB_QUEUE = "lts_executing_job_queue";
+    public static final String NODE_GROUP_STORE = "lts_node_group_store";
+    public static final String SUSPEND_JOB_QUEUE = "lts_suspend_job_queue";
+
     private JobQueueUtils() {
     }
 
@@ -21,14 +27,4 @@ public class JobQueueUtils {
     public static String getFeedbackQueueName(String jobClientNodeGroup) {
         return "lts_fjq_".concat(jobClientNodeGroup);
     }
-
-    public static final String CRON_JOB_QUEUE = "lts_cron_job_queue";
-
-    public static final String REPEAT_JOB_QUEUE = "lts_repeat_job_queue";
-
-    public static final String EXECUTING_JOB_QUEUE = "lts_executing_job_queue";
-
-    public static final String NODE_GROUP_STORE = "lts_node_group_store";
-
-	public static final String SUSPEND_JOB_QUEUE = "lts_suspend_job_queue";
 }

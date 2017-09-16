@@ -21,13 +21,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class StoreTxLogEngine<K, V> {
 
+    private static final String LOG_FILE_SUFFIX = StoreTxLog.LOG_FILE_SUFFIX;
     private volatile StoreTxLog storeTxLog;
     private StoreSerializer serializer;
     private AtomicBoolean initialed = new AtomicBoolean(false);
     private List<StoreTxLog> storeTxLogs;
     private StoreConfig storeConfig;
-    private static final String LOG_FILE_SUFFIX = StoreTxLog.LOG_FILE_SUFFIX;
-
     // Log 目录
     private File logPath;
 

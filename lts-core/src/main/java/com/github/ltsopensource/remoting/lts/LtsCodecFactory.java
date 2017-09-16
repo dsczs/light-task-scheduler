@@ -26,6 +26,14 @@ public class LtsCodecFactory {
         this.codec = codec;
     }
 
+    public Encoder getEncoder() {
+        return new NioEncoder();
+    }
+
+    public Decoder getDecoder() {
+        return new NioDecoder();
+    }
+
     public class NioEncoder implements Encoder {
 
         @Override
@@ -64,14 +72,6 @@ public class LtsCodecFactory {
                 throw e;
             }
         }
-    }
-
-    public Encoder getEncoder() {
-        return new NioEncoder();
-    }
-
-    public Decoder getDecoder() {
-        return new NioDecoder();
     }
 
 }

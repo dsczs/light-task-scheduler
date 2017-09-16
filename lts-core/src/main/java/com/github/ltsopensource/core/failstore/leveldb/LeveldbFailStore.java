@@ -22,11 +22,9 @@ import java.util.Map;
  */
 public class LeveldbFailStore extends AbstractFailStore {
 
-    private DB db;
-
-    private Options options;
-
     public static final String name = "leveldb";
+    private DB db;
+    private Options options;
 
     public LeveldbFailStore(File dbPath, boolean needLock) {
         super(dbPath, needLock);

@@ -25,42 +25,39 @@ public class FastDateFormat extends Format {
 
     //-----------------------------------------------------------------------
 
+    protected FastDateFormat(final String pattern, final TimeZone timeZone, final Locale locale) {
+        this(pattern, timeZone, locale, null);
+    }
+
+
+    protected FastDateFormat(final String pattern, final TimeZone timeZone, final Locale locale, final Date centuryStart) {
+        printer = new FastDatePrinter(pattern, timeZone, locale);
+        parser = new FastDateParser(pattern, timeZone, locale, centuryStart);
+    }
+
     public static FastDateFormat getInstance() {
         return cache.getInstance();
     }
-
 
     public static FastDateFormat getInstance(final String pattern) {
         return cache.getInstance(pattern, null, null);
     }
 
-
     public static FastDateFormat getInstance(final String pattern, final TimeZone timeZone) {
         return cache.getInstance(pattern, timeZone, null);
     }
 
+    //-----------------------------------------------------------------------
 
     public static FastDateFormat getInstance(final String pattern, final Locale locale) {
         return cache.getInstance(pattern, null, locale);
     }
 
-
-    public static FastDateFormat getInstance(final String pattern, final TimeZone timeZone, final Locale locale) {
-        return cache.getInstance(pattern, timeZone, locale);
-    }
-
-    //-----------------------------------------------------------------------
-
-    protected FastDateFormat(final String pattern, final TimeZone timeZone, final Locale locale) {
-        this(pattern, timeZone, locale, null);
-    }
-
     // Constructor
     //-----------------------------------------------------------------------
 
-    protected FastDateFormat(final String pattern, final TimeZone timeZone, final Locale locale, final Date centuryStart) {
-        printer = new FastDatePrinter(pattern, timeZone, locale);
-        parser = new FastDateParser(pattern, timeZone, locale, centuryStart);
+    public static FastDateFormat getInstance(final String pattern, final TimeZone timeZone, final Locale locale) {
+        return cache.getInstance(pattern, timeZone, locale);
     }
 
     // Format methods

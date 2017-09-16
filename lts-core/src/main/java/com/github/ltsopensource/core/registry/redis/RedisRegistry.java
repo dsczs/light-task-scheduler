@@ -32,16 +32,19 @@ public class RedisRegistry extends FailbackRegistry {
     private static final Logger LOGGER = LoggerFactory.getLogger(RedisRegistry.class);
 
     private final Map<String, JedisPool> jedisPools = new ConcurrentHashMap<String, JedisPool>();
-
-    private String clusterName;
     private final ScheduledExecutorService expireExecutor = Executors.newScheduledThreadPool(1,
             new NamedThreadFactory("LTSRedisRegistryExpireTimer", true));
     private final ScheduledFuture<?> expireFuture;
     private final int expirePeriod;
-    private boolean replicate;
     private final int reconnectPeriod;
     private final ConcurrentMap<String, Notifier> notifiers = new ConcurrentHashMap<String, Notifier>();
+    private String clusterName;
+    private boolean replicate;
     private RedisLock lock;
+    private ConcurrentHashMap<String/*key*/, List<String>> cachedNodeMap = new ConcurrentHashMap<String, List<String>>();
+    // 用这个线程来监控redis是否可用
+    private volatile String monitorId;
+    private volatile boolean redisAvailable = false;
 
     public RedisRegistry(AppContext appContext) {
         super(appContext);
@@ -287,8 +290,6 @@ public class RedisRegistry extends FailbackRegistry {
         }
     }
 
-    private ConcurrentHashMap<String/*key*/, List<String>> cachedNodeMap = new ConcurrentHashMap<String, List<String>>();
-
     private void doNotify(Jedis jedis, Collection<String> keys, Collection<NotifyListener> listeners, boolean reload) {
         if (CollectionUtils.isEmpty(keys)
                 && CollectionUtils.isEmpty(listeners)) {
@@ -364,10 +365,6 @@ public class RedisRegistry extends FailbackRegistry {
             }
         }
     }
-
-    // 用这个线程来监控redis是否可用
-    private volatile String monitorId;
-    private volatile boolean redisAvailable = false;
 
     private class Notifier extends Thread {
 

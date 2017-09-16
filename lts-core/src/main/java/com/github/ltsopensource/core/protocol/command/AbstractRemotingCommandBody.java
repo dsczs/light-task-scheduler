@@ -11,13 +11,13 @@ import java.util.Map;
 
 /**
  * @author Robert HG (254963746@qq.com) on 7/24/14.
- * 抽象的header 传输信息
+ *         抽象的header 传输信息
  */
 public class AbstractRemotingCommandBody implements RemotingCommandBody {
 
-	private static final long serialVersionUID = -8184979792935677160L;
+    private static final long serialVersionUID = -8184979792935677160L;
 
-	/**
+    /**
      * 节点组 当前节点的 group(统一类型, 具有相同功能的节点group相同)
      */
     @NotNull

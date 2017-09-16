@@ -2,13 +2,13 @@ package com.github.ltsopensource.kv.data;
 
 import com.github.ltsopensource.core.commons.file.FileUtils;
 import com.github.ltsopensource.core.commons.io.UnsafeByteArrayInputStream;
+import com.github.ltsopensource.core.json.JSON;
+import com.github.ltsopensource.core.logger.Logger;
 import com.github.ltsopensource.kv.CapacityNotEnoughException;
 import com.github.ltsopensource.kv.DB;
 import com.github.ltsopensource.kv.DBException;
 import com.github.ltsopensource.kv.StoreConfig;
 import com.github.ltsopensource.kv.txlog.StoreTxLogPosition;
-import com.github.ltsopensource.core.json.JSON;
-import com.github.ltsopensource.core.logger.Logger;
 import com.github.ltsopensource.remoting.common.ServiceThread;
 
 import java.io.File;
@@ -29,25 +29,22 @@ import java.nio.channels.ReadableByteChannel;
  */
 public class DataBlock {
 
+    public static final String FILE_SUFFIX = ".ltsdata";
     private final static Logger LOGGER = DB.LOGGER;
-
+    private final long maxDataEntrySize = 1000;
     private File file;
     private long fileId;
     private String fileName;
     // 文件大小
     private long fileSize;
     private FileChannel fileChannel;
-
     private DataBlockFileHeader fileHeader;
-
-    private final long maxDataEntrySize = 1000;
     private StoreConfig storeConfig;
-
-    public static final String FILE_SUFFIX = ".ltsdata";
-
     private StoreTxLogPosition lastTxLogPosition;
 
     private FlushDataService flushDataService;
+    private int totalNum;
+    private int aliveNum;
 
     public DataBlock(String fileName, StoreConfig storeConfig) throws IOException {
         this.fileName = fileName;
@@ -189,9 +186,6 @@ public class DataBlock {
         fileChannel.read(byteBuffer);
         return byteBuffer.array();
     }
-
-    private int totalNum;
-    private int aliveNum;
 
     public void flushDisk() throws IOException {
 

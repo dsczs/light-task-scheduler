@@ -8,7 +8,7 @@ import java.io.File;
 /**
  * Robert HG (254963746@qq.com) on 5/26/15.
  */
-public class BerkeleydbFailStoreFactory extends AbstractFailStoreFactory{
+public class BerkeleydbFailStoreFactory extends AbstractFailStoreFactory {
 
     @Override
     protected String getName() {

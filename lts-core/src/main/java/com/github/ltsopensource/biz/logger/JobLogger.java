@@ -1,8 +1,8 @@
 package com.github.ltsopensource.biz.logger;
 
+import com.github.ltsopensource.admin.response.PaginationRsp;
 import com.github.ltsopensource.biz.logger.domain.JobLogPo;
 import com.github.ltsopensource.biz.logger.domain.JobLoggerRequest;
-import com.github.ltsopensource.admin.response.PaginationRsp;
 
 import java.util.List;
 

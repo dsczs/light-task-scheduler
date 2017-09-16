@@ -33,6 +33,7 @@ package com.github.ltsopensource.core.commons.io;
  * @see https://github.com/ikkisoft/SerialKiller
  * @see http://www.infoq.com/cn/articles/java-deserialization-nsfocus
  */
+
 import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

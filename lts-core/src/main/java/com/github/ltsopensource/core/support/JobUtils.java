@@ -66,7 +66,7 @@ public class JobUtils {
         return StringUtils.generateUUID();
     }
 
-    public static String generateExeSeqId(JobPo jobPo){
+    public static String generateExeSeqId(JobPo jobPo) {
         return String.valueOf(jobPo.getTriggerTime());
     }
 

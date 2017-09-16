@@ -1,7 +1,7 @@
 package com.github.ltsopensource.core.domain;
 
-import com.github.ltsopensource.core.cluster.NodeType;
 import com.github.ltsopensource.admin.request.PaginationReq;
+import com.github.ltsopensource.core.cluster.NodeType;
 
 /**
  * @author Robert HG (254963746@qq.com) on 9/5/15.

@@ -1,8 +1,8 @@
 package com.github.ltsopensource.core.logger;
 
 
-import com.github.ltsopensource.core.spi.SPI;
 import com.github.ltsopensource.core.constant.ExtConfig;
+import com.github.ltsopensource.core.spi.SPI;
 
 import java.io.File;
 
@@ -29,18 +29,18 @@ public interface LoggerAdapter {
     Logger getLogger(String key);
 
     /**
-     * 设置输出等级
-     *
-     * @param level 输出等级
-     */
-    void setLevel(Level level);
-
-    /**
      * 获取当前日志等级
      *
      * @return 当前日志等级
      */
     Level getLevel();
+
+    /**
+     * 设置输出等级
+     *
+     * @param level 输出等级
+     */
+    void setLevel(Level level);
 
     /**
      * 获取当前日志文件

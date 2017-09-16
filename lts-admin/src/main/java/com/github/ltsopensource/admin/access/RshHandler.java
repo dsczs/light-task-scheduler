@@ -38,23 +38,6 @@ public class RshHandler {
             return null;
         }
     };
-
-    private static Node getNodeByRs(final ResultSet rs) throws SQLException {
-        Node node = new Node();
-        node.setIdentity(rs.getString("identity"));
-        node.setClusterName(rs.getString("cluster_name"));
-        node.setNodeType(NodeType.valueOf(rs.getString("node_type")));
-        node.setIp(rs.getString("ip"));
-        node.setPort(rs.getInt("port"));
-        node.setGroup(rs.getString("node_group"));
-        node.setCreateTime(rs.getLong("create_time"));
-        node.setThreads(rs.getInt("threads"));
-        node.setAvailable(rs.getInt("available") == 1);
-        node.setHostName(rs.getString("host_name"));
-        node.setHttpCmdPort(rs.getInt("http_cmd_port"));
-        return node;
-    }
-
     public static final ResultSetHandler<List<JobTrackerMDataPo>> JOB_TRACKER_SUM_M_DATA_RSH = new ResultSetHandler<List<JobTrackerMDataPo>>() {
         @Override
         public List<JobTrackerMDataPo> handle(ResultSet rs) throws SQLException {
@@ -81,7 +64,6 @@ public class RshHandler {
             return list;
         }
     };
-
     public static final ResultSetHandler<List<NodeOnOfflineLog>> NODE_ON_OFFLINE_LOG_LIST_RSH = new ResultSetHandler<List<NodeOnOfflineLog>>() {
         @Override
         public List<NodeOnOfflineLog> handle(ResultSet rs) throws SQLException {
@@ -106,7 +88,6 @@ public class RshHandler {
             return list;
         }
     };
-
     public static final ResultSetHandler<List<TaskTrackerMDataPo>> TASK_TRACKER_SUM_M_DATA_RSH = new ResultSetHandler<List<TaskTrackerMDataPo>>() {
         @Override
         public List<TaskTrackerMDataPo> handle(ResultSet rs) throws SQLException {
@@ -127,7 +108,6 @@ public class RshHandler {
             return list;
         }
     };
-
     public static final ResultSetHandler<List<JobClientMDataPo>> JOB_CLIENT_SUM_M_DATA_RSH = new ResultSetHandler<List<JobClientMDataPo>>() {
         @Override
         public List<JobClientMDataPo> handle(ResultSet rs) throws SQLException {
@@ -147,7 +127,6 @@ public class RshHandler {
             return list;
         }
     };
-
     public static final ResultSetHandler<List<NodeInfo>> NODE_INFO_LIST_RSH = new ResultSetHandler<List<NodeInfo>>() {
         @Override
         public List<NodeInfo> handle(ResultSet rs) throws SQLException {
@@ -162,7 +141,6 @@ public class RshHandler {
             return list;
         }
     };
-
     public static final ResultSetHandler<List<JVMMemoryDataPo>> JVM_MEMORY_SUM_M_DATA_RSH = new ResultSetHandler<List<JVMMemoryDataPo>>() {
         @Override
         public List<JVMMemoryDataPo> handle(ResultSet rs) throws SQLException {
@@ -202,7 +180,6 @@ public class RshHandler {
             return list;
         }
     };
-
     public static final ResultSetHandler<List<JVMGCDataPo>> JVM_GC_SUM_M_DATA_RSH = new ResultSetHandler<List<JVMGCDataPo>>() {
         @Override
         public List<JVMGCDataPo> handle(ResultSet rs) throws SQLException {
@@ -226,7 +203,6 @@ public class RshHandler {
             return list;
         }
     };
-
     public static final ResultSetHandler<List<JVMThreadDataPo>> JVM_THREAD_SUM_M_DATA_RSH = new ResultSetHandler<List<JVMThreadDataPo>>() {
         @Override
         public List<JVMThreadDataPo> handle(ResultSet rs) throws SQLException {
@@ -246,4 +222,20 @@ public class RshHandler {
             return list;
         }
     };
+
+    private static Node getNodeByRs(final ResultSet rs) throws SQLException {
+        Node node = new Node();
+        node.setIdentity(rs.getString("identity"));
+        node.setClusterName(rs.getString("cluster_name"));
+        node.setNodeType(NodeType.valueOf(rs.getString("node_type")));
+        node.setIp(rs.getString("ip"));
+        node.setPort(rs.getInt("port"));
+        node.setGroup(rs.getString("node_group"));
+        node.setCreateTime(rs.getLong("create_time"));
+        node.setThreads(rs.getInt("threads"));
+        node.setAvailable(rs.getInt("available") == 1);
+        node.setHostName(rs.getString("host_name"));
+        node.setHttpCmdPort(rs.getInt("http_cmd_port"));
+        return node;
+    }
 }

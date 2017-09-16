@@ -10,12 +10,12 @@ import java.util.List;
 
 /**
  * @author Robert HG (254963746@qq.com) on 8/13/14.
- * 返回给客户端的
+ *         返回给客户端的
  */
 public class Response implements Serializable {
 
-	private static final long serialVersionUID = 1466250084442936848L;
-	private boolean success;
+    private static final long serialVersionUID = 1466250084442936848L;
+    private boolean success;
     private String msg;
     private String code;
 
@@ -30,15 +30,15 @@ public class Response implements Serializable {
         this.failedJobs = failedJobs;
     }
 
-    public void addFailedJobs(List<Job> jobs){
-        if(this.failedJobs == null){
+    public void addFailedJobs(List<Job> jobs) {
+        if (this.failedJobs == null) {
             this.failedJobs = new ArrayList<Job>();
         }
         this.failedJobs.addAll(jobs);
     }
 
-    public void addFailedJob(Job job){
-        if(this.failedJobs == null){
+    public void addFailedJob(Job job) {
+        if (this.failedJobs == null) {
             this.failedJobs = new ArrayList<Job>();
         }
         this.failedJobs.add(job);

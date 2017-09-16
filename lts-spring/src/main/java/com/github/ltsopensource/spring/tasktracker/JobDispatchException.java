@@ -3,11 +3,11 @@ package com.github.ltsopensource.spring.tasktracker;
 /**
  * @author Robert HG (254963746@qq.com) on 10/21/15.
  */
-public class JobDispatchException extends Exception{
+public class JobDispatchException extends Exception {
 
-	private static final long serialVersionUID = -99670791735250890L;
+    private static final long serialVersionUID = -99670791735250890L;
 
-	public JobDispatchException() {
+    public JobDispatchException() {
         super();
     }
 

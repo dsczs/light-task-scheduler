@@ -9,19 +9,12 @@ import java.lang.management.ManagementFactory;
 public class JVMGC implements JVMGCMBean {
 
     private static final JVMGC instance = new JVMGC();
-
-    public static JVMGC getInstance() {
-        return instance;
-    }
-
     private GarbageCollectorMXBean fullGC;
     private GarbageCollectorMXBean youngGC;
-
     private long lastYoungGCCollectionCount = -1;
     private long lastYoungGCCollectionTime = -1;
     private long lastFullGCCollectionCount = -1;
     private long lastFullGCCollectionTime = -1;
-
     private JVMGC() {
         for (GarbageCollectorMXBean item : ManagementFactory.getGarbageCollectorMXBeans()) {
             if ("ConcurrentMarkSweep".equals(item.getName()) //
@@ -44,6 +37,10 @@ public class JVMGC implements JVMGCMBean {
                 youngGC = item;
             }
         }
+    }
+
+    public static JVMGC getInstance() {
+        return instance;
     }
 
     @Override

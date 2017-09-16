@@ -5,11 +5,12 @@ import java.util.Map;
 
 /**
  * 来自 slf4j
+ *
  * @author Robert HG (254963746@qq.com) on 5/19/15.
  */
 @SuppressWarnings("rawtypes")
 public class MessageFormatter {
-    
+
     static final char DELIM_START = '{';
     static final char DELIM_STOP = '}';
     static final String DELIM_STR = "{}";
@@ -20,49 +21,44 @@ public class MessageFormatter {
      * parameter.
      * <p>
      * For example,
-     *
+     * <p>
      * <pre>
      * MessageFormatter.format(&quot;Hi {}.&quot;, &quot;there&quot;);
      * </pre>
-     *
+     * <p>
      * will return the string "Hi there.".
      * <p>
      *
-     * @param messagePattern
-     *          The message pattern which will be parsed and formatted
-     *          The argument to be substituted in place of the formatting anchor
+     * @param messagePattern The message pattern which will be parsed and formatted
+     *                       The argument to be substituted in place of the formatting anchor
      * @return The formatted message
      */
     final public static FormattingTuple format(String messagePattern, Object arg) {
-        return arrayFormat(messagePattern, new Object[] { arg });
+        return arrayFormat(messagePattern, new Object[]{arg});
     }
 
     /**
-     *
      * Performs a two argument substitution for the 'messagePattern' passed as
      * parameter.
      * <p>
      * For example,
-     *
+     * <p>
      * <pre>
      * MessageFormatter.format(&quot;Hi {}. My name is {}.&quot;, &quot;Alice&quot;, &quot;Bob&quot;);
      * </pre>
-     *
+     * <p>
      * will return the string "Hi Alice. My name is Bob.".
      *
-     * @param messagePattern
-     *          The message pattern which will be parsed and formatted
-     * @param arg1
-     *          The argument to be substituted in place of the first formatting
-     *          anchor
-     * @param arg2
-     *          The argument to be substituted in place of the second formatting
-     *          anchor
+     * @param messagePattern The message pattern which will be parsed and formatted
+     * @param arg1           The argument to be substituted in place of the first formatting
+     *                       anchor
+     * @param arg2           The argument to be substituted in place of the second formatting
+     *                       anchor
      * @return The formatted message
      */
     final public static FormattingTuple format(final String messagePattern,
-                                                                 Object arg1, Object arg2) {
-        return arrayFormat(messagePattern, new Object[] { arg1, arg2 });
+                                               Object arg1, Object arg2) {
+        return arrayFormat(messagePattern, new Object[]{arg1, arg2});
     }
 
     static final Throwable getThrowableCandidate(Object[] argArray) {
@@ -82,15 +78,13 @@ public class MessageFormatter {
      * {@link #format(String, Object, Object)} methods except that any number of
      * arguments can be passed in an array.
      *
-     * @param messagePattern
-     *          The message pattern which will be parsed and formatted
-     * @param argArray
-     *          An array of arguments to be substituted in place of formatting
-     *          anchors
+     * @param messagePattern The message pattern which will be parsed and formatted
+     * @param argArray       An array of arguments to be substituted in place of formatting
+     *                       anchors
      * @return The formatted message
      */
     final public static FormattingTuple arrayFormat(final String messagePattern,
-                                                                      final Object[] argArray) {
+                                                    final Object[] argArray) {
 
         Throwable throwableCandidate = getThrowableCandidate(argArray);
 

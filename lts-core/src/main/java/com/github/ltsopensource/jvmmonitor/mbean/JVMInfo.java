@@ -15,11 +15,6 @@ import java.util.Properties;
 public class JVMInfo implements JVMInfoMBean {
 
     private static final JVMInfo instance = new JVMInfo();
-
-    public static JVMInfo getInstance() {
-        return instance;
-    }
-
     private RuntimeMXBean runtimeMXBean;
     private ClassLoadingMXBean classLoadingMXBean;
     private CompilationMXBean compilationMXBean;
@@ -27,12 +22,15 @@ public class JVMInfo implements JVMInfoMBean {
     private String inputArguments;
     private int availableProcessors = 0;
     private String pid;
-
     private JVMInfo() {
         classLoadingMXBean = ManagementFactory.getClassLoadingMXBean();
         compilationMXBean = ManagementFactory.getCompilationMXBean();
         runtimeMXBean = ManagementFactory.getRuntimeMXBean();
         properties = System.getProperties();
+    }
+
+    public static JVMInfo getInstance() {
+        return instance;
     }
 
     private String getSystemProperty(String key) {

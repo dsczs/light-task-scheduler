@@ -26,7 +26,7 @@ public class TaskTrackerFactoryBean extends TaskTrackerAnnotationFactoryBean {
 
         Map<String, String> configMap = cfg.getConfigs();
         Properties configs = new Properties();
-        if(CollectionUtils.isNotEmpty(configMap)){
+        if (CollectionUtils.isNotEmpty(configMap)) {
             for (Map.Entry<String, String> entry : configMap.entrySet()) {
                 configs.put(entry.getKey(), entry.getValue());
             }

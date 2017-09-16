@@ -1,9 +1,9 @@
 package com.github.ltsopensource.ec.injvm;
 
 import com.github.ltsopensource.core.commons.concurrent.ConcurrentHashSet;
+import com.github.ltsopensource.core.constant.Constants;
 import com.github.ltsopensource.core.factory.NamedThreadFactory;
 import com.github.ltsopensource.core.json.JSON;
-import com.github.ltsopensource.core.constant.Constants;
 import com.github.ltsopensource.core.logger.Logger;
 import com.github.ltsopensource.core.logger.LoggerFactory;
 import com.github.ltsopensource.ec.EventCenter;

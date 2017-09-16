@@ -11,6 +11,21 @@ import java.util.regex.Pattern;
  */
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
+    private static final List<Pattern> PATTERNS = new CopyOnWriteArrayList<Pattern>();
+
+    static {
+        PATTERNS.add(Pattern.compile("<script>(.*?)</script>", Pattern.CASE_INSENSITIVE));
+        PATTERNS.add(Pattern.compile("src[\r\n]*=[\r\n]*\\\'(.*?)\\\'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL));
+        PATTERNS.add(Pattern.compile("src[\r\n]*=[\r\n]*\\\"(.*?)\\\"", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL));
+        PATTERNS.add(Pattern.compile("</script>", Pattern.CASE_INSENSITIVE));
+        PATTERNS.add(Pattern.compile("<script(.*?)>", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL));
+        PATTERNS.add(Pattern.compile("eval\\((.*?)\\)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL));
+        PATTERNS.add(Pattern.compile("e­xpression\\((.*?)\\)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL));
+        PATTERNS.add(Pattern.compile("javascript:", Pattern.CASE_INSENSITIVE));
+        PATTERNS.add(Pattern.compile("vbscript:", Pattern.CASE_INSENSITIVE));
+        PATTERNS.add(Pattern.compile("onload(.*?)=", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL));
+    }
+
     public XssHttpServletRequestWrapper(HttpServletRequest servletRequest) {
         super(servletRequest);
     }
@@ -41,21 +56,6 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         if (value == null)
             return null;
         return cleanXSS(value);
-    }
-
-    private static final List<Pattern> PATTERNS = new CopyOnWriteArrayList<Pattern>();
-
-    static {
-        PATTERNS.add(Pattern.compile("<script>(.*?)</script>", Pattern.CASE_INSENSITIVE));
-        PATTERNS.add(Pattern.compile("src[\r\n]*=[\r\n]*\\\'(.*?)\\\'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL));
-        PATTERNS.add(Pattern.compile("src[\r\n]*=[\r\n]*\\\"(.*?)\\\"", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL));
-        PATTERNS.add(Pattern.compile("</script>", Pattern.CASE_INSENSITIVE));
-        PATTERNS.add(Pattern.compile("<script(.*?)>", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL));
-        PATTERNS.add(Pattern.compile("eval\\((.*?)\\)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL));
-        PATTERNS.add(Pattern.compile("e­xpression\\((.*?)\\)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL));
-        PATTERNS.add(Pattern.compile("javascript:", Pattern.CASE_INSENSITIVE));
-        PATTERNS.add(Pattern.compile("vbscript:", Pattern.CASE_INSENSITIVE));
-        PATTERNS.add(Pattern.compile("onload(.*?)=", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL));
     }
 
     private String cleanXSS(String value) {

@@ -6,13 +6,13 @@ import java.io.Serializable;
 
 /**
  * @author Robert HG (254963746@qq.com) on 6/13/15.
- * 发送给客户端的 任务执行结果
+ *         发送给客户端的 任务执行结果
  */
-public class JobResult implements Serializable{
+public class JobResult implements Serializable {
 
-	private static final long serialVersionUID = -6542469058048149122L;
+    private static final long serialVersionUID = -6542469058048149122L;
 
-	private Job job;
+    private Job job;
 
     // 执行成功还是失败
     private boolean success;

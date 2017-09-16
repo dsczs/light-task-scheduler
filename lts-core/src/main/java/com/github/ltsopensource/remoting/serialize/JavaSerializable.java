@@ -32,7 +32,7 @@ public class JavaSerializable implements RemotingSerializable {
     }
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public <T> T deserialize(byte[] data, Class<T> clazz) throws Exception {
 
         UnsafeByteArrayInputStream bin = new UnsafeByteArrayInputStream(data);

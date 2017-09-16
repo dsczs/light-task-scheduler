@@ -9,15 +9,15 @@ import org.junit.Test;
 public class JobPriorityBlockingDequeTest {
 
     @Test
-    public void testOffer(){
+    public void testOffer() {
 
         JobPriorityBlockingDeque deque = new JobPriorityBlockingDeque(300);
 
         for (int i = 0; i < 20; i++) {
             JobPo jobPo = new JobPo();
-            jobPo.setJobId("21312" + (i%3));
+            jobPo.setJobId("21312" + (i % 3));
             jobPo.setPriority(i);
-            jobPo.setGmtModified(Long.valueOf(20-i));
+            jobPo.setGmtModified(Long.valueOf(20 - i));
             deque.offer(jobPo);
         }
 

@@ -3,7 +3,6 @@ package com.github.ltsopensource.spring.boot;
 import com.github.ltsopensource.core.cluster.AbstractJobNode;
 import com.github.ltsopensource.core.cluster.NodeType;
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
-import com.github.ltsopensource.core.commons.utils.StringUtils;
 import com.github.ltsopensource.spring.boot.annotation.EnableTaskTracker;
 import com.github.ltsopensource.spring.boot.annotation.JobRunner4TaskTracker;
 import com.github.ltsopensource.spring.boot.properties.TaskTrackerProperties;
@@ -33,6 +32,7 @@ import java.util.Map;
 @EnableConfigurationProperties(TaskTrackerProperties.class)
 public class TaskTrackerAutoConfiguration extends AbstractAutoConfiguration {
 
+    String JOB_RUNNER_BEAN_NAME = "LTS_".concat(JobDispatcher.class.getSimpleName());
     @Autowired(required = false)
     private TaskTrackerProperties properties;
     private TaskTracker taskTracker;
@@ -82,8 +82,6 @@ public class TaskTrackerAutoConfiguration extends AbstractAutoConfiguration {
         }
 
     }
-
-    String JOB_RUNNER_BEAN_NAME = "LTS_".concat(JobDispatcher.class.getSimpleName());
 
     private void registerRunnerBeanDefinition() {
         DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory)

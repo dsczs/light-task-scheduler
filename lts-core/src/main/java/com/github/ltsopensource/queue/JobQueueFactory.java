@@ -2,8 +2,8 @@ package com.github.ltsopensource.queue;
 
 import com.github.ltsopensource.core.AppContext;
 import com.github.ltsopensource.core.cluster.Config;
-import com.github.ltsopensource.core.spi.SPI;
 import com.github.ltsopensource.core.constant.ExtConfig;
+import com.github.ltsopensource.core.spi.SPI;
 
 /**
  * @author Robert HG (254963746@qq.com) on 3/12/16.

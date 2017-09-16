@@ -45,9 +45,9 @@ public abstract class AbstractJobNode<T extends Node, Context extends AppContext
     protected T node;
     protected Config config;
     protected Context appContext;
+    protected AtomicBoolean started = new AtomicBoolean(false);
     private List<NodeChangeListener> nodeChangeListeners;
     private List<MasterChangeListener> masterChangeListeners;
-    protected AtomicBoolean started = new AtomicBoolean(false);
 
     public AbstractJobNode() {
         appContext = getAppContext();

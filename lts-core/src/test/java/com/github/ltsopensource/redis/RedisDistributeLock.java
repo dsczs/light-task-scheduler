@@ -13,11 +13,11 @@ public class RedisDistributeLock {
     private static Logger LOGGER = LoggerFactory.getLogger(RedisDistributeLock.class);
 
     private static JedisPool pool;
-    private JedisLock        jedisLock;
-    private String           lockKey;
+    private JedisLock jedisLock;
+    private String lockKey;
     private Jedis jedis;
-    private int              timeoutMsecs;
-    private int              expireMsecs;
+    private int timeoutMsecs;
+    private int expireMsecs;
 
     public RedisDistributeLock(String lockKey) {
         this(lockKey, 3000, 300000);
@@ -29,6 +29,14 @@ public class RedisDistributeLock {
         this.timeoutMsecs = timeoutMsecs;
         this.expireMsecs = expireMsecs;
         this.jedisLock = new JedisLock(jedis, lockKey.intern(), timeoutMsecs, expireMsecs);
+    }
+
+    public static JedisPool getPool() {
+        return pool;
+    }
+
+    public static synchronized void setPool(JedisPool pool) {
+        RedisDistributeLock.pool = pool;
     }
 
     public void wrap(Runnable runnable) {
@@ -65,14 +73,6 @@ public class RedisDistributeLock {
             jedis.close();
         }
         LOGGER.info("release logck,lockKey={},timeoutMsecs={},expireMsecs={}", lockKey, timeoutMsecs, expireMsecs);
-    }
-
-    public static JedisPool getPool() {
-        return pool;
-    }
-
-    public static synchronized void setPool(JedisPool pool) {
-        RedisDistributeLock.pool = pool;
     }
 
 }

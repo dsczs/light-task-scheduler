@@ -15,11 +15,9 @@ import java.util.Set;
 public class AdaptiveSerializable implements RemotingSerializable {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(RemotingSerializable.class);
-
-    private static volatile String defaultSerializable;
-
     private static final Map<Integer, RemotingSerializable>
             ID_SERIALIZABLE_MAP = new HashMap<Integer, RemotingSerializable>();
+    private static volatile String defaultSerializable;
 
     static {
         Set<String> names = ServiceLoader.getServiceProviders(RemotingSerializable.class);

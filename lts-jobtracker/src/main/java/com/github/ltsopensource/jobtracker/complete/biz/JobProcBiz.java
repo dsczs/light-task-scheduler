@@ -27,11 +27,11 @@ import java.util.List;
  */
 public class JobProcBiz implements JobCompletedBiz {
 
-    private ClientNotifier clientNotifier;
     private final JobRetryHandler retryHandler;
     private final JobFinishHandler jobFinishHandler;
     // 任务的最大重试次数
     private final Integer globalMaxRetryTimes;
+    private ClientNotifier clientNotifier;
 
     public JobProcBiz(final JobTrackerAppContext appContext) {
         this.retryHandler = new JobRetryHandler(appContext);

@@ -41,7 +41,7 @@ public interface JVMInfoMBean {
 
     long getTotalCompilationTime();
 
-    String  getHostName();
+    String getHostName();
 
     String getLocalIp();
 

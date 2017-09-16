@@ -8,14 +8,14 @@ import java.util.Vector;
 
 /**
  * 用来处理跨classLoader 共享class
+ *
  * @author Robert HG (254963746@qq.com) on 6/25/16.
  */
 public class CrossClassLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CrossClassLoader.class);
-
-    private static Field classes;
     private static final Object LOCK = new Object();
+    private static Field classes;
 
     static {
         try {

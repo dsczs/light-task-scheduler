@@ -24,20 +24,15 @@ import java.util.Timer;
  */
 public class StoreTxLog implements Closeable {
 
+    public static final String LOG_FILE_SUFFIX = ".log";
     private static final Logger LOGGER = DB.LOGGER;
-    private StoreTxLog next;
-
-    private FileChannel fileChannel;
-    private StoreConfig storeConfig;
-
-    private final ByteBuffer entryBuffer;
-    private StoreTxLogFileHeader fileHeader;
-
     private static final int ENTRY_HEAD_LENGTH = 1 + 4;
     private static final byte magic = (byte) 0xA2;
-
-    public static final String LOG_FILE_SUFFIX = ".log";
-
+    private final ByteBuffer entryBuffer;
+    private StoreTxLog next;
+    private FileChannel fileChannel;
+    private StoreConfig storeConfig;
+    private StoreTxLogFileHeader fileHeader;
     private long lastCheckPointLength = 0;
 
     private Timer syncTimer;

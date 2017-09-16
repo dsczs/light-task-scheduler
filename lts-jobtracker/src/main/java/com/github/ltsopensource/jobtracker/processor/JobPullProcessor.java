@@ -16,9 +16,8 @@ import com.github.ltsopensource.remoting.protocol.RemotingCommand;
  */
 public class JobPullProcessor extends AbstractRemotingProcessor {
 
-    private JobPusher jobPusher;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(JobPullProcessor.class);
+    private JobPusher jobPusher;
 
     public JobPullProcessor(JobTrackerAppContext appContext) {
         super(appContext);

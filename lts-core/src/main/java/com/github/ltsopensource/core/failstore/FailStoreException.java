@@ -5,9 +5,9 @@ package com.github.ltsopensource.core.failstore;
  */
 public class FailStoreException extends Exception {
 
-	private static final long serialVersionUID = -527169987823345068L;
+    private static final long serialVersionUID = -527169987823345068L;
 
-	public FailStoreException(String message) {
+    public FailStoreException(String message) {
         super(message);
     }
 

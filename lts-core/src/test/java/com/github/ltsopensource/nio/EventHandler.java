@@ -7,7 +7,6 @@ import com.github.ltsopensource.nio.channel.NioChannel;
 import com.github.ltsopensource.nio.handler.IoFutureListener;
 import com.github.ltsopensource.nio.handler.NioHandler;
 import com.github.ltsopensource.nio.idle.IdleState;
-import com.github.ltsopensource.remoting.ChannelHandlerListener;
 import com.github.ltsopensource.remoting.Future;
 
 /**
@@ -30,7 +29,7 @@ public class EventHandler implements NioHandler {
     }
 
     @Override
-    public void messageReceived(NioChannel channel, Object msg) throws Exception{
+    public void messageReceived(NioChannel channel, Object msg) throws Exception {
         LOGGER.info("messageReceived : " + channel.remoteAddress() + "  " + JSON.toJSONString(msg));
     }
 

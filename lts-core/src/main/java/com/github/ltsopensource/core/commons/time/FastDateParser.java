@@ -15,21 +15,63 @@ import java.util.regex.Pattern;
 public class FastDateParser {
 
     static final Locale JAPANESE_IMPERIAL = new Locale("ja", "JP", "JP");
+    private static final Pattern formatPattern = Pattern.compile(
+            "D+|E+|F+|G+|H+|K+|M+|S+|W+|Z+|a+|d+|h+|k+|m+|s+|w+|y+|z+|''|'[^']++(''[^']*+)*+'|[^'A-Za-z]++");
+    @SuppressWarnings("unchecked") // OK because we are creating an array with no entries
+    private static final ConcurrentMap<Locale, Strategy>[] caches = new ConcurrentMap[Calendar.FIELD_COUNT];
+    private static final Strategy ABBREVIATED_YEAR_STRATEGY = new NumberStrategy(Calendar.YEAR) {
 
+        @Override
+        void setCalendar(final FastDateParser parser, final Calendar cal, final String value) {
+            int iValue = Integer.parseInt(value);
+            if (iValue < 100) {
+                iValue = parser.adjustYear(iValue);
+            }
+            cal.set(Calendar.YEAR, iValue);
+        }
+    };
+    private static final Strategy NUMBER_MONTH_STRATEGY = new NumberStrategy(Calendar.MONTH) {
+        @Override
+        int modify(final int iValue) {
+            return iValue - 1;
+        }
+    };
+    private static final Strategy LITERAL_YEAR_STRATEGY = new NumberStrategy(Calendar.YEAR);
+    private static final Strategy WEEK_OF_YEAR_STRATEGY = new NumberStrategy(Calendar.WEEK_OF_YEAR);
+    private static final Strategy WEEK_OF_MONTH_STRATEGY = new NumberStrategy(Calendar.WEEK_OF_MONTH);
+    private static final Strategy DAY_OF_YEAR_STRATEGY = new NumberStrategy(Calendar.DAY_OF_YEAR);
+    private static final Strategy DAY_OF_MONTH_STRATEGY = new NumberStrategy(Calendar.DAY_OF_MONTH);
+    private static final Strategy DAY_OF_WEEK_IN_MONTH_STRATEGY = new NumberStrategy(Calendar.DAY_OF_WEEK_IN_MONTH);
+    private static final Strategy HOUR_OF_DAY_STRATEGY = new NumberStrategy(Calendar.HOUR_OF_DAY);
+    private static final Strategy MODULO_HOUR_OF_DAY_STRATEGY = new NumberStrategy(Calendar.HOUR_OF_DAY) {
+        @Override
+        int modify(final int iValue) {
+            return iValue % 24;
+        }
+    };
+    private static final Strategy MODULO_HOUR_STRATEGY = new NumberStrategy(Calendar.HOUR) {
+        @Override
+        int modify(final int iValue) {
+            return iValue % 12;
+        }
+    };
+    private static final Strategy HOUR_STRATEGY = new NumberStrategy(Calendar.HOUR);
+    private static final Strategy MINUTE_STRATEGY = new NumberStrategy(Calendar.MINUTE);
+    private static final Strategy SECOND_STRATEGY = new NumberStrategy(Calendar.SECOND);
+    private static final Strategy MILLISECOND_STRATEGY = new NumberStrategy(Calendar.MILLISECOND);
     // defining fields
     private final String pattern;
     private final TimeZone timeZone;
     private final Locale locale;
     private final int century;
     private final int startYear;
-
     // derived fields
     private transient Pattern parsePattern;
     private transient Strategy[] strategies;
-
     // dynamic fields to communicate with Strategy
     private transient String currentFormatField;
     private transient Strategy nextStrategy;
+
 
     protected FastDateParser(final String pattern, final TimeZone timeZone, final Locale locale) {
         this(pattern, timeZone, locale, null);
@@ -56,6 +98,55 @@ public class FastDateParser {
         startYear = centuryStartYear - century;
 
         init(definingCalendar);
+    }
+
+    // Support for strategies
+    //-----------------------------------------------------------------------
+    private static StringBuilder escapeRegex(final StringBuilder regex, final String value, final boolean unquote) {
+        regex.append("\\Q");
+        for (int i = 0; i < value.length(); ++i) {
+            char c = value.charAt(i);
+            switch (c) {
+                case '\'':
+                    if (unquote) {
+                        if (++i == value.length()) {
+                            return regex;
+                        }
+                        c = value.charAt(i);
+                    }
+                    break;
+                case '\\':
+                    if (++i == value.length()) {
+                        break;
+                    }
+
+                    regex.append(c); // we always want the original \
+                    c = value.charAt(i); // Is it followed by E ?
+                    if (c == 'E') { // \E detected
+                        regex.append("E\\\\E\\"); // see comment above
+                        c = 'Q'; // appended below
+                    }
+                    break;
+                default:
+                    break;
+            }
+            regex.append(c);
+        }
+        regex.append("\\E");
+        return regex;
+    }
+
+    private static Map<String, Integer> getDisplayNames(final int field, final Calendar definingCalendar, final Locale locale) {
+        return definingCalendar.getDisplayNames(field, Calendar.ALL_STYLES, locale);
+    }
+
+    private static ConcurrentMap<Locale, Strategy> getCache(final int field) {
+        synchronized (caches) {
+            if (caches[field] == null) {
+                caches[field] = new ConcurrentHashMap<Locale, Strategy>(3);
+            }
+            return caches[field];
+        }
     }
 
     private void init(Calendar definingCalendar) {
@@ -107,12 +198,10 @@ public class FastDateParser {
                 && locale.equals(other.locale);
     }
 
-
     @Override
     public int hashCode() {
         return pattern.hashCode() + 13 * (timeZone.hashCode() + 13 * locale.hashCode());
     }
-
 
     @Override
     public String toString() {
@@ -159,81 +248,18 @@ public class FastDateParser {
         return cal.getTime();
     }
 
-    // Support for strategies
-    //-----------------------------------------------------------------------
-    private static StringBuilder escapeRegex(final StringBuilder regex, final String value, final boolean unquote) {
-        regex.append("\\Q");
-        for (int i = 0; i < value.length(); ++i) {
-            char c = value.charAt(i);
-            switch (c) {
-                case '\'':
-                    if (unquote) {
-                        if (++i == value.length()) {
-                            return regex;
-                        }
-                        c = value.charAt(i);
-                    }
-                    break;
-                case '\\':
-                    if (++i == value.length()) {
-                        break;
-                    }
-
-                    regex.append(c); // we always want the original \
-                    c = value.charAt(i); // Is it followed by E ?
-                    if (c == 'E') { // \E detected
-                        regex.append("E\\\\E\\"); // see comment above
-                        c = 'Q'; // appended below
-                    }
-                    break;
-                default:
-                    break;
-            }
-            regex.append(c);
-        }
-        regex.append("\\E");
-        return regex;
-    }
-
-
-    private static Map<String, Integer> getDisplayNames(final int field, final Calendar definingCalendar, final Locale locale) {
-        return definingCalendar.getDisplayNames(field, Calendar.ALL_STYLES, locale);
-    }
-
-
     private int adjustYear(final int twoDigitYear) {
         int trial = century + twoDigitYear;
         return twoDigitYear >= startYear ? trial : trial + 100;
     }
 
-
     boolean isNextNumber() {
         return nextStrategy != null && nextStrategy.isNumber();
     }
 
-
     int getFieldWidth() {
         return currentFormatField.length();
     }
-
-
-    private static abstract class Strategy {
-
-        boolean isNumber() {
-            return false;
-        }
-
-        void setCalendar(final FastDateParser parser, final Calendar cal, final String value) {
-
-        }
-
-        abstract boolean addRegex(FastDateParser parser, StringBuilder regex);
-    }
-
-
-    private static final Pattern formatPattern = Pattern.compile(
-            "D+|E+|F+|G+|H+|K+|M+|S+|W+|Z+|a+|d+|h+|k+|m+|s+|w+|y+|z+|''|'[^']++(''[^']*+)*+'|[^'A-Za-z]++");
-
 
     private Strategy getStrategy(final String formatField, final Calendar definingCalendar) {
         switch (formatField.charAt(0)) {
@@ -284,20 +310,6 @@ public class FastDateParser {
         }
     }
 
-    @SuppressWarnings("unchecked") // OK because we are creating an array with no entries
-    private static final ConcurrentMap<Locale, Strategy>[] caches = new ConcurrentMap[Calendar.FIELD_COUNT];
-
-
-    private static ConcurrentMap<Locale, Strategy> getCache(final int field) {
-        synchronized (caches) {
-            if (caches[field] == null) {
-                caches[field] = new ConcurrentHashMap<Locale, Strategy>(3);
-            }
-            return caches[field];
-        }
-    }
-
-
     private Strategy getLocaleSpecificStrategy(final int field, final Calendar definingCalendar) {
         final ConcurrentMap<Locale, Strategy> cache = getCache(field);
         Strategy strategy = cache.get(locale);
@@ -313,6 +325,18 @@ public class FastDateParser {
         return strategy;
     }
 
+    private static abstract class Strategy {
+
+        boolean isNumber() {
+            return false;
+        }
+
+        void setCalendar(final FastDateParser parser, final Calendar cal, final String value) {
+
+        }
+
+        abstract boolean addRegex(FastDateParser parser, StringBuilder regex);
+    }
 
     private static class CopyQuotedStrategy extends Strategy {
         private final String formatField;
@@ -339,7 +363,6 @@ public class FastDateParser {
             return false;
         }
     }
-
 
     private static class TextStrategy extends Strategy {
         private final int field;
@@ -417,34 +440,15 @@ public class FastDateParser {
         }
     }
 
-    private static final Strategy ABBREVIATED_YEAR_STRATEGY = new NumberStrategy(Calendar.YEAR) {
-
-        @Override
-        void setCalendar(final FastDateParser parser, final Calendar cal, final String value) {
-            int iValue = Integer.parseInt(value);
-            if (iValue < 100) {
-                iValue = parser.adjustYear(iValue);
-            }
-            cal.set(Calendar.YEAR, iValue);
-        }
-    };
-
-
     private static class TimeZoneStrategy extends Strategy {
 
+        private static final int ID = 0;
+        private static final int LONG_STD = 1;
+        private static final int SHORT_STD = 2;
+        private static final int LONG_DST = 3;
+        private static final int SHORT_DST = 4;
         private final String validTimeZoneChars;
         private final SortedMap<String, TimeZone> tzNames = new TreeMap<String, TimeZone>(String.CASE_INSENSITIVE_ORDER);
-
-
-        private static final int ID = 0;
-
-        private static final int LONG_STD = 1;
-
-        private static final int SHORT_STD = 2;
-
-        private static final int LONG_DST = 3;
-
-        private static final int SHORT_DST = 4;
 
 
         TimeZoneStrategy(final Locale locale) {
@@ -503,34 +507,4 @@ public class FastDateParser {
             cal.setTimeZone(tz);
         }
     }
-
-    private static final Strategy NUMBER_MONTH_STRATEGY = new NumberStrategy(Calendar.MONTH) {
-        @Override
-        int modify(final int iValue) {
-            return iValue - 1;
-        }
-    };
-    private static final Strategy LITERAL_YEAR_STRATEGY = new NumberStrategy(Calendar.YEAR);
-    private static final Strategy WEEK_OF_YEAR_STRATEGY = new NumberStrategy(Calendar.WEEK_OF_YEAR);
-    private static final Strategy WEEK_OF_MONTH_STRATEGY = new NumberStrategy(Calendar.WEEK_OF_MONTH);
-    private static final Strategy DAY_OF_YEAR_STRATEGY = new NumberStrategy(Calendar.DAY_OF_YEAR);
-    private static final Strategy DAY_OF_MONTH_STRATEGY = new NumberStrategy(Calendar.DAY_OF_MONTH);
-    private static final Strategy DAY_OF_WEEK_IN_MONTH_STRATEGY = new NumberStrategy(Calendar.DAY_OF_WEEK_IN_MONTH);
-    private static final Strategy HOUR_OF_DAY_STRATEGY = new NumberStrategy(Calendar.HOUR_OF_DAY);
-    private static final Strategy MODULO_HOUR_OF_DAY_STRATEGY = new NumberStrategy(Calendar.HOUR_OF_DAY) {
-        @Override
-        int modify(final int iValue) {
-            return iValue % 24;
-        }
-    };
-    private static final Strategy MODULO_HOUR_STRATEGY = new NumberStrategy(Calendar.HOUR) {
-        @Override
-        int modify(final int iValue) {
-            return iValue % 12;
-        }
-    };
-    private static final Strategy HOUR_STRATEGY = new NumberStrategy(Calendar.HOUR);
-    private static final Strategy MINUTE_STRATEGY = new NumberStrategy(Calendar.MINUTE);
-    private static final Strategy SECOND_STRATEGY = new NumberStrategy(Calendar.SECOND);
-    private static final Strategy MILLISECOND_STRATEGY = new NumberStrategy(Calendar.MILLISECOND);
 }

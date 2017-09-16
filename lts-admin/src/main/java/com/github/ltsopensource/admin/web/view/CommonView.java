@@ -24,7 +24,7 @@ public class CommonView {
     private BackendAppContext appContext;
 
     @RequestMapping("index")
-    public String index(){
+    public String index() {
         return "index";
     }
 
@@ -110,15 +110,15 @@ public class CommonView {
     }
 
     @RequestMapping("cron_generator_iframe")
-    public String cronGeneratorIframe(Model model){
+    public String cronGeneratorIframe(Model model) {
         return "cron/cronGenerator";
     }
 
-	@RequestMapping("suspend-job-queue")
-	public String suspendJobQueueUI(Model model) {
-		setAttr(model);
-		return "suspendJobQueue";
-	}
+    @RequestMapping("suspend-job-queue")
+    public String suspendJobQueueUI(Model model) {
+        setAttr(model);
+        return "suspendJobQueue";
+    }
 
     private void setAttr(Model model) {
         List<NodeGroupPo> jobClientNodeGroups = appContext.getNodeGroupStore().getNodeGroup(NodeType.JOB_CLIENT);

@@ -9,9 +9,8 @@ import java.util.UUID;
  */
 public final class CSRFTokenManager {
 
-    static final String CSRF_PARAM_NAME = "csrfToken";
-
     public final static String CSRF_TOKEN_FOR_SESSION_ATTR_NAME = CSRFTokenManager.class.getSimpleName() + ".token";
+    static final String CSRF_PARAM_NAME = "csrfToken";
 
     private CSRFTokenManager() {
     }

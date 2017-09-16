@@ -1,7 +1,6 @@
 package com.github.ltsopensource.autoconfigure;
 
 import com.github.ltsopensource.core.json.JSON;
-import com.github.ltsopensource.core.json.JSONFactory;
 
 import java.io.IOException;
 

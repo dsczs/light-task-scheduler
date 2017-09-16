@@ -3,12 +3,12 @@ package com.github.ltsopensource.core.failstore.berkeleydb;
 import com.github.ltsopensource.core.cluster.Config;
 import com.github.ltsopensource.core.cluster.NodeType;
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
-import com.github.ltsopensource.core.json.JSON;
 import com.github.ltsopensource.core.constant.Constants;
 import com.github.ltsopensource.core.domain.Job;
 import com.github.ltsopensource.core.domain.Pair;
 import com.github.ltsopensource.core.failstore.FailStore;
 import com.github.ltsopensource.core.failstore.FailStoreException;
+import com.github.ltsopensource.core.json.JSON;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,6 +37,7 @@ public class BerkeleydbFailStoreTest {
     public String getFailStorePath(Config config) {
         return config.getDataPath() + "/.lts" + "/" + config.getNodeType() + "/" + config.getNodeGroup() + "/failstore/";
     }
+
     @Test
     public void put() throws FailStoreException {
         Job job = new Job();

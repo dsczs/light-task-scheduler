@@ -10,10 +10,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Robert HG (254963746@qq.com)
  *         Remoting模块中，服务器与客户端通过传递RemotingCommand来交互
  */
-public class RemotingCommand implements Serializable{
+public class RemotingCommand implements Serializable {
 
-	private static final long serialVersionUID = -6424506729433386206L;
-	private static final AtomicInteger requestId = new AtomicInteger(0);
+    private static final long serialVersionUID = -6424506729433386206L;
+    private static final AtomicInteger requestId = new AtomicInteger(0);
     /**
      * Header 部分
      */
@@ -63,13 +63,13 @@ public class RemotingCommand implements Serializable{
         return createResponseCommand(code, remark, null);
     }
 
-    public void setBody(RemotingCommandBody body) {
-        this.body = body;
+    @SuppressWarnings("unchecked")
+    public <T extends RemotingCommandBody> T getBody() {
+        return (T) body;
     }
 
-    @SuppressWarnings("unchecked")
-	public <T extends RemotingCommandBody> T getBody() {
-        return (T) body;
+    public void setBody(RemotingCommandBody body) {
+        this.body = body;
     }
 
     public int getCode() {
@@ -100,16 +100,16 @@ public class RemotingCommand implements Serializable{
         return flag;
     }
 
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
     public int getSubCode() {
         return subCode;
     }
 
     public void setSubCode(int subCode) {
         this.subCode = subCode;
-    }
-
-    public void setFlag(int flag) {
-        this.flag = flag;
     }
 
     public String getRemark() {

@@ -6,13 +6,13 @@ import java.io.Serializable;
 
 /**
  * @author Robert HG (254963746@qq.com) on 8/19/14.
- * TaskTracker 任务执行结果
+ *         TaskTracker 任务执行结果
  */
-public class JobRunResult implements Serializable{
+public class JobRunResult implements Serializable {
 
-	private static final long serialVersionUID = 8622758290605000897L;
+    private static final long serialVersionUID = 8622758290605000897L;
 
-	private JobMeta jobMeta;
+    private JobMeta jobMeta;
 
     private Action action;
 

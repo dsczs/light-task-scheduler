@@ -6,6 +6,6 @@ package com.github.ltsopensource.core.protocol.command;
  */
 public class HeartBeatRequest extends AbstractRemotingCommandBody {
 
-	private static final long serialVersionUID = 8442764611832226224L;
+    private static final long serialVersionUID = 8442764611832226224L;
 
 }

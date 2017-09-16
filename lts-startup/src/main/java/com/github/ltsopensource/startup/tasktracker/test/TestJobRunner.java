@@ -18,6 +18,7 @@ public class TestJobRunner implements JobRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestJobRunner.class);
     private static AtomicLong counter = new AtomicLong(0);
+
     @Override
     public Result run(JobContext jobContext) throws Throwable {
         try {

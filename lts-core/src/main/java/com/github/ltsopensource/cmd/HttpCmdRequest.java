@@ -31,10 +31,6 @@ public class HttpCmdRequest {
         this.nodeIdentity = nodeIdentity;
     }
 
-    public void setParams(Map<String, String> params) {
-        this.params = params;
-    }
-
     public String getParam(String key) {
         if (params != null) {
             return params.get(key);
@@ -62,6 +58,10 @@ public class HttpCmdRequest {
 
     public Map<String, String> getParams() {
         return params;
+    }
+
+    public void setParams(Map<String, String> params) {
+        this.params = params;
     }
 
 }

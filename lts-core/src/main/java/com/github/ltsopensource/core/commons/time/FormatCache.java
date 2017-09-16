@@ -14,9 +14,37 @@ import java.util.concurrent.ConcurrentMap;
  */
 abstract class FormatCache<F extends Format> {
 
+    private static final ConcurrentMap<MultipartKey, String> cDateTimeInstanceCache = new ConcurrentHashMap<MultipartKey, String>(7);
     private final ConcurrentMap<MultipartKey, F> cInstanceCache = new ConcurrentHashMap<MultipartKey, F>(7);
 
-    private static final ConcurrentMap<MultipartKey, String> cDateTimeInstanceCache = new ConcurrentHashMap<MultipartKey, String>(7);
+    static String getPatternForStyle(final Integer dateStyle, final Integer timeStyle, final Locale locale) {
+        final MultipartKey key = new MultipartKey(dateStyle, timeStyle, locale);
+
+        String pattern = cDateTimeInstanceCache.get(key);
+        if (pattern == null) {
+            try {
+                DateFormat formatter;
+                if (dateStyle == null) {
+                    formatter = DateFormat.getTimeInstance(timeStyle, locale);
+                } else if (timeStyle == null) {
+                    formatter = DateFormat.getDateInstance(dateStyle, locale);
+                } else {
+                    formatter = DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale);
+                }
+                pattern = ((SimpleDateFormat) formatter).toPattern();
+                final String previous = cDateTimeInstanceCache.putIfAbsent(key, pattern);
+                if (previous != null) {
+                    // even though it doesn't matter if another thread put the pattern
+                    // it's still good practice to return the String instance that is
+                    // actually in the ConcurrentMap
+                    pattern = previous;
+                }
+            } catch (final ClassCastException ex) {
+                throw new IllegalArgumentException("No date time pattern for locale: " + locale);
+            }
+        }
+        return pattern;
+    }
 
     public F getInstance() {
         return getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, TimeZone.getDefault(), Locale.getDefault());
@@ -66,35 +94,6 @@ abstract class FormatCache<F extends Format> {
 
     F getTimeInstance(final int timeStyle, final TimeZone timeZone, Locale locale) {
         return getDateTimeInstance(null, timeStyle, timeZone, locale);
-    }
-
-    static String getPatternForStyle(final Integer dateStyle, final Integer timeStyle, final Locale locale) {
-        final MultipartKey key = new MultipartKey(dateStyle, timeStyle, locale);
-
-        String pattern = cDateTimeInstanceCache.get(key);
-        if (pattern == null) {
-            try {
-                DateFormat formatter;
-                if (dateStyle == null) {
-                    formatter = DateFormat.getTimeInstance(timeStyle, locale);
-                } else if (timeStyle == null) {
-                    formatter = DateFormat.getDateInstance(dateStyle, locale);
-                } else {
-                    formatter = DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale);
-                }
-                pattern = ((SimpleDateFormat) formatter).toPattern();
-                final String previous = cDateTimeInstanceCache.putIfAbsent(key, pattern);
-                if (previous != null) {
-                    // even though it doesn't matter if another thread put the pattern
-                    // it's still good practice to return the String instance that is
-                    // actually in the ConcurrentMap
-                    pattern = previous;
-                }
-            } catch (final ClassCastException ex) {
-                throw new IllegalArgumentException("No date time pattern for locale: " + locale);
-            }
-        }
-        return pattern;
     }
 
     private static class MultipartKey {

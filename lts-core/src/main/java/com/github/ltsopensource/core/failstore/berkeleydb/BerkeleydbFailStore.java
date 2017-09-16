@@ -2,10 +2,10 @@ package com.github.ltsopensource.core.failstore.berkeleydb;
 
 import com.github.ltsopensource.core.commons.file.FileUtils;
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
-import com.github.ltsopensource.core.json.JSON;
 import com.github.ltsopensource.core.domain.Pair;
 import com.github.ltsopensource.core.failstore.AbstractFailStore;
 import com.github.ltsopensource.core.failstore.FailStoreException;
+import com.github.ltsopensource.core.json.JSON;
 import com.github.ltsopensource.core.logger.Logger;
 import com.github.ltsopensource.core.logger.LoggerFactory;
 import com.sleepycat.je.*;
@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class BerkeleydbFailStore extends AbstractFailStore {
 
+    public static final String name = "berkeleydb";
     private static final Logger LOGGER = LoggerFactory.getLogger(BerkeleydbFailStore.class);
     private Environment environment;
     private Database db;
@@ -30,10 +31,8 @@ public class BerkeleydbFailStore extends AbstractFailStore {
         super(dbPath, needLock);
     }
 
-    public static final String name = "berkeleydb";
-
     @Override
-    protected void init() throws FailStoreException{
+    protected void init() throws FailStoreException {
         try {
             envConfig = new EnvironmentConfig();
             // 如果不存在则创建一个
@@ -69,7 +68,7 @@ public class BerkeleydbFailStore extends AbstractFailStore {
         try {
             String valueString = JSON.toJSONString(value);
             @SuppressWarnings("unused")
-			OperationStatus status = db.put(null, new DatabaseEntry(key.getBytes("UTF-8")),
+            OperationStatus status = db.put(null, new DatabaseEntry(key.getBytes("UTF-8")),
                     new DatabaseEntry(valueString.getBytes("UTF-8")));
         } catch (Exception e) {
             throw new FailStoreException(e);
@@ -82,7 +81,7 @@ public class BerkeleydbFailStore extends AbstractFailStore {
             DatabaseEntry delKey = new DatabaseEntry();
             delKey.setData(key.getBytes("UTF-8"));
             @SuppressWarnings("unused")
-			OperationStatus status = db.delete(null, delKey);
+            OperationStatus status = db.delete(null, delKey);
         } catch (Exception e) {
             throw new FailStoreException(e);
         }

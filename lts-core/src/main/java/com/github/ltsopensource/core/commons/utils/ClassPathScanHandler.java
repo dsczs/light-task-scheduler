@@ -8,7 +8,10 @@ import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
@@ -193,20 +196,20 @@ public class ClassPathScanHandler {
         return excludeInner;
     }
 
-    public boolean isCheckInOrEx() {
-        return checkInOrEx;
-    }
-
-    public List<String> getClassFilters() {
-        return classFilters;
-    }
-
     public void setExcludeInner(boolean pExcludeInner) {
         excludeInner = pExcludeInner;
     }
 
+    public boolean isCheckInOrEx() {
+        return checkInOrEx;
+    }
+
     public void setCheckInOrEx(boolean pCheckInOrEx) {
         checkInOrEx = pCheckInOrEx;
+    }
+
+    public List<String> getClassFilters() {
+        return classFilters;
     }
 
     public void setClassFilters(List<String> pClassFilters) {

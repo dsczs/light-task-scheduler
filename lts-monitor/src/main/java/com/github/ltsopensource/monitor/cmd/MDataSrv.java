@@ -20,17 +20,33 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MDataSrv {
 
-    private MonitorAppContext appContext;
-
     private static final BeanCopier<JobClientMData, JobClientMDataPo> jobClientMDataBeanCopier
             = BeanCopierFactory.createCopier(JobClientMData.class, JobClientMDataPo.class);
     private static final BeanCopier<JobTrackerMData, JobTrackerMDataPo> jobTrackerMDataBeanCopier
             = BeanCopierFactory.createCopier(JobTrackerMData.class, JobTrackerMDataPo.class);
     private static final BeanCopier<TaskTrackerMData, TaskTrackerMDataPo> taskTrackerMDataBeanCopier
             = BeanCopierFactory.createCopier(TaskTrackerMData.class, TaskTrackerMDataPo.class);
+    private static final Map<String, Method> CACHED_METHOD_MAP = new ConcurrentHashMap<String, Method>();
+
+    static {
+        cacheMethod(JVMGCDataPo.class);
+        cacheMethod(JVMMemoryDataPo.class);
+        cacheMethod(JVMThreadDataPo.class);
+    }
+
+    private MonitorAppContext appContext;
 
     public MDataSrv(MonitorAppContext appContext) {
         this.appContext = appContext;
+    }
+
+    private static void cacheMethod(Class<?> clazz) {
+        Method[] methods = clazz.getDeclaredMethods();
+        for (Method method : methods) {
+            if (method.getName().startsWith("set")) {
+                CACHED_METHOD_MAP.put(clazz.getSimpleName() + "_" + method.getName().substring(3), method);
+            }
+        }
     }
 
     public void addMDatas(MNode mNode, List<MData> mDatas) {
@@ -133,24 +149,6 @@ public class MDataSrv {
         appContext.getJvmGCAccess().insert(jvmGCDataPos);
         appContext.getJvmMemoryAccess().insert(jvmMemoryDataPos);
         appContext.getJvmThreadAccess().insert(jvmThreadDataPos);
-    }
-
-
-    private static final Map<String, Method> CACHED_METHOD_MAP = new ConcurrentHashMap<String, Method>();
-
-    static {
-        cacheMethod(JVMGCDataPo.class);
-        cacheMethod(JVMMemoryDataPo.class);
-        cacheMethod(JVMThreadDataPo.class);
-    }
-
-    private static void cacheMethod(Class<?> clazz) {
-        Method[] methods = clazz.getDeclaredMethods();
-        for (Method method : methods) {
-            if (method.getName().startsWith("set")) {
-                CACHED_METHOD_MAP.put(clazz.getSimpleName() + "_" + method.getName().substring(3), method);
-            }
-        }
     }
 
     /**

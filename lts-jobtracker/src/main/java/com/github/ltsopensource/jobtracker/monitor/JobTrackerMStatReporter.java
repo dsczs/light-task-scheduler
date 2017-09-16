@@ -13,10 +13,6 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class JobTrackerMStatReporter extends AbstractMStatReporter {
 
-    public JobTrackerMStatReporter(JobTrackerAppContext appContext) {
-        super(appContext);
-    }
-
     // 接受的任务数
     private AtomicLong receiveJobNum = new AtomicLong(0);
     // 分发出去的任务数
@@ -31,6 +27,9 @@ public class JobTrackerMStatReporter extends AbstractMStatReporter {
     private AtomicLong exeExceptionNum = new AtomicLong(0);
     // 修复死任务数
     private AtomicLong fixExecutingJobNum = new AtomicLong(0);
+    public JobTrackerMStatReporter(JobTrackerAppContext appContext) {
+        super(appContext);
+    }
 
     public void incReceiveJobNum() {
         receiveJobNum.incrementAndGet();

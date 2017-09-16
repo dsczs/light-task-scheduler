@@ -67,7 +67,7 @@
                                 <select class="form-control selectpicker" name="logLevel">
                                     <option value="">-- 不限 --</option>
                                     #foreach ($logLevel in $logLevelList)
-                                    <option value="$logLevel.name()">$logLevel.name()</option>
+                                        <option value="$logLevel.name()">$logLevel.name()</option>
                                     #end
                                 </select>
                             </div>
@@ -204,8 +204,8 @@
             BIZ: '业务日志',
             RESEND: '重新反馈任务',
             DEL: '删除',
-            SUSPEND:'暂停任务',
-            RESUME:'恢复任务'
+            SUSPEND: '暂停任务',
+            RESUME: '恢复任务'
         };
 
         LTS.colFormatter.logTypeLabel = function (v) {
@@ -294,7 +294,7 @@
 //            ltsTable.renderEmpty();
         }
         //翻译日志类型选择下拉列表
-        $("select[name='logType'] option").each(function(i, v){
+        $("select[name='logType'] option").each(function (i, v) {
             $(v).text(LOG_TYPE[$(v).val()]);
         })
     });

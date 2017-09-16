@@ -5,9 +5,9 @@ package com.github.ltsopensource.core.exception;
  */
 public class RequestTimeoutException extends RuntimeException {
 
-	private static final long serialVersionUID = 7216536669163975612L;
+    private static final long serialVersionUID = 7216536669163975612L;
 
-	public RequestTimeoutException() {
+    public RequestTimeoutException() {
         super();
     }
 

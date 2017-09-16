@@ -20,16 +20,14 @@ public abstract class FailbackRegistry extends AbstractRegistry {
     // 定时任务执行器
     private final ScheduledExecutorService retryExecutor = Executors.newScheduledThreadPool(1,
             new NamedThreadFactory("LTSRegistryFailedRetryTimer", true));
-
-    // 失败重试定时器，定时检查是否有请求失败，如有，无限次重试
-    private ScheduledFuture<?> retryFuture;
-
     // 注册失败的定时重试
     private final Set<Node> failedRegistered = new ConcurrentHashSet<Node>();
     private final Set<Node> failedUnRegistered = new ConcurrentHashSet<Node>();
     private final ConcurrentMap<Node, Set<NotifyListener>> failedSubscribed = new ConcurrentHashMap<Node, Set<NotifyListener>>();
     private final ConcurrentMap<Node, Set<NotifyListener>> failedUnsubscribed = new ConcurrentHashMap<Node, Set<NotifyListener>>();
     private final ConcurrentMap<Node, Map<NotifyListener, NotifyPair<NotifyEvent, List<Node>>>> failedNotified = new ConcurrentHashMap<Node, Map<NotifyListener, NotifyPair<NotifyEvent, List<Node>>>>();
+    // 失败重试定时器，定时检查是否有请求失败，如有，无限次重试
+    private ScheduledFuture<?> retryFuture;
 
     public FailbackRegistry(AppContext appContext) {
         super(appContext);
@@ -320,6 +318,14 @@ public abstract class FailbackRegistry extends AbstractRegistry {
         }
     }
 
+    protected abstract void doRegister(Node node);
+
+    protected abstract void doUnRegister(Node node);
+
+    protected abstract void doSubscribe(Node node, NotifyListener listener);
+
+    protected abstract void doUnsubscribe(Node node, NotifyListener listener);
+
     private class NotifyPair<T1, T2> {
         T1 event;
         T2 nodes;
@@ -329,12 +335,4 @@ public abstract class FailbackRegistry extends AbstractRegistry {
             this.nodes = nodes;
         }
     }
-
-    protected abstract void doRegister(Node node);
-
-    protected abstract void doUnRegister(Node node);
-
-    protected abstract void doSubscribe(Node node, NotifyListener listener);
-
-    protected abstract void doUnsubscribe(Node node, NotifyListener listener);
 }

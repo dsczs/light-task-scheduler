@@ -16,12 +16,17 @@ abstract class InterruptSupport {
         }
     };
 
+    // -- sun.misc.SharedSecrets --
+    static void blockedOn(Interruptible intr) { // package-private
+        sun.misc.SharedSecrets.getJavaLangAccess().blockedOn(Thread.currentThread(), intr);
+    }
+
     public final boolean execute() throws InterruptedException {
         try {
             blockedOn(interruptor); // 位置1
             System.out.println("=======1");
             if (Thread.currentThread().isInterrupted()) { // 立马被interrupted
-                ((InterruptRead.InterruptibleAdapter)interruptor).interrupt();
+                ((InterruptRead.InterruptibleAdapter) interruptor).interrupt();
                 System.out.println("=======2");
             }
             // 执行业务代码
@@ -37,15 +42,32 @@ abstract class InterruptSupport {
     public abstract void bussiness();
 
     public abstract void interrupt();
-
-    // -- sun.misc.SharedSecrets --
-    static void blockedOn(Interruptible intr) { // package-private
-        sun.misc.SharedSecrets.getJavaLangAccess().blockedOn(Thread.currentThread(), intr);
-    }
 }
 
 public class InterruptRead extends InterruptSupport {
     private FileInputStream in;
+
+    public static void main(String args[]) throws Exception {
+        final InterruptRead test = new InterruptRead();
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                long start = System.currentTimeMillis();
+                try {
+                    System.out.println("InterruptRead start!");
+                    test.execute();
+                } catch (InterruptedException e) {
+                    System.out.println("InterruptRead end! cost time : " + (System.currentTimeMillis() - start));
+                    e.printStackTrace();
+                }
+            }
+        };
+        t.start();
+        // 先让Read执行3秒
+        Thread.sleep(30000);
+        // 发出interrupt中断
+//        t.interrupt();
+    }
 
     @Override
     public void bussiness() {
@@ -75,29 +97,7 @@ public class InterruptRead extends InterruptSupport {
         }
     }
 
-    public static void main(String args[]) throws Exception {
-        final InterruptRead test = new InterruptRead();
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                long start = System.currentTimeMillis();
-                try {
-                    System.out.println("InterruptRead start!");
-                    test.execute();
-                } catch (InterruptedException e) {
-                    System.out.println("InterruptRead end! cost time : " + (System.currentTimeMillis() - start));
-                    e.printStackTrace();
-                }
-            }
-        };
-        t.start();
-        // 先让Read执行3秒
-        Thread.sleep(30000);
-        // 发出interrupt中断
-//        t.interrupt();
-    }
-
-    public static abstract class InterruptibleAdapter implements Interruptible{
+    public static abstract class InterruptibleAdapter implements Interruptible {
         public void interrupt(Thread thread) {
             interrupt();
         }

@@ -3,7 +3,7 @@ package com.github.ltsopensource.core.groovy;
 /**
  * @author Robert HG (254963746@qq.com) on 11/11/15.
  */
-public class GroovyException extends Exception{
+public class GroovyException extends Exception {
 
     public GroovyException() {
         super();

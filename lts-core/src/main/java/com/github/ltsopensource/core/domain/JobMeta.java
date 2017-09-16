@@ -30,9 +30,11 @@ public class JobMeta implements Serializable {
     public JobType getJobType() {
         return jobType;
     }
+
     public void setJobType(JobType jobType) {
         this.jobType = jobType;
     }
+
     public String getJobId() {
         return jobId;
     }

@@ -13,10 +13,6 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class JobClientMStatReporter extends AbstractMStatReporter {
 
-    public JobClientMStatReporter(AppContext appContext) {
-        super(appContext);
-    }
-
     // 提交成功的个数
     private AtomicLong submitSuccessNum = new AtomicLong(0);
     // 提交失败的个数
@@ -27,6 +23,9 @@ public class JobClientMStatReporter extends AbstractMStatReporter {
     private AtomicLong submitFailStoreNum = new AtomicLong(0);
     // 处理的反馈的个数
     private AtomicLong handleFeedbackNum = new AtomicLong(0);
+    public JobClientMStatReporter(AppContext appContext) {
+        super(appContext);
+    }
 
     public void incSubmitSuccessNum(int num) {
         submitSuccessNum.addAndGet(num);

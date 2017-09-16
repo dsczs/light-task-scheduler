@@ -32,13 +32,11 @@ public class ExecutableDeadJobChecker {
     private final ScheduledExecutorService FIXED_EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1, new NamedThreadFactory("LTS-ExecutableJobQueue-Fix-Executor", true));
 
     private JobTrackerAppContext appContext;
-
+    private AtomicBoolean start = new AtomicBoolean(false);
+    private ScheduledFuture<?> scheduledFuture;
     public ExecutableDeadJobChecker(JobTrackerAppContext appContext) {
         this.appContext = appContext;
     }
-
-    private AtomicBoolean start = new AtomicBoolean(false);
-    private ScheduledFuture<?> scheduledFuture;
 
     public void start() {
         try {

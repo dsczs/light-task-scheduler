@@ -13,12 +13,6 @@ import java.util.Map;
  */
 public class JobTrackerBuilder extends AbstractNodeBuilder<JobTracker, JobTrackerBuilder> {
 
-    @Override
-    protected JobTracker build0() {
-        JobTrackerProperties properties = PropertiesConfigurationFactory.createPropertiesConfiguration(JobTrackerProperties.class, locations);
-        return buildByProperties(properties);
-    }
-
     public static JobTracker buildByProperties(JobTrackerProperties properties) {
 
         properties.checkProperties();
@@ -43,5 +37,11 @@ public class JobTrackerBuilder extends AbstractNodeBuilder<JobTracker, JobTracke
             }
         }
         return jobTracker;
+    }
+
+    @Override
+    protected JobTracker build0() {
+        JobTrackerProperties properties = PropertiesConfigurationFactory.createPropertiesConfiguration(JobTrackerProperties.class, locations);
+        return buildByProperties(properties);
     }
 }

@@ -80,16 +80,14 @@ public class SQLFormatter {
     boolean afterInsert = false;
     int inFunction = 0;
     int parensSinceSelect = 0;
-    private LinkedList<Integer> parenCounts = new LinkedList<Integer>();
-    private LinkedList<Boolean> afterByOrFromOrSelects = new LinkedList<Boolean>();
-
     int indent = 1;
-
     StringBuffer result = new StringBuffer();
     StringTokenizer tokens;
     String lastToken;
     String token;
     String lcToken;
+    private LinkedList<Integer> parenCounts = new LinkedList<Integer>();
+    private LinkedList<Boolean> afterByOrFromOrSelects = new LinkedList<Boolean>();
 
     public SQLFormatter(String sql) {
         tokens = new StringTokenizer(
@@ -97,6 +95,29 @@ public class SQLFormatter {
                 "()+*/-=<>'`\"[]," + WHITESPACE,
                 true
         );
+    }
+
+    private static boolean isFunctionName(String tok) {
+        final char begin = tok.charAt(0);
+        final boolean isIdentifier = Character.isJavaIdentifierStart(begin) || '"' == begin;
+        return isIdentifier &&
+                !LOGICAL.contains(tok) &&
+                !END_CLAUSES.contains(tok) &&
+                !QUANTIFIERS.contains(tok) &&
+                !DML.contains(tok) &&
+                !MISC.contains(tok);
+    }
+
+    private static boolean isWhitespace(String token) {
+        return WHITESPACE.contains(token);
+    }
+
+    public static String format(String sql) {
+        try {
+            return new SQLFormatter(sql).format();
+        } catch (Throwable t) {
+            return sql;
+        }
     }
 
     public SQLFormatter setInitialString(String initial) {
@@ -324,35 +345,11 @@ public class SQLFormatter {
         parensSinceSelect++;
     }
 
-    private static boolean isFunctionName(String tok) {
-        final char begin = tok.charAt(0);
-        final boolean isIdentifier = Character.isJavaIdentifierStart(begin) || '"' == begin;
-        return isIdentifier &&
-                !LOGICAL.contains(tok) &&
-                !END_CLAUSES.contains(tok) &&
-                !QUANTIFIERS.contains(tok) &&
-                !DML.contains(tok) &&
-                !MISC.contains(tok);
-    }
-
-    private static boolean isWhitespace(String token) {
-        return WHITESPACE.contains(token);
-    }
-
     private void newline() {
         result.append("\n");
         for (int i = 0; i < indent; i++) {
             result.append(indentString);
         }
         beginLine = true;
-    }
-
-
-    public static String format(String sql) {
-        try {
-            return new SQLFormatter(sql).format();
-        } catch (Throwable t) {
-            return sql;
-        }
     }
 }

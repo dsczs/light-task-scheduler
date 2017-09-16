@@ -111,6 +111,37 @@ public class JobPushProcessor extends AbstractProcessor {
                 .ResponseCode.JOB_PUSH_SUCCESS.code(), "job push success!");
     }
 
+    private boolean isEnableFailStore() {
+        return !appContext.getConfig().getParameter(ExtConfig.TASK_TRACKER_JOB_RESULT_FAIL_STORE_CLOSE, false);
+    }
+
+    /**
+     * 发送JobResults
+     */
+    private boolean retrySendJobResults(List<JobRunResult> results) {
+        // 发送消息给 JobTracker
+        JobCompletedRequest requestBody = appContext.getCommandBodyWrapper().wrapper(new JobCompletedRequest());
+        requestBody.setJobRunResults(results);
+        requestBody.setReSend(true);
+
+        int requestCode = JobProtos.RequestCode.JOB_COMPLETED.code();
+        RemotingCommand request = RemotingCommand.createRequestCommand(requestCode, requestBody);
+
+        try {
+            // 这里一定要用同步，不然异步会发生文件锁，死锁
+            RemotingCommand commandResponse = remotingClient.invokeSync(request);
+            if (commandResponse != null && commandResponse.getCode() == RemotingProtos.ResponseCode.SUCCESS.code()) {
+                return true;
+            } else {
+                LOGGER.warn("Send job failed, {}", commandResponse);
+                return false;
+            }
+        } catch (JobTrackerNotFoundException e) {
+            LOGGER.error("Retry send job result failed! jobResults={}", results, e);
+        }
+        return false;
+    }
+
     /**
      * 任务执行的回调(任务执行完之后线程回调这个函数)
      */
@@ -198,37 +229,6 @@ public class JobPushProcessor extends AbstractProcessor {
 
             return returnResponse.getJobMeta();
         }
-    }
-
-    private boolean isEnableFailStore() {
-        return !appContext.getConfig().getParameter(ExtConfig.TASK_TRACKER_JOB_RESULT_FAIL_STORE_CLOSE, false);
-    }
-
-    /**
-     * 发送JobResults
-     */
-    private boolean retrySendJobResults(List<JobRunResult> results) {
-        // 发送消息给 JobTracker
-        JobCompletedRequest requestBody = appContext.getCommandBodyWrapper().wrapper(new JobCompletedRequest());
-        requestBody.setJobRunResults(results);
-        requestBody.setReSend(true);
-
-        int requestCode = JobProtos.RequestCode.JOB_COMPLETED.code();
-        RemotingCommand request = RemotingCommand.createRequestCommand(requestCode, requestBody);
-
-        try {
-            // 这里一定要用同步，不然异步会发生文件锁，死锁
-            RemotingCommand commandResponse = remotingClient.invokeSync(request);
-            if (commandResponse != null && commandResponse.getCode() == RemotingProtos.ResponseCode.SUCCESS.code()) {
-                return true;
-            } else {
-                LOGGER.warn("Send job failed, {}", commandResponse);
-                return false;
-            }
-        } catch (JobTrackerNotFoundException e) {
-            LOGGER.error("Retry send job result failed! jobResults={}", results, e);
-        }
-        return false;
     }
 
 }

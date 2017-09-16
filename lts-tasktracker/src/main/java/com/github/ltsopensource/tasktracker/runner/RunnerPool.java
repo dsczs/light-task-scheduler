@@ -78,6 +78,13 @@ public class RunnerPool {
         return threadPoolExecutor.getMaximumPoolSize() - threadPoolExecutor.getActiveCount();
     }
 
+    /**
+     * 得到最大线程数
+     */
+    public int getWorkThread() {
+        return threadPoolExecutor.getCorePoolSize();
+    }
+
     public void setWorkThread(int workThread) {
         if (workThread == 0) {
             throw new IllegalArgumentException("workThread can not be zero!");
@@ -87,13 +94,6 @@ public class RunnerPool {
         threadPoolExecutor.setCorePoolSize(workThread);
 
         LOGGER.info("workThread update to {}", workThread);
-    }
-
-    /**
-     * 得到最大线程数
-     */
-    public int getWorkThread() {
-        return threadPoolExecutor.getCorePoolSize();
     }
 
     public RunnerFactory getRunnerFactory() {
@@ -125,6 +125,10 @@ public class RunnerPool {
         } catch (Throwable t) {
             LOGGER.error("stop working failed ", t);
         }
+    }
+
+    public RunningJobManager getRunningJobManager() {
+        return runningJobManager;
     }
 
     /**
@@ -173,9 +177,5 @@ public class RunnerPool {
                 }
             }
         }
-    }
-
-    public RunningJobManager getRunningJobManager() {
-        return runningJobManager;
     }
 }

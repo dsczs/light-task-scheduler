@@ -20,25 +20,8 @@ import java.nio.ByteBuffer;
 public class MinaCodecFactory implements ProtocolCodecFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MinaCodecFactory.class);
-
-    private Codec codec;
-
-    public MinaCodecFactory(Codec codec) {
-        this.codec = codec;
-    }
-
-    @Override
-    public ProtocolEncoder getEncoder(IoSession session) throws Exception {
-        return encoder;
-    }
-
-    @Override
-    public ProtocolDecoder getDecoder(IoSession session) throws Exception {
-        return decoder;
-    }
-
     IoBufferAllocator bufferAllocator = new SimpleBufferAllocator();
-
+    private Codec codec;
     private ProtocolEncoder encoder = new ProtocolEncoderAdapter() {
 
         @Override
@@ -65,7 +48,6 @@ public class MinaCodecFactory implements ProtocolCodecFactory {
             }
         }
     };
-
     private ProtocolDecoder decoder = new CumulativeProtocolDecoder() {
 
         @Override
@@ -103,5 +85,19 @@ public class MinaCodecFactory implements ProtocolCodecFactory {
         }
 
     };
+
+    public MinaCodecFactory(Codec codec) {
+        this.codec = codec;
+    }
+
+    @Override
+    public ProtocolEncoder getEncoder(IoSession session) throws Exception {
+        return encoder;
+    }
+
+    @Override
+    public ProtocolDecoder getDecoder(IoSession session) throws Exception {
+        return decoder;
+    }
 
 }

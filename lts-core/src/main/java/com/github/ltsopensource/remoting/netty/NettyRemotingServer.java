@@ -84,7 +84,7 @@ public class NettyRemotingServer extends AbstractRemotingServer {
     }
 
     @Override
-    protected void serverShutdown() throws RemotingException{
+    protected void serverShutdown() throws RemotingException {
 
         this.bossSelectorGroup.shutdownGracefully();
         this.workerSelectorGroup.shutdownGracefully();

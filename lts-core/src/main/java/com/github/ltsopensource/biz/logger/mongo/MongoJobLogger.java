@@ -1,13 +1,13 @@
 package com.github.ltsopensource.biz.logger.mongo;
 
 
+import com.github.ltsopensource.admin.response.PaginationRsp;
 import com.github.ltsopensource.biz.logger.JobLogger;
 import com.github.ltsopensource.biz.logger.domain.JobLogPo;
 import com.github.ltsopensource.biz.logger.domain.JobLoggerRequest;
 import com.github.ltsopensource.core.cluster.Config;
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
 import com.github.ltsopensource.core.commons.utils.StringUtils;
-import com.github.ltsopensource.admin.response.PaginationRsp;
 import com.github.ltsopensource.store.mongo.MongoRepository;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -50,19 +50,19 @@ public class MongoJobLogger extends MongoRepository implements JobLogger {
     public PaginationRsp<JobLogPo> search(JobLoggerRequest request) {
 
         Query<JobLogPo> query = template.createQuery(JobLogPo.class);
-        if(StringUtils.isNotEmpty(request.getTaskId())){
+        if (StringUtils.isNotEmpty(request.getTaskId())) {
             query.field("taskId").equal(request.getTaskId());
         }
-        if(StringUtils.isNotEmpty(request.getTaskTrackerNodeGroup())){
+        if (StringUtils.isNotEmpty(request.getTaskTrackerNodeGroup())) {
             query.field("taskTrackerNodeGroup").equal(request.getTaskTrackerNodeGroup());
         }
-        if(StringUtils.isNotEmpty(request.getLogType())){
+        if (StringUtils.isNotEmpty(request.getLogType())) {
             query.field("logType").equal(request.getLogType());
         }
-        if(StringUtils.isNotEmpty(request.getLevel())){
+        if (StringUtils.isNotEmpty(request.getLevel())) {
             query.field("level").equal(request.getLevel());
         }
-        if(StringUtils.isNotEmpty(request.getSuccess())){
+        if (StringUtils.isNotEmpty(request.getSuccess())) {
             query.field("success").equal(request.getSuccess());
         }
         if (request.getStartLogTime() != null) {

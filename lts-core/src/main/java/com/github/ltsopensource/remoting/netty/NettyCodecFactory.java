@@ -32,6 +32,14 @@ public class NettyCodecFactory {
         this.codec = codec;
     }
 
+    public ChannelHandler getEncoder() {
+        return new NettyEncoder();
+    }
+
+    public ChannelHandler getDecoder() {
+        return new NettyDecoder();
+    }
+
     @ChannelHandler.Sharable
     public class NettyEncoder extends MessageToByteEncoder<RemotingCommand> {
         @Override
@@ -85,13 +93,5 @@ public class NettyCodecFactory {
 
             return null;
         }
-    }
-
-    public ChannelHandler getEncoder() {
-        return new NettyEncoder();
-    }
-
-    public ChannelHandler getDecoder() {
-        return new NettyDecoder();
     }
 }

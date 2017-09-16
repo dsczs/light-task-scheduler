@@ -42,7 +42,7 @@ public class QuietUtils {
         }
     }
 
-    public static void sleep(long millis){
+    public static void sleep(long millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException ignored) {

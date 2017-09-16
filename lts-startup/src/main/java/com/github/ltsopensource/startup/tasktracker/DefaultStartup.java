@@ -11,7 +11,7 @@ import java.util.Map;
 public class DefaultStartup {
 
     @SuppressWarnings("unchecked")
-	public static TaskTracker start(TaskTrackerCfg cfg) {
+    public static TaskTracker start(TaskTrackerCfg cfg) {
 
         final TaskTracker taskTracker = new TaskTracker();
         taskTracker.setJobRunnerClass(cfg.getJobRunnerClass());

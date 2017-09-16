@@ -126,7 +126,7 @@
                 var identities = groupIdMap[nodeGroup];
                 if (identities && identities.length > 0) {
                     $.each(identities, function (i, v) {
-                        identityHtml += '<option value="'+ v +'">'+ v +'</option>';
+                        identityHtml += '<option value="' + v + '">' + v + '</option>';
                     });
                 }
             }

@@ -15,6 +15,7 @@ import com.github.ltsopensource.remoting.Future;
 public class IdleDetector {
 
     private final ConcurrentHashSet<NioChannel> channels = new ConcurrentHashSet<NioChannel>();
+    private DetectorTask task = new DetectorTask();
 
     public void addChannel(NioChannel channel) {
         channels.add(channel);
@@ -30,8 +31,6 @@ public class IdleDetector {
     public void removeChannel(NioChannel channel) {
         channels.remove(channel);
     }
-
-    private DetectorTask task = new DetectorTask();
 
     public void start() {
         new Thread(task).start();

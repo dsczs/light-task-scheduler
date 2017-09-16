@@ -28,10 +28,10 @@ public class RocksdbTest {
         Options options = new Options();
         try {
             db = RocksDB.open(options, db_path_not_found);
-            assert(false);
+            assert (false);
         } catch (RocksDBException e) {
             System.out.format("caught the expceted exception -- %s\n", e);
-            assert(db == null);
+            assert (db == null);
         }
 
         try {
@@ -43,42 +43,42 @@ public class RocksdbTest {
                     .setCompressionType(CompressionType.SNAPPY_COMPRESSION)
                     .setCompactionStyle(CompactionStyle.UNIVERSAL);
         } catch (IllegalArgumentException e) {
-            assert(false);
+            assert (false);
         }
 
         Statistics stats = options.statisticsPtr();
 
-        assert(options.createIfMissing() == true);
-        assert(options.writeBufferSize() == 8 * SizeUnit.KB);
-        assert(options.maxWriteBufferNumber() == 3);
-        assert(options.maxBackgroundCompactions() == 10);
-        assert(options.compressionType() == CompressionType.SNAPPY_COMPRESSION);
-        assert(options.compactionStyle() == CompactionStyle.UNIVERSAL);
+        assert (options.createIfMissing() == true);
+        assert (options.writeBufferSize() == 8 * SizeUnit.KB);
+        assert (options.maxWriteBufferNumber() == 3);
+        assert (options.maxBackgroundCompactions() == 10);
+        assert (options.compressionType() == CompressionType.SNAPPY_COMPRESSION);
+        assert (options.compactionStyle() == CompactionStyle.UNIVERSAL);
 
-        assert(options.memTableFactoryName().equals("SkipListFactory"));
+        assert (options.memTableFactoryName().equals("SkipListFactory"));
         options.setMemTableConfig(
                 new HashSkipListMemTableConfig()
                         .setHeight(4)
                         .setBranchingFactor(4)
                         .setBucketCount(2000000));
-        assert(options.memTableFactoryName().equals("HashSkipListRepFactory"));
+        assert (options.memTableFactoryName().equals("HashSkipListRepFactory"));
 
         options.setMemTableConfig(
                 new HashLinkedListMemTableConfig()
                         .setBucketCount(100000));
-        assert(options.memTableFactoryName().equals("HashLinkedListRepFactory"));
+        assert (options.memTableFactoryName().equals("HashLinkedListRepFactory"));
 
         options.setMemTableConfig(
                 new VectorMemTableConfig().setReservedSize(10000));
-        assert(options.memTableFactoryName().equals("VectorRepFactory"));
+        assert (options.memTableFactoryName().equals("VectorRepFactory"));
 
         options.setMemTableConfig(new SkipListMemTableConfig());
-        assert(options.memTableFactoryName().equals("SkipListFactory"));
+        assert (options.memTableFactoryName().equals("SkipListFactory"));
 
         options.setTableFormatConfig(new PlainTableConfig());
         // Plain-Table requires mmap read
         options.setAllowMmapReads(true);
-        assert(options.tableFactoryName().equals("PlainTable"));
+        assert (options.tableFactoryName().equals("PlainTable"));
 
         options.setRateLimiterConfig(new GenericRateLimiterConfig(10000000,
                 10000, 10));
@@ -97,29 +97,29 @@ public class RocksdbTest {
                 .setBlockCacheCompressedSize(64 * SizeUnit.KB)
                 .setBlockCacheCompressedNumShardBits(10);
 
-        assert(table_options.blockCacheSize() == 64 * SizeUnit.KB);
-        assert(table_options.cacheNumShardBits() == 6);
-        assert(table_options.blockSizeDeviation() == 5);
-        assert(table_options.blockRestartInterval() == 10);
-        assert(table_options.cacheIndexAndFilterBlocks() == true);
-        assert(table_options.hashIndexAllowCollision() == false);
-        assert(table_options.blockCacheCompressedSize() == 64 * SizeUnit.KB);
-        assert(table_options.blockCacheCompressedNumShardBits() == 10);
+        assert (table_options.blockCacheSize() == 64 * SizeUnit.KB);
+        assert (table_options.cacheNumShardBits() == 6);
+        assert (table_options.blockSizeDeviation() == 5);
+        assert (table_options.blockRestartInterval() == 10);
+        assert (table_options.cacheIndexAndFilterBlocks() == true);
+        assert (table_options.hashIndexAllowCollision() == false);
+        assert (table_options.blockCacheCompressedSize() == 64 * SizeUnit.KB);
+        assert (table_options.blockCacheCompressedNumShardBits() == 10);
 
         options.setTableFormatConfig(table_options);
-        assert(options.tableFactoryName().equals("BlockBasedTable"));
+        assert (options.tableFactoryName().equals("BlockBasedTable"));
 
         try {
             db = RocksDB.open(options, db_path);
             db.put("hello".getBytes(), "world".getBytes());
             byte[] value = db.get("hello".getBytes());
-            assert("world".equals(new String(value)));
+            assert ("world".equals(new String(value)));
             String str = db.getProperty("rocksdb.stats");
-            assert(str != null && !str.equals(""));
+            assert (str != null && !str.equals(""));
         } catch (RocksDBException e) {
             System.out.format("[ERROR] caught the unexpceted exception -- %s\n", e);
-            assert(db == null);
-            assert(false);
+            assert (db == null);
+            assert (false);
         }
         // be sure to release the c++ pointer
         db.close();
@@ -162,7 +162,7 @@ public class RocksdbTest {
             }
             for (int i = 10; i <= 19; ++i) {
                 for (int j = 10; j <= 19; ++j) {
-                    assert(new String(
+                    assert (new String(
                             db.get(String.format("%dx%d", i, j).getBytes())).equals(
                             String.format("%d", i * j)));
                     System.out.format("%s ", new String(db.get(
@@ -173,45 +173,45 @@ public class RocksdbTest {
             writeOpt.dispose();
 
             value = db.get("1x1".getBytes());
-            assert(value != null);
+            assert (value != null);
             value = db.get("world".getBytes());
-            assert(value == null);
+            assert (value == null);
             value = db.get(readOptions, "world".getBytes());
-            assert(value == null);
+            assert (value == null);
 
             byte[] testKey = "asdf".getBytes();
             byte[] testValue =
                     "asdfghjkl;'?><MNBVCXZQWERTYUIOP{+_)(*&^%$#@".getBytes();
             db.put(testKey, testValue);
             byte[] testResult = db.get(testKey);
-            assert(testResult != null);
-            assert(Arrays.equals(testValue, testResult));
-            assert(new String(testValue).equals(new String(testResult)));
+            assert (testResult != null);
+            assert (Arrays.equals(testValue, testResult));
+            assert (new String(testValue).equals(new String(testResult)));
             testResult = db.get(readOptions, testKey);
-            assert(testResult != null);
-            assert(Arrays.equals(testValue, testResult));
-            assert(new String(testValue).equals(new String(testResult)));
+            assert (testResult != null);
+            assert (Arrays.equals(testValue, testResult));
+            assert (new String(testValue).equals(new String(testResult)));
 
             byte[] insufficientArray = new byte[10];
             byte[] enoughArray = new byte[50];
             int len;
             len = db.get(testKey, insufficientArray);
-            assert(len > insufficientArray.length);
+            assert (len > insufficientArray.length);
             len = db.get("asdfjkl;".getBytes(), enoughArray);
-            assert(len == RocksDB.NOT_FOUND);
+            assert (len == RocksDB.NOT_FOUND);
             len = db.get(testKey, enoughArray);
-            assert(len == testValue.length);
+            assert (len == testValue.length);
 
             len = db.get(readOptions, testKey, insufficientArray);
-            assert(len > insufficientArray.length);
+            assert (len > insufficientArray.length);
             len = db.get(readOptions, "asdfjkl;".getBytes(), enoughArray);
-            assert(len == RocksDB.NOT_FOUND);
+            assert (len == RocksDB.NOT_FOUND);
             len = db.get(readOptions, testKey, enoughArray);
-            assert(len == testValue.length);
+            assert (len == testValue.length);
 
             db.remove(testKey);
             len = db.get(testKey, enoughArray);
-            assert(len == RocksDB.NOT_FOUND);
+            assert (len == RocksDB.NOT_FOUND);
 
             // repeat the test with WriteOptions
             WriteOptions writeOpts = new WriteOptions();
@@ -219,8 +219,8 @@ public class RocksdbTest {
             writeOpts.setDisableWAL(true);
             db.put(writeOpts, testKey, testValue);
             len = db.get(testKey, enoughArray);
-            assert(len == testValue.length);
-            assert(new String(testValue).equals(
+            assert (len == testValue.length);
+            assert (new String(testValue).equals(
                     new String(enoughArray, 0, len)));
             writeOpts.dispose();
 
@@ -231,14 +231,14 @@ public class RocksdbTest {
                 System.out.println("getTickerCount() passed.");
             } catch (Exception e) {
                 System.out.println("Failed in call to getTickerCount()");
-                assert(false); //Should never reach here.
+                assert (false); //Should never reach here.
             }
 
             try {
                 System.out.println("geHistogramData() passed.");
             } catch (Exception e) {
                 System.out.println("Failed in call to geHistogramData()");
-                assert(false); //Should never reach here.
+                assert (false); //Should never reach here.
             }
 
             RocksIterator iterator = db.newIterator();
@@ -246,30 +246,30 @@ public class RocksdbTest {
             boolean seekToFirstPassed = false;
             for (iterator.seekToFirst(); iterator.isValid(); iterator.next()) {
                 iterator.status();
-                assert(iterator.key() != null);
-                assert(iterator.value() != null);
+                assert (iterator.key() != null);
+                assert (iterator.value() != null);
                 seekToFirstPassed = true;
             }
-            if(seekToFirstPassed) {
+            if (seekToFirstPassed) {
                 System.out.println("iterator seekToFirst tests passed.");
             }
 
             boolean seekToLastPassed = false;
             for (iterator.seekToLast(); iterator.isValid(); iterator.prev()) {
                 iterator.status();
-                assert(iterator.key() != null);
-                assert(iterator.value() != null);
+                assert (iterator.key() != null);
+                assert (iterator.value() != null);
                 seekToLastPassed = true;
             }
 
-            if(seekToLastPassed) {
+            if (seekToLastPassed) {
                 System.out.println("iterator seekToLastPassed tests passed.");
             }
 
             iterator.seekToFirst();
             iterator.seek(iterator.key());
-            assert(iterator.key() != null);
-            assert(iterator.value() != null);
+            assert (iterator.key() != null);
+            assert (iterator.value() != null);
 
             System.out.println("iterator seek test passed.");
 
@@ -284,15 +284,15 @@ public class RocksdbTest {
             iterator.dispose();
 
             Map<byte[], byte[]> values = db.multiGet(keys);
-            assert(values.size() == keys.size());
-            for(byte[] value1 : values.values()) {
-                assert(value1 != null);
+            assert (values.size() == keys.size());
+            for (byte[] value1 : values.values()) {
+                assert (value1 != null);
             }
 
             values = db.multiGet(new ReadOptions(), keys);
-            assert(values.size() == keys.size());
-            for(byte[] value1 : values.values()) {
-                assert(value1 != null);
+            assert (values.size() == keys.size());
+            for (byte[] value1 : values.values()) {
+                assert (value1 != null);
             }
         } catch (RocksDBException e) {
             System.err.println(e);

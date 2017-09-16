@@ -22,7 +22,7 @@ public class TaskTrackerCfg {
 
     private int workThreads;
 
-	private Class jobRunnerClass;
+    private Class jobRunnerClass;
 
     private String dataPath;
 

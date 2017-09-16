@@ -54,14 +54,12 @@ public class ExecutingDeadJobChecker {
 
     private JobTrackerAppContext appContext;
     private JobTrackerMStatReporter stat;
-
+    private AtomicBoolean start = new AtomicBoolean(false);
+    private ScheduledFuture<?> scheduledFuture;
     public ExecutingDeadJobChecker(JobTrackerAppContext appContext) {
         this.appContext = appContext;
         this.stat = (JobTrackerMStatReporter) appContext.getMStatReporter();
     }
-
-    private AtomicBoolean start = new AtomicBoolean(false);
-    private ScheduledFuture<?> scheduledFuture;
 
     public void start() {
         try {

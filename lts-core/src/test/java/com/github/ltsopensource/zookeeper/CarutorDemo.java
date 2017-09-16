@@ -55,10 +55,10 @@ public class CarutorDemo {
                 new NodeCacheListener() {
                     @Override
                     public void nodeChanged() throws Exception {
-                        if(nodeCache.getCurrentData().getData() == null){
+                        if (nodeCache.getCurrentData().getData() == null) {
                             System.out.println("delete data:" + nodeCache.getCurrentData().getPath());
-                        }else{
-                            System.out.println("Node data is changed, path:"+ nodeCache.getCurrentData().getPath() +" new data: " +
+                        } else {
+                            System.out.println("Node data is changed, path:" + nodeCache.getCurrentData().getPath() + " new data: " +
                                     new String(nodeCache.getCurrentData().getData()));
                         }
                     }

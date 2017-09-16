@@ -4,7 +4,7 @@ import com.github.ltsopensource.jobtracker.channel.ChannelWrapper;
 
 /**
  * @author Robert HG (254963746@qq.com) on 8/17/14.
- * 客户端节点
+ *         客户端节点
  */
 public class JobClientNode {
 

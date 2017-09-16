@@ -46,40 +46,6 @@ public class RshHolder {
             return jobPos;
         }
     };
-
-    private static JobPo getJobPo(ResultSet rs) throws SQLException {
-        JobPo jobPo = new JobPo();
-        jobPo.setJobId(rs.getString("job_id"));
-        jobPo.setPriority(rs.getInt("priority"));
-        jobPo.setLastGenerateTriggerTime(rs.getLong("last_generate_trigger_time"));
-        jobPo.setRetryTimes(rs.getInt("retry_times"));
-        jobPo.setMaxRetryTimes(rs.getInt("max_retry_times"));
-        jobPo.setRelyOnPrevCycle(rs.getBoolean("rely_on_prev_cycle"));
-        jobPo.setInternalExtParams(JSON.parse(rs.getString("internal_ext_params"), new TypeReference<HashMap<String, String>>() {
-        }));
-        jobPo.setTaskId(rs.getString("task_id"));
-        jobPo.setRealTaskId(rs.getString("real_task_id"));
-        jobPo.setGmtCreated(rs.getLong("gmt_created"));
-        jobPo.setGmtModified(rs.getLong("gmt_modified"));
-        jobPo.setSubmitNodeGroup(rs.getString("submit_node_group"));
-        jobPo.setTaskTrackerNodeGroup(rs.getString("task_tracker_node_group"));
-        jobPo.setExtParams(JSON.parse(rs.getString("ext_params"), new TypeReference<HashMap<String, String>>() {
-        }));
-        String jobType = rs.getString("job_type");
-        if (StringUtils.isNotEmpty(jobType)) {
-            jobPo.setJobType(JobType.valueOf(jobType));
-        }
-        jobPo.setIsRunning(rs.getBoolean("is_running"));
-        jobPo.setTaskTrackerIdentity(rs.getString("task_tracker_identity"));
-        jobPo.setCronExpression(rs.getString("cron_expression"));
-        jobPo.setNeedFeedback(rs.getBoolean("need_feedback"));
-        jobPo.setTriggerTime(rs.getLong("trigger_time"));
-        jobPo.setRepeatCount(rs.getInt("repeat_count"));
-        jobPo.setRepeatedCount(rs.getInt("repeated_count"));
-        jobPo.setRepeatInterval(rs.getLong("repeat_interval"));
-        return jobPo;
-    }
-
     public static final ResultSetHandler<List<JobFeedbackPo>> JOB_FEED_BACK_LIST_RSH = new ResultSetHandler<List<JobFeedbackPo>>() {
         @Override
         public List<JobFeedbackPo> handle(ResultSet rs) throws SQLException {
@@ -95,7 +61,6 @@ public class RshHolder {
             return jobFeedbackPos;
         }
     };
-
     public static final ResultSetHandler<List<NodeGroupPo>> NODE_GROUP_LIST_RSH = new ResultSetHandler<List<NodeGroupPo>>() {
         @Override
         public List<NodeGroupPo> handle(ResultSet rs) throws SQLException {
@@ -110,7 +75,6 @@ public class RshHolder {
             return list;
         }
     };
-
     public static final ResultSetHandler<List<JobLogPo>> JOB_LOGGER_LIST_RSH = new ResultSetHandler<List<JobLogPo>>() {
         @Override
         public List<JobLogPo> handle(ResultSet rs) throws SQLException {
@@ -152,6 +116,39 @@ public class RshHolder {
             return result;
         }
     };
+
+    private static JobPo getJobPo(ResultSet rs) throws SQLException {
+        JobPo jobPo = new JobPo();
+        jobPo.setJobId(rs.getString("job_id"));
+        jobPo.setPriority(rs.getInt("priority"));
+        jobPo.setLastGenerateTriggerTime(rs.getLong("last_generate_trigger_time"));
+        jobPo.setRetryTimes(rs.getInt("retry_times"));
+        jobPo.setMaxRetryTimes(rs.getInt("max_retry_times"));
+        jobPo.setRelyOnPrevCycle(rs.getBoolean("rely_on_prev_cycle"));
+        jobPo.setInternalExtParams(JSON.parse(rs.getString("internal_ext_params"), new TypeReference<HashMap<String, String>>() {
+        }));
+        jobPo.setTaskId(rs.getString("task_id"));
+        jobPo.setRealTaskId(rs.getString("real_task_id"));
+        jobPo.setGmtCreated(rs.getLong("gmt_created"));
+        jobPo.setGmtModified(rs.getLong("gmt_modified"));
+        jobPo.setSubmitNodeGroup(rs.getString("submit_node_group"));
+        jobPo.setTaskTrackerNodeGroup(rs.getString("task_tracker_node_group"));
+        jobPo.setExtParams(JSON.parse(rs.getString("ext_params"), new TypeReference<HashMap<String, String>>() {
+        }));
+        String jobType = rs.getString("job_type");
+        if (StringUtils.isNotEmpty(jobType)) {
+            jobPo.setJobType(JobType.valueOf(jobType));
+        }
+        jobPo.setIsRunning(rs.getBoolean("is_running"));
+        jobPo.setTaskTrackerIdentity(rs.getString("task_tracker_identity"));
+        jobPo.setCronExpression(rs.getString("cron_expression"));
+        jobPo.setNeedFeedback(rs.getBoolean("need_feedback"));
+        jobPo.setTriggerTime(rs.getLong("trigger_time"));
+        jobPo.setRepeatCount(rs.getInt("repeat_count"));
+        jobPo.setRepeatedCount(rs.getInt("repeated_count"));
+        jobPo.setRepeatInterval(rs.getLong("repeat_interval"));
+        return jobPo;
+    }
 }
 
 

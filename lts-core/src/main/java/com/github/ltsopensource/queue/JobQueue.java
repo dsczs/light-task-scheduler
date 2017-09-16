@@ -1,8 +1,8 @@
 package com.github.ltsopensource.queue;
 
 import com.github.ltsopensource.admin.request.JobQueueReq;
-import com.github.ltsopensource.queue.domain.JobPo;
 import com.github.ltsopensource.admin.response.PaginationRsp;
+import com.github.ltsopensource.queue.domain.JobPo;
 
 /**
  * @author Robert HG (254963746@qq.com) on 6/6/15.

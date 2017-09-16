@@ -17,7 +17,6 @@ import com.github.ltsopensource.core.protocol.command.JobPushRequest;
 import com.github.ltsopensource.core.protocol.command.JobPushResponse;
 import com.github.ltsopensource.core.remoting.RemotingServerDelegate;
 import com.github.ltsopensource.core.support.JobDomainConverter;
-import com.github.ltsopensource.core.support.SystemClock;
 import com.github.ltsopensource.jobtracker.domain.JobTrackerAppContext;
 import com.github.ltsopensource.jobtracker.domain.TaskTrackerNode;
 import com.github.ltsopensource.jobtracker.monitor.JobTrackerMStatReporter;
@@ -40,9 +39,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class JobPusher {
 
     private final Logger LOGGER = LoggerFactory.getLogger(JobPusher.class);
-    private JobTrackerAppContext appContext;
     private final ExecutorService executorService;
     private final ExecutorService pushExecutorService;
+    private JobTrackerAppContext appContext;
     private JobTrackerMStatReporter stat;
     private RemotingServerDelegate remotingServer;
     private int jobPushBatchSize = 10;

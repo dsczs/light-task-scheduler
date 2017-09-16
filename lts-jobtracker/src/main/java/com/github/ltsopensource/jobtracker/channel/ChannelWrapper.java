@@ -5,7 +5,7 @@ import com.github.ltsopensource.remoting.Channel;
 
 /**
  * @author Robert HG (254963746@qq.com) on 7/24/14.
- * 对channel的包装
+ *         对channel的包装
  */
 public class ChannelWrapper {
 

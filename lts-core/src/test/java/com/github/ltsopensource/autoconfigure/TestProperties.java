@@ -2,7 +2,6 @@ package com.github.ltsopensource.autoconfigure;
 
 import com.github.ltsopensource.autoconfigure.annotation.ConfigurationProperties;
 import com.github.ltsopensource.core.cluster.AbstractJobNode;
-import com.github.ltsopensource.core.cluster.Node;
 
 import java.util.List;
 import java.util.Map;
@@ -95,6 +94,12 @@ public class TestProperties {
         this.nodeClass = nodeClass;
     }
 
+    public static enum EnumValue {
+        ONE,
+        TWO,
+        THREE
+    }
+
     public static class Config {
         private String string;
         private Integer integer;
@@ -168,11 +173,5 @@ public class TestProperties {
         public void setEnumValue(EnumValue enumValue) {
             this.enumValue = enumValue;
         }
-    }
-
-    public static enum EnumValue {
-        ONE,
-        TWO,
-        THREE
     }
 }

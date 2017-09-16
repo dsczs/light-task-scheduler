@@ -2,9 +2,9 @@ package com.github.ltsopensource.tasktracker.monitor;
 
 import com.github.ltsopensource.core.AppContext;
 import com.github.ltsopensource.core.cluster.NodeType;
+import com.github.ltsopensource.core.domain.monitor.MData;
 import com.github.ltsopensource.core.domain.monitor.TaskTrackerMData;
 import com.github.ltsopensource.core.monitor.AbstractMStatReporter;
-import com.github.ltsopensource.core.domain.monitor.MData;
 
 import java.util.concurrent.atomic.AtomicLong;
 

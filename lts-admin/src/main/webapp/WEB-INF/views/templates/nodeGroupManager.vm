@@ -133,7 +133,7 @@
                 confirmButtonText: "确认删除",
                 closeOnConfirm: false
             }, function (isConfirm) {
-                if(isConfirm){
+                if (isConfirm) {
                     $.ajax({
                         url: 'api/node/node-group-del',
                         type: 'POST',
@@ -152,7 +152,7 @@
             });
         });
 
-        $(document).on("click", "#addBtn", function(){
+        $(document).on("click", "#addBtn", function () {
             var nodeGroup = $("input[name='nodeGroup']").val();
             var nodeType = $("select[name='nodeType']").val();
             if (!nodeGroup) {

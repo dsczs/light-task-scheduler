@@ -5,9 +5,9 @@ package com.github.ltsopensource.core.exception;
  */
 public class JobSubmitException extends RuntimeException {
 
-	private static final long serialVersionUID = 8375498515729588730L;
+    private static final long serialVersionUID = 8375498515729588730L;
 
-	public JobSubmitException() {
+    public JobSubmitException() {
         super();
     }
 

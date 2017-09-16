@@ -1,9 +1,9 @@
 package com.github.ltsopensource.queue;
 
+import com.github.ltsopensource.admin.response.PaginationRsp;
 import com.github.ltsopensource.core.cluster.NodeType;
 import com.github.ltsopensource.core.domain.NodeGroupGetReq;
 import com.github.ltsopensource.queue.domain.NodeGroupPo;
-import com.github.ltsopensource.admin.response.PaginationRsp;
 
 import java.util.List;
 

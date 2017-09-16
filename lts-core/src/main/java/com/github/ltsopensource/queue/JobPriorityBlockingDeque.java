@@ -8,6 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 优先级 有界 去重 双向队列
+ *
  * @author Robert HG (254963746@qq.com) on 8/5/16.
  */
 public class JobPriorityBlockingDeque {

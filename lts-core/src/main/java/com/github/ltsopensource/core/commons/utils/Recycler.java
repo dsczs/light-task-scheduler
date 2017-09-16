@@ -52,15 +52,20 @@ public abstract class Recycler<T> {
 
         final Recycler<T> parent;
         final Thread thread;
+        private final Map<T, Boolean> map = new IdentityHashMap<T, Boolean>(INITIAL_CAPACITY);
         private T[] elements;
         private int size;
-        private final Map<T, Boolean> map = new IdentityHashMap<T, Boolean>(INITIAL_CAPACITY);
 
         @SuppressWarnings({"unchecked", "SuspiciousArrayCast"})
         Stack(Recycler<T> parent, Thread thread) {
             this.parent = parent;
             this.thread = thread;
             elements = newArray(INITIAL_CAPACITY);
+        }
+
+        @SuppressWarnings({"unchecked", "SuspiciousArrayCast"})
+        private static <T> T[] newArray(int length) {
+            return (T[]) new Object[length];
         }
 
         T pop() {
@@ -90,11 +95,6 @@ public abstract class Recycler<T> {
 
             elements[size] = o;
             this.size = size + 1;
-        }
-
-        @SuppressWarnings({"unchecked", "SuspiciousArrayCast"})
-        private static <T> T[] newArray(int length) {
-            return (T[]) new Object[length];
         }
     }
 }

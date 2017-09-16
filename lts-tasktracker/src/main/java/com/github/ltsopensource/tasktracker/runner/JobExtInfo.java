@@ -25,7 +25,7 @@ public class JobExtInfo {
     /**
      * 执行的时序 (每个执行周期都不一样，但是修复死任务，重试等不会改变)
      */
-    private String  seqId;
+    private String seqId;
 
     public boolean isRetry() {
         return retry;

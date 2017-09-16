@@ -32,22 +32,20 @@ import java.util.concurrent.PriorityBlockingQueue;
  */
 public class MStatReportWorker implements Runnable {
 
+    private final static int MAX_RETRY_RETAIN = 500;
+    private final static int BATCH_REPORT_SIZE = 10;
     protected final Logger LOGGER = LoggerFactory.getLogger(MStatReportWorker.class);
-
     private int interval = 1;    // 1分钟
     private Integer preMinute = null;  // 上一分钟
+    // 这里面保存发送失败的，不过有个最大限制，防止内存爆掉
     private AppContext appContext;
     private AbstractMStatReporter reporter;
-    // 这里面保存发送失败的，不过有个最大限制，防止内存爆掉
-
     private PriorityBlockingQueue<MData> queue = new PriorityBlockingQueue<MData>(16, new Comparator<MData>() {
         @Override
         public int compare(MData o1, MData o2) {
             return o1.getTimestamp().compareTo(o2.getTimestamp());
         }
     });
-    private final static int MAX_RETRY_RETAIN = 500;
-    private final static int BATCH_REPORT_SIZE = 10;
     private volatile boolean running = false;
     private LoadBalance loadBalance;
 

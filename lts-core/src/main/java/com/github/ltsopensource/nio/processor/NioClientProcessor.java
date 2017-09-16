@@ -27,6 +27,14 @@ public class NioClientProcessor extends AbstractNioProcessor {
         this.clientConfig = clientConfig;
     }
 
+    private static SocketChannel newSocket() {
+        try {
+            return SocketChannel.open();
+        } catch (IOException e) {
+            throw new NioException("can't create a new socket, out of file descriptors ?", e);
+        }
+    }
+
     @Override
     protected NioChannel doAccept(NioSelectorLoop selectorLoop) {
         throw new UnsupportedOperationException();
@@ -86,14 +94,6 @@ public class NioClientProcessor extends AbstractNioProcessor {
         connectFuture.setChannel(channel);
         connectFuture.notifyListeners();
         return channel;
-    }
-
-    private static SocketChannel newSocket() {
-        try {
-            return SocketChannel.open();
-        } catch (IOException e) {
-            throw new NioException("can't create a new socket, out of file descriptors ?", e);
-        }
     }
 
     @Override

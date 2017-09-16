@@ -19,14 +19,13 @@ import java.util.List;
  */
 public class RocksdbFailStore extends AbstractFailStore {
 
+    public static final String name = "rocksdb";
     private RocksDB db = null;
     private Options options;
 
     public RocksdbFailStore(File dbPath, boolean needLock) {
         super(dbPath, needLock);
     }
-
-    public static final String name = "rocksdb";
 
     @Override
     protected void init() throws FailStoreException {

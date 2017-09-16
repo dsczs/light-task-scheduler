@@ -35,7 +35,7 @@
 
         $('select').addClass("selectpicker");
 
-        $(document).on("click", "button[type='reset']", function(){
+        $(document).on("click", "button[type='reset']", function () {
             var form = $($(this)[0].form);
             form[0].reset();
             form.find('select').selectpicker('render');

@@ -1,10 +1,10 @@
 package com.github.ltsopensource.kv.index;
 
 import com.github.ltsopensource.core.factory.NamedThreadFactory;
+import com.github.ltsopensource.core.logger.Logger;
 import com.github.ltsopensource.kv.DB;
 import com.github.ltsopensource.kv.StoreConfig;
 import com.github.ltsopensource.kv.serializer.StoreSerializer;
-import com.github.ltsopensource.core.logger.Logger;
 
 import java.io.IOException;
 import java.util.concurrent.Executors;
@@ -18,11 +18,11 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractIndexSnapshot<K, V> implements IndexSnapshot<K, V> {
 
     protected static final Logger LOGGER = DB.LOGGER;
-    private ScheduledExecutorService executorService;
-    private ScheduledFuture<?> future;
     protected Index<K, V> index;
     protected StoreSerializer serializer;
     protected StoreConfig storeConfig;
+    private ScheduledExecutorService executorService;
+    private ScheduledFuture<?> future;
 
     public AbstractIndexSnapshot(Index<K, V> index, StoreConfig storeConfig, StoreSerializer serializer) {
         this.index = index;

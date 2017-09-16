@@ -24,15 +24,15 @@ public class JavaSourceBean {
         this.classDefinition = classDefinition;
     }
 
-    public void addImport(String importName){
+    public void addImport(String importName) {
         importNameList.add(importName);
     }
 
-    public void addMethod(String methodCode){
+    public void addMethod(String methodCode) {
         methodCodeList.add(methodCode);
     }
 
-    public String toString(){
+    public String toString() {
         StringBuilder code = new StringBuilder();
         code.append("package ").append(packageName).append(";\n");
 

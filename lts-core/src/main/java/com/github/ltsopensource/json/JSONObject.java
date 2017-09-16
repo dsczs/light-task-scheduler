@@ -27,24 +27,9 @@ import static com.github.ltsopensource.core.json.TypeUtils.*;
  */
 public class JSONObject {
 
-    private static final class Null {
-        protected final Object clone() {
-            return this;
-        }
-
-        public boolean equals(Object object) {
-            return object == null || object == this;
-        }
-
-        public String toString() {
-            return "null";
-        }
-    }
-
-    private final Map<String, Object> map;
-    private static final ConcurrentMap<Class<?>, Set<MethodInfo>> METHOD_MAP = new ConcurrentHashMap<Class<?>, Set<MethodInfo>>();
-
     public static final Object NULL = new Null();
+    private static final ConcurrentMap<Class<?>, Set<MethodInfo>> METHOD_MAP = new ConcurrentHashMap<Class<?>, Set<MethodInfo>>();
+    private final Map<String, Object> map;
 
     public JSONObject() {
         this.map = new HashMap<String, Object>();
@@ -119,56 +104,6 @@ public class JSONObject {
         this(new JSONTokenizer(source));
     }
 
-    public Object get(String key) throws JSONException {
-        if (key == null) {
-            throw new JSONException("Null key.");
-        }
-        return this.opt(key);
-    }
-
-    public JSONArray getJSONArray(String key) throws JSONException {
-        Object object = this.get(key);
-        if (object instanceof JSONArray) {
-            return (JSONArray) object;
-        }
-        throw new JSONException("JSONObject[" + quote(key)
-                + "] is not a JSONArray.");
-    }
-
-    public JSONObject getJSONObject(String key) throws JSONException {
-        Object object = this.get(key);
-        if (object instanceof JSONObject) {
-            return (JSONObject) object;
-        }
-        throw new JSONException("JSONObject[" + quote(key)
-                + "] is not a JSONObject.");
-    }
-
-    public boolean has(String key) {
-        return this.map.containsKey(key);
-    }
-
-    public Iterator<String> keys() {
-        return this.keySet().iterator();
-    }
-
-    public Set<String> keySet() {
-        return this.map.keySet();
-    }
-
-    public int size() {
-        return this.map.size();
-    }
-
-    public JSONArray names() {
-        JSONArray ja = new JSONArray();
-        Iterator<String> keys = this.keys();
-        while (keys.hasNext()) {
-            ja.put(keys.next());
-        }
-        return ja.length() == 0 ? null : ja;
-    }
-
     private static String numberToString(Number number) throws JSONException {
         if (number == null) {
             throw new JSONException("Null pointer");
@@ -184,65 +119,6 @@ public class JSONObject {
             }
         }
         return string;
-    }
-
-    public Object opt(String key) {
-        if (key == null) {
-            return null;
-        }
-        Object value = map.get(key);
-        if (value == NULL) {
-            return null;
-        }
-        return value;
-    }
-
-    public JSONObject put(String key, Object value) throws JSONException {
-        if (key == null) {
-            throw new NullPointerException("Null key.");
-        }
-        if (value != null) {
-            this.map.put(key, value);
-        } else {
-            this.remove(key);
-        }
-        return this;
-    }
-
-    public JSONObject putOnce(String key, Object value) throws JSONException {
-        if (key != null && value != null) {
-            if (this.opt(key) != null) {
-                throw new JSONException("Duplicate key \"" + key + "\"");
-            }
-            this.put(key, value);
-        }
-        return this;
-    }
-
-    private String quote(String string) {
-        StringWriter sw = new StringWriter();
-        try {
-            return quote(string, sw).toString();
-        } catch (IOException ignored) {
-            return "";
-        }
-    }
-
-    private void populateMap(Object bean) {
-        Class<?> clazz = bean.getClass();
-        Set<MethodInfo> methodInfos = getGetterMethodInfo(clazz);
-
-        if (CollectionUtils.isNotEmpty(methodInfos)) {
-            for (MethodInfo methodInfo : methodInfos) {
-                try {
-                    Object result = methodInfo.getMethod().invoke(bean, (Object[]) null);
-                    if (result != null) {
-                        this.map.put(methodInfo.getFieldName(), wrap(result));
-                    }
-                } catch (Exception ignored) {
-                }
-            }
-        }
     }
 
     private static Set<MethodInfo> getGetterMethodInfo(Class<?> clazz) {
@@ -353,19 +229,6 @@ public class JSONObject {
         return w;
     }
 
-    public Object remove(String key) {
-        return this.map.remove(key);
-    }
-
-    public String toString() {
-        try {
-            StringWriter w = new StringWriter();
-            return this.write(w).toString();
-        } catch (Exception e) {
-            throw new JSONException(e);
-        }
-    }
-
     protected static Object wrap(Object object) {
         try {
             if (object == null) {
@@ -437,6 +300,166 @@ public class JSONObject {
         return writer;
     }
 
+    public static <T> T parseObject(String json, Type type) {
+        // 如果是原始类型
+        if (PrimitiveTypeUtils.isPrimitiveType(type)) {
+            return new PrimitiveTypeDeserializer().deserialize(json, type);
+        }
+
+        Object object = null;
+        if (StringUtils.isEmpty(json)) {
+            throw new JSONException("illegal json: json is empty");
+        }
+        json = json.trim();
+        if (json.startsWith("{")) {
+            object = new JSONObject(json);
+        } else if (json.startsWith("[")) {
+            object = new JSONArray(json);
+        } else {
+            throw new JSONException("illegal json:" + json);
+        }
+        return JSONParser.parse(object, type);
+    }
+
+    public static String toJSONString(Object obj) {
+        if (isJSONArray(obj.getClass())) {
+            return new com.github.ltsopensource.json.JSONArray(obj).toString();
+        }
+        return new com.github.ltsopensource.json.JSONObject(obj).toString();
+    }
+
+    private static boolean isJSONArray(Class<?> clazz) {
+        if (clazz.isArray()) {
+            return true;
+        }
+        if (Collection.class.isAssignableFrom(clazz)) {
+            return true;
+        }
+        return false;
+    }
+
+    public Object get(String key) throws JSONException {
+        if (key == null) {
+            throw new JSONException("Null key.");
+        }
+        return this.opt(key);
+    }
+
+    public JSONArray getJSONArray(String key) throws JSONException {
+        Object object = this.get(key);
+        if (object instanceof JSONArray) {
+            return (JSONArray) object;
+        }
+        throw new JSONException("JSONObject[" + quote(key)
+                + "] is not a JSONArray.");
+    }
+
+    public JSONObject getJSONObject(String key) throws JSONException {
+        Object object = this.get(key);
+        if (object instanceof JSONObject) {
+            return (JSONObject) object;
+        }
+        throw new JSONException("JSONObject[" + quote(key)
+                + "] is not a JSONObject.");
+    }
+
+    public boolean has(String key) {
+        return this.map.containsKey(key);
+    }
+
+    public Iterator<String> keys() {
+        return this.keySet().iterator();
+    }
+
+    public Set<String> keySet() {
+        return this.map.keySet();
+    }
+
+    public int size() {
+        return this.map.size();
+    }
+
+    public JSONArray names() {
+        JSONArray ja = new JSONArray();
+        Iterator<String> keys = this.keys();
+        while (keys.hasNext()) {
+            ja.put(keys.next());
+        }
+        return ja.length() == 0 ? null : ja;
+    }
+
+    public Object opt(String key) {
+        if (key == null) {
+            return null;
+        }
+        Object value = map.get(key);
+        if (value == NULL) {
+            return null;
+        }
+        return value;
+    }
+
+    public JSONObject put(String key, Object value) throws JSONException {
+        if (key == null) {
+            throw new NullPointerException("Null key.");
+        }
+        if (value != null) {
+            this.map.put(key, value);
+        } else {
+            this.remove(key);
+        }
+        return this;
+    }
+
+    public JSONObject putOnce(String key, Object value) throws JSONException {
+        if (key != null && value != null) {
+            if (this.opt(key) != null) {
+                throw new JSONException("Duplicate key \"" + key + "\"");
+            }
+            this.put(key, value);
+        }
+        return this;
+    }
+
+    private String quote(String string) {
+        StringWriter sw = new StringWriter();
+        try {
+            return quote(string, sw).toString();
+        } catch (IOException ignored) {
+            return "";
+        }
+    }
+
+    private void populateMap(Object bean) {
+        Class<?> clazz = bean.getClass();
+        Set<MethodInfo> methodInfos = getGetterMethodInfo(clazz);
+
+        if (CollectionUtils.isNotEmpty(methodInfos)) {
+            for (MethodInfo methodInfo : methodInfos) {
+                try {
+                    Object result = methodInfo.getMethod().invoke(bean, (Object[]) null);
+                    if (result != null) {
+                        this.map.put(methodInfo.getFieldName(), wrap(result));
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+        }
+    }
+
+    public Object remove(String key) {
+        return this.map.remove(key);
+    }
+
+    public String toString() {
+        try {
+            StringWriter w = new StringWriter();
+            return this.write(w).toString();
+        } catch (Exception e) {
+            throw new JSONException(e);
+        }
+    }
+
     private Writer write(Writer writer)
             throws JSONException {
         try {
@@ -498,7 +521,6 @@ public class JSONObject {
         }
         return castToBytes(value);
     }
-
 
     public boolean getBooleanValue(String key) {
         Object value = map.get(key);
@@ -643,41 +665,17 @@ public class JSONObject {
         map.putAll(m);
     }
 
-    public static <T> T parseObject(String json, Type type) {
-        // 如果是原始类型
-        if (PrimitiveTypeUtils.isPrimitiveType(type)) {
-            return new PrimitiveTypeDeserializer().deserialize(json, type);
+    private static final class Null {
+        protected final Object clone() {
+            return this;
         }
 
-        Object object = null;
-        if (StringUtils.isEmpty(json)) {
-            throw new JSONException("illegal json: json is empty");
+        public boolean equals(Object object) {
+            return object == null || object == this;
         }
-        json = json.trim();
-        if (json.startsWith("{")) {
-            object = new JSONObject(json);
-        } else if (json.startsWith("[")) {
-            object = new JSONArray(json);
-        } else {
-            throw new JSONException("illegal json:" + json);
-        }
-        return JSONParser.parse(object, type);
-    }
 
-    public static String toJSONString(Object obj) {
-        if (isJSONArray(obj.getClass())) {
-            return new com.github.ltsopensource.json.JSONArray(obj).toString();
+        public String toString() {
+            return "null";
         }
-        return new com.github.ltsopensource.json.JSONObject(obj).toString();
-    }
-
-    private static boolean isJSONArray(Class<?> clazz) {
-        if (clazz.isArray()) {
-            return true;
-        }
-        if (Collection.class.isAssignableFrom(clazz)) {
-            return true;
-        }
-        return false;
     }
 }

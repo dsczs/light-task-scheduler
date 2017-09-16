@@ -17,21 +17,14 @@ import java.math.MathContext;
 public class JVMThread implements JVMThreadMBean {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(JVMThread.class);
-
+    private static final JVMThread instance = new JVMThread();
     private volatile long lastCPUTime;
     private volatile long lastCPUUpTime;
-	private OperatingSystemMXBean OperatingSystem;
+    private OperatingSystemMXBean OperatingSystem;
     private RuntimeMXBean Runtime;
-
-    private static final JVMThread instance = new JVMThread();
-
-    public static JVMThread getInstance() {
-        return instance;
-    }
-
     private ThreadMXBean threadMXBean;
 
-	private JVMThread() {
+    private JVMThread() {
         threadMXBean = ManagementFactory.getThreadMXBean();
         OperatingSystem = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
         Runtime = ManagementFactory.getRuntimeMXBean();
@@ -43,9 +36,13 @@ public class JVMThread implements JVMThreadMBean {
         }
     }
 
+    public static JVMThread getInstance() {
+        return instance;
+    }
+
     @Override
     public BigDecimal getProcessCpuTimeRate() {
-		long cpuTime = OperatingSystem.getProcessCpuTime();
+        long cpuTime = OperatingSystem.getProcessCpuTime();
         long upTime = Runtime.getUptime();
 
         long elapsedCpu = cpuTime - lastCPUTime;

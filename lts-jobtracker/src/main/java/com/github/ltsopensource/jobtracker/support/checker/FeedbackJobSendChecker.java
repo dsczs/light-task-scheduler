@@ -34,14 +34,7 @@ public class FeedbackJobSendChecker {
     private AtomicBoolean start = new AtomicBoolean(false);
     private ClientNotifier clientNotifier;
     private JobTrackerAppContext appContext;
-
-    /**
-     * 是否已经启动
-     */
-    @SuppressWarnings("unused")
-	private boolean isStart() {
-        return start.get();
-    }
+    private volatile boolean isRunning = false;
 
     public FeedbackJobSendChecker(final JobTrackerAppContext appContext) {
         this.appContext = appContext;
@@ -60,6 +53,14 @@ public class FeedbackJobSendChecker {
                 // do nothing
             }
         });
+    }
+
+    /**
+     * 是否已经启动
+     */
+    @SuppressWarnings("unused")
+    private boolean isStart() {
+        return start.get();
     }
 
     /**
@@ -92,8 +93,6 @@ public class FeedbackJobSendChecker {
             LOGGER.error("Feedback job checker stop failed!", t);
         }
     }
-
-    private volatile boolean isRunning = false;
 
     private class Runner implements Runnable {
         @Override
@@ -164,14 +163,10 @@ public class FeedbackJobSendChecker {
     }
 
     private class JobRunResultWrapper extends JobRunResult {
-		
-    	private static final long serialVersionUID = 6257259684477618571L;
-    	
-		private String id;
 
-        public String getId() {
-            return id;
-        }
+        private static final long serialVersionUID = 6257259684477618571L;
+
+        private String id;
 
         public JobRunResultWrapper(String id, JobRunResult result) {
             this.id = id;
@@ -179,6 +174,10 @@ public class FeedbackJobSendChecker {
             setMsg(result.getMsg());
             setAction(result.getAction());
             setTime(result.getTime());
+        }
+
+        public String getId() {
+            return id;
         }
     }
 

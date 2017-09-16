@@ -116,9 +116,9 @@ public class BizLoggerImpl extends BizLoggerAdapter implements BizLogger {
         requestBody.setBizLogs(Collections.singletonList(bizLog));
 
         if (!remotingClient.isServerEnable()) {
-            if(isEnableBizLoggerFailStore()){
+            if (isEnableBizLoggerFailStore()) {
                 retryScheduler.inSchedule(StringUtils.generateUUID(), bizLog);
-            }else{
+            } else {
                 logger.error("Send Biz Logger to JobTracker Error, server is down, bizLog={}", JSON.toJSONString(bizLog));
             }
             return;

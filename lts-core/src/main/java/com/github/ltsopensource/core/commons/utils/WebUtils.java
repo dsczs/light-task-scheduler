@@ -22,18 +22,6 @@ public class WebUtils {
     private static final String METHOD_GET = "GET";
     private static boolean ignoreSSLCheck = true; // 忽略SSL检查
 
-    private static class TrustAllTrustManager implements X509TrustManager {
-        public X509Certificate[] getAcceptedIssuers() {
-            return null;
-        }
-
-        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-        }
-
-        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-        }
-    }
-
     private WebUtils() {
     }
 
@@ -339,6 +327,18 @@ public class WebUtils {
             }
         }
         return result;
+    }
+
+    private static class TrustAllTrustManager implements X509TrustManager {
+        public X509Certificate[] getAcceptedIssuers() {
+            return null;
+        }
+
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        }
+
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        }
     }
 
 }

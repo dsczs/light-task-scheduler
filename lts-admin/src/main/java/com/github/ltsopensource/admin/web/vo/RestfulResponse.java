@@ -9,9 +9,9 @@ import java.util.List;
  */
 public class RestfulResponse implements Serializable {
 
-	private static final long serialVersionUID = -5795089018013798231L;
+    private static final long serialVersionUID = -5795089018013798231L;
 
-	private boolean success;
+    private boolean success;
 
     private String code;
 

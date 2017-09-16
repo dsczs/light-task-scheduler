@@ -25,12 +25,10 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class ZookeeperRegistry extends FailbackRegistry {
 
-    private ZkClient zkClient;
     // 用来记录父节点下的子节点的变化
     private final ConcurrentHashMap<String/*parentPath*/, List<String/*children*/>> cachedChildrenNodeMap;
-
     private final ConcurrentMap<Node, ConcurrentMap<NotifyListener, ChildListener>> zkListeners;
-
+    private ZkClient zkClient;
     private String clusterName;
 
     public ZookeeperRegistry(final AppContext appContext) {

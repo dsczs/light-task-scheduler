@@ -13,16 +13,16 @@ public abstract class BizLoggerAdapter implements BizLogger {
         this.jobMetaThreadLocal = new ThreadLocal<JobMeta>();
     }
 
-    public void setJobMeta(JobMeta jobMeta) {
-        jobMetaThreadLocal.set(jobMeta);
-    }
-
     public void removeJobMeta() {
         jobMetaThreadLocal.remove();
     }
 
     protected JobMeta getJobMeta() {
         return jobMetaThreadLocal.get();
+    }
+
+    public void setJobMeta(JobMeta jobMeta) {
+        jobMetaThreadLocal.set(jobMeta);
     }
 
 }

@@ -2,13 +2,13 @@ package com.github.ltsopensource.tasktracker.expcetion;
 
 /**
  * @author Robert HG (254963746@qq.com) on 8/16/14.
- * 没有可用的线程
+ *         没有可用的线程
  */
-public class NoAvailableJobRunnerException extends Exception{
+public class NoAvailableJobRunnerException extends Exception {
 
-	private static final long serialVersionUID = 5317008601154858522L;
+    private static final long serialVersionUID = 5317008601154858522L;
 
-	public NoAvailableJobRunnerException() {
+    public NoAvailableJobRunnerException() {
         super();
     }
 

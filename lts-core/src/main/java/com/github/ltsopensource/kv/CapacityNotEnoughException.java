@@ -3,7 +3,7 @@ package com.github.ltsopensource.kv;
 /**
  * @author Robert HG (254963746@qq.com) on 12/19/15.
  */
-public class CapacityNotEnoughException extends DBException{
+public class CapacityNotEnoughException extends DBException {
 
     public CapacityNotEnoughException() {
     }

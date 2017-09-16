@@ -5,9 +5,9 @@ package com.github.ltsopensource.core.exception;
  */
 public class NodeRegistryException extends RuntimeException {
 
-	private static final long serialVersionUID = 3113597129620580907L;
+    private static final long serialVersionUID = 3113597129620580907L;
 
-	public NodeRegistryException() {
+    public NodeRegistryException() {
         super();
     }
 

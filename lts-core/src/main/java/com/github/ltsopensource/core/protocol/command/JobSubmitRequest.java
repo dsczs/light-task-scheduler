@@ -11,9 +11,9 @@ import java.util.List;
  */
 public class JobSubmitRequest extends AbstractRemotingCommandBody {
 
-	private static final long serialVersionUID = 7229438891247265777L;
-	
-	@NotNull
+    private static final long serialVersionUID = 7229438891247265777L;
+
+    @NotNull
     private List<Job> jobs;
 
     public List<Job> getJobs() {

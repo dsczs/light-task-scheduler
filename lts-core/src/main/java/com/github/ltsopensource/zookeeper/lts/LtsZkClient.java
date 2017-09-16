@@ -25,22 +25,22 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * LTS 自带实现的zkclient
+ *
  * @author Robert HG (254963746@qq.com) on 2/18/16.
  */
 public class LtsZkClient extends AbstractZkClient<ChildListener, DataListener> implements Watcher {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LtsZkClient.class);
     public static final int connectionTimeout = 30000;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(LtsZkClient.class);
     private final ReentrantLock lock = new ReentrantLock();
     private final Condition conditionNotConnect = lock.newCondition();
     private final Condition conditionConnected = lock.newCondition();
+    private final Map<String, Set<ChildListener>> childListeners = new ConcurrentHashMap<String, Set<ChildListener>>();
     private ZooKeeper zk;
     private volatile boolean isClosed = false;
     private String hosts;
     private volatile Event.KeeperState state = Event.KeeperState.SyncConnected;
     private ZkSerializer serializer = new SerializableSerializer();
-    private final Map<String, Set<ChildListener>> childListeners = new ConcurrentHashMap<String, Set<ChildListener>>();
 
     public LtsZkClient(Config config) {
 
@@ -85,7 +85,6 @@ public class LtsZkClient extends AbstractZkClient<ChildListener, DataListener> i
                         + ", sessionTimeout="
                         + getSessionTimeout());
                 notifyConnected();
-
 
 
             } else if (Event.KeeperState.Disconnected == event.getState()) {

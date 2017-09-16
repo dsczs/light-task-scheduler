@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Robert HG (254963746@qq.com) on 9/22/15.
  */
-public interface BackendTaskTrackerMAccess extends TaskTrackerMAccess{
+public interface BackendTaskTrackerMAccess extends TaskTrackerMAccess {
 
     List<TaskTrackerMDataPo> querySum(MDataPaginationReq request);
 

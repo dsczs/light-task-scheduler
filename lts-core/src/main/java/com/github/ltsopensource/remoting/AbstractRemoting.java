@@ -42,9 +42,9 @@ public abstract class AbstractRemoting {
     protected final HashMap<Integer/* request code */, Pair<RemotingProcessor, ExecutorService>> processorTable =
             new HashMap<Integer, Pair<RemotingProcessor, ExecutorService>>(64);
     protected final RemotingEventExecutor remotingEventExecutor = new RemotingEventExecutor();
+    protected final ChannelEventListener channelEventListener;
     // 默认请求代码处理器
     protected Pair<RemotingProcessor, ExecutorService> defaultRequestProcessor;
-    protected final ChannelEventListener channelEventListener;
 
     public AbstractRemoting(final int permitsOneway, final int permitsAsync, ChannelEventListener channelEventListener) {
         this.semaphoreOneway = new Semaphore(permitsOneway, true);
@@ -294,11 +294,11 @@ public abstract class AbstractRemoting {
                         }
 
                         responseFuture.putResponse(null);
-						try {
-							responseFuture.executeInvokeCallback();
-						} finally {
-							responseFuture.release();
-						}
+                        try {
+                            responseFuture.executeInvokeCallback();
+                        } finally {
+                            responseFuture.release();
+                        }
 
                         responseTable.remove(request.getOpaque());
                         LOGGER.warn("send a request command to channel <" + channel.remoteAddress() + "> failed.");
@@ -360,6 +360,11 @@ public abstract class AbstractRemoting {
         }
     }
 
+    protected Codec getCodec() {
+        // TODO 改为SPI
+        return new DefaultCodec();
+    }
+
     class RemotingEventExecutor extends ServiceThread {
         private final LinkedBlockingQueue<RemotingEvent> eventQueue = new LinkedBlockingQueue<RemotingEvent>();
         private final int MaxSize = 10000;
@@ -419,11 +424,6 @@ public abstract class AbstractRemoting {
         public String getServiceName() {
             return RemotingEventExecutor.class.getSimpleName();
         }
-    }
-
-    protected Codec getCodec() {
-        // TODO 改为SPI
-        return new DefaultCodec();
     }
 
 }

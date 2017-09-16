@@ -4,6 +4,7 @@ import com.github.ltsopensource.core.constant.Environment;
 
 /**
  * 全局变量
+ *
  * @author Robert HG (254963746@qq.com) on 9/12/15.
  */
 public class LTSConfig {

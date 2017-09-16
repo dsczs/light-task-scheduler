@@ -24,12 +24,12 @@ public class SystemClock {
         scheduleClockUpdating();
     }
 
-    private static class InstanceHolder {
-        public static final SystemClock INSTANCE = new SystemClock(1);
-    }
-
     private static SystemClock instance() {
         return InstanceHolder.INSTANCE;
+    }
+
+    public static long now() {
+        return instance().currentTimeMillis();
     }
 
     private void scheduleClockUpdating() {
@@ -46,8 +46,8 @@ public class SystemClock {
         return now.get();
     }
 
-    public static long now() {
-        return instance().currentTimeMillis();
+    private static class InstanceHolder {
+        public static final SystemClock INSTANCE = new SystemClock(1);
     }
 
 }

@@ -15,6 +15,7 @@ import java.util.Map;
 
 /**
  * from fastjson
+ *
  * @author Robert HG (254963746@qq.com) on 11/21/15.
  */
 public class TypeUtils {

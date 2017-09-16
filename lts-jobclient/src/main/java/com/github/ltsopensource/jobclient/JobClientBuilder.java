@@ -16,25 +16,6 @@ public class JobClientBuilder extends AbstractNodeBuilder<JobClient, JobClientBu
 
     private JobCompletedHandler jobCompletedHandler;
 
-    public JobClientBuilder setJobCompletedHandler(JobCompletedHandler jobCompletedHandler) {
-        this.jobCompletedHandler = jobCompletedHandler;
-        return this;
-    }
-
-    @Override
-    protected JobClient build0() {
-        JobClientProperties properties = PropertiesConfigurationFactory
-                .createPropertiesConfiguration(JobClientProperties.class, locations);
-
-        JobClient jobClient = buildByProperties(properties);
-
-        if (jobCompletedHandler != null) {
-            jobClient.setJobCompletedHandler(jobCompletedHandler);
-        }
-
-        return jobClient;
-    }
-
     public static JobClient buildByProperties(JobClientProperties properties) {
         properties.checkProperties();
 
@@ -65,6 +46,25 @@ public class JobClientBuilder extends AbstractNodeBuilder<JobClient, JobClientBu
                 jobClient.addConfig(entry.getKey(), entry.getValue());
             }
         }
+        return jobClient;
+    }
+
+    public JobClientBuilder setJobCompletedHandler(JobCompletedHandler jobCompletedHandler) {
+        this.jobCompletedHandler = jobCompletedHandler;
+        return this;
+    }
+
+    @Override
+    protected JobClient build0() {
+        JobClientProperties properties = PropertiesConfigurationFactory
+                .createPropertiesConfiguration(JobClientProperties.class, locations);
+
+        JobClient jobClient = buildByProperties(properties);
+
+        if (jobCompletedHandler != null) {
+            jobClient.setJobCompletedHandler(jobCompletedHandler);
+        }
+
         return jobClient;
     }
 }

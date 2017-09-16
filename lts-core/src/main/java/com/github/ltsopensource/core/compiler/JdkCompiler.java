@@ -1,7 +1,6 @@
 package com.github.ltsopensource.core.compiler;
 
 import com.github.ltsopensource.core.commons.utils.ClassHelper;
-import com.github.ltsopensource.core.logger.LoggerFactory;
 
 import javax.tools.*;
 import java.io.*;
@@ -64,6 +63,14 @@ public class JdkCompiler extends AbstractCompiler {
         javaFileManager = new JavaFileManagerImpl(manager, classLoader);
     }
 
+    private static URI toURI(String name) {
+        try {
+            return new URI(name);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public Class<?> doCompile(String name, String sourceCode) throws Throwable {
         int i = name.lastIndexOf('.');
         String packageName = i < 0 ? "" : name.substring(0, i);
@@ -79,59 +86,10 @@ public class JdkCompiler extends AbstractCompiler {
         return classLoader.loadClass(name);
     }
 
-    private final class ClassLoaderImpl extends ClassLoader {
-
-        private final Map<String, JavaFileObject> classes = new HashMap<String, JavaFileObject>();
-
-        ClassLoaderImpl(final ClassLoader parentClassLoader) {
-            super(parentClassLoader);
-        }
-
-        Collection<JavaFileObject> files() {
-            return Collections.unmodifiableCollection(classes.values());
-        }
-
-        @Override
-        protected Class<?> findClass(final String qualifiedClassName) throws ClassNotFoundException {
-            JavaFileObject file = classes.get(qualifiedClassName);
-            if (file != null) {
-                byte[] bytes = ((JavaFileObjectImpl) file).getByteCode();
-                return defineClass(qualifiedClassName, bytes, 0, bytes.length);
-            }
-            try {
-                return ClassHelper.forNameWithCallerClassLoader(qualifiedClassName, getClass());
-            } catch (ClassNotFoundException nf) {
-                return super.findClass(qualifiedClassName);
-            }
-        }
-
-        void add(final String qualifiedClassName, final JavaFileObject javaFile) {
-            classes.put(qualifiedClassName, javaFile);
-        }
-
-        @Override
-        protected synchronized Class<?> loadClass(final String name, final boolean resolve) throws ClassNotFoundException {
-            return super.loadClass(name, resolve);
-        }
-
-        @Override
-        public InputStream getResourceAsStream(final String name) {
-            if (name.endsWith(CLASS_EXTENSION)) {
-                String qualifiedClassName = name.substring(0, name.length() - CLASS_EXTENSION.length()).replace('/', '.');
-                JavaFileObjectImpl file = (JavaFileObjectImpl) classes.get(qualifiedClassName);
-                if (file != null) {
-                    return new ByteArrayInputStream(file.getByteCode());
-                }
-            }
-            return super.getResourceAsStream(name);
-        }
-    }
-
     private static final class JavaFileObjectImpl extends SimpleJavaFileObject {
 
-        private ByteArrayOutputStream bytecode;
-
         private final CharSequence source;
+        private ByteArrayOutputStream bytecode;
 
         public JavaFileObjectImpl(final String baseName, final CharSequence source) {
             super(toURI(baseName + JAVA_EXTENSION), Kind.SOURCE);
@@ -249,11 +207,51 @@ public class JdkCompiler extends AbstractCompiler {
         }
     }
 
-    private static URI toURI(String name) {
-        try {
-            return new URI(name);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+    private final class ClassLoaderImpl extends ClassLoader {
+
+        private final Map<String, JavaFileObject> classes = new HashMap<String, JavaFileObject>();
+
+        ClassLoaderImpl(final ClassLoader parentClassLoader) {
+            super(parentClassLoader);
+        }
+
+        Collection<JavaFileObject> files() {
+            return Collections.unmodifiableCollection(classes.values());
+        }
+
+        @Override
+        protected Class<?> findClass(final String qualifiedClassName) throws ClassNotFoundException {
+            JavaFileObject file = classes.get(qualifiedClassName);
+            if (file != null) {
+                byte[] bytes = ((JavaFileObjectImpl) file).getByteCode();
+                return defineClass(qualifiedClassName, bytes, 0, bytes.length);
+            }
+            try {
+                return ClassHelper.forNameWithCallerClassLoader(qualifiedClassName, getClass());
+            } catch (ClassNotFoundException nf) {
+                return super.findClass(qualifiedClassName);
+            }
+        }
+
+        void add(final String qualifiedClassName, final JavaFileObject javaFile) {
+            classes.put(qualifiedClassName, javaFile);
+        }
+
+        @Override
+        protected synchronized Class<?> loadClass(final String name, final boolean resolve) throws ClassNotFoundException {
+            return super.loadClass(name, resolve);
+        }
+
+        @Override
+        public InputStream getResourceAsStream(final String name) {
+            if (name.endsWith(CLASS_EXTENSION)) {
+                String qualifiedClassName = name.substring(0, name.length() - CLASS_EXTENSION.length()).replace('/', '.');
+                JavaFileObjectImpl file = (JavaFileObjectImpl) classes.get(qualifiedClassName);
+                if (file != null) {
+                    return new ByteArrayInputStream(file.getByteCode());
+                }
+            }
+            return super.getResourceAsStream(name);
         }
     }
 

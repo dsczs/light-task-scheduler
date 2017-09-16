@@ -28,7 +28,7 @@ public class JVMMonitor {
 
     private static final MBeanServer MBEAN_SERVER = ManagementFactory.getPlatformMBeanServer();
     private static final AtomicBoolean start = new AtomicBoolean(false);
-
+    private final static Map<String, Object> MONITOR_MAP = new HashMap<String, Object>();
     private static AtomicLong refCount;
 
     static {
@@ -47,8 +47,6 @@ public class JVMMonitor {
     private static AtomicLong getRefCount() {
         return refCount;
     }
-
-    private final static Map<String, Object> MONITOR_MAP = new HashMap<String, Object>();
 
     public static void start() {
         getRefCount().incrementAndGet();

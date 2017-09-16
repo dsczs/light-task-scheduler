@@ -25,6 +25,31 @@ public class MysqlDataSourceProvider implements DataSourceProvider {
     private static final ConcurrentHashMap<String, DataSource> DATA_SOURCE_MAP = new ConcurrentHashMap<String, DataSource>();
 
     private static final Object lock = new Object();
+    private static final Map<String, Class<?>> FIELDS = new ConcurrentHashMap<String, Class<?>>();
+
+    static {
+        // druid配置属性，see <a href="https://github.com/alibaba/druid/wiki/DruidDataSource%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%88%97%E8%A1%A8">DruidDataSource配置属性列表</a>
+//        FIELDS.put("url", String.class);
+//        FIELDS.put("username", String.class);
+//        FIELDS.put("password", String.class);
+//        FIELDS.put("driverClassName", String.class);
+        FIELDS.put("initialSize", Integer.class);
+        FIELDS.put("maxActive", Integer.class);
+        FIELDS.put("maxIdle", Integer.class);
+        FIELDS.put("minIdle", Integer.class);
+        FIELDS.put("maxWait", Integer.class);
+        FIELDS.put("poolPreparedStatements", Boolean.class);
+        FIELDS.put("maxOpenPreparedStatements", Integer.class);
+        FIELDS.put("validationQuery", String.class);
+        FIELDS.put("testOnBorrow", Boolean.class);
+        FIELDS.put("testOnReturn", Boolean.class);
+        FIELDS.put("testWhileIdle", Boolean.class);
+        FIELDS.put("timeBetweenEvictionRunsMillis", Long.class);
+        FIELDS.put("numTestsPerEvictionRun", Integer.class);
+        FIELDS.put("minEvictableIdleTimeMillis", Long.class);
+        FIELDS.put("exceptionSorter", String.class);
+        FIELDS.put("filters", String.class);
+    }
 
     public DataSource getDataSource(Config config) {
 
@@ -95,31 +120,5 @@ public class MysqlDataSourceProvider implements DataSourceProvider {
         dataSource.setPassword(password);
 
         return dataSource;
-    }
-
-    private static final Map<String, Class<?>> FIELDS = new ConcurrentHashMap<String, Class<?>>();
-
-    static {
-        // druid配置属性，see <a href="https://github.com/alibaba/druid/wiki/DruidDataSource%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%88%97%E8%A1%A8">DruidDataSource配置属性列表</a>
-//        FIELDS.put("url", String.class);
-//        FIELDS.put("username", String.class);
-//        FIELDS.put("password", String.class);
-//        FIELDS.put("driverClassName", String.class);
-        FIELDS.put("initialSize", Integer.class);
-        FIELDS.put("maxActive", Integer.class);
-        FIELDS.put("maxIdle", Integer.class);
-        FIELDS.put("minIdle", Integer.class);
-        FIELDS.put("maxWait", Integer.class);
-        FIELDS.put("poolPreparedStatements", Boolean.class);
-        FIELDS.put("maxOpenPreparedStatements", Integer.class);
-        FIELDS.put("validationQuery", String.class);
-        FIELDS.put("testOnBorrow", Boolean.class);
-        FIELDS.put("testOnReturn", Boolean.class);
-        FIELDS.put("testWhileIdle", Boolean.class);
-        FIELDS.put("timeBetweenEvictionRunsMillis", Long.class);
-        FIELDS.put("numTestsPerEvictionRun", Integer.class);
-        FIELDS.put("minEvictableIdleTimeMillis", Long.class);
-        FIELDS.put("exceptionSorter", String.class);
-        FIELDS.put("filters", String.class);
     }
 }

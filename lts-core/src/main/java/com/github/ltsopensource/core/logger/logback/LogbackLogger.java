@@ -5,7 +5,7 @@ import com.github.ltsopensource.core.logger.support.AbstractLogger;
 
 import java.io.Serializable;
 
-public class LogbackLogger  extends AbstractLogger implements Logger, Serializable {
+public class LogbackLogger extends AbstractLogger implements Logger, Serializable {
 
     private static final long serialVersionUID = 1L;
     private final ch.qos.logback.classic.Logger logger;

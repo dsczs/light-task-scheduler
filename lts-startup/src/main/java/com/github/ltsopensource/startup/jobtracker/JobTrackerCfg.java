@@ -4,6 +4,7 @@ import java.util.Map;
 
 /**
  * JobTracker 配置文件
+ *
  * @author Robert HG (254963746@qq.com) on 9/1/15.
  */
 public class JobTrackerCfg {

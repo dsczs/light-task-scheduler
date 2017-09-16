@@ -26,10 +26,6 @@ public class NioSelectorLoop {
     private static final Logger LOGGER = LoggerFactory.getLogger(NioSelectorLoop.class);
     private static final int SELECTOR_AUTO_REBUILD_THRESHOLD = 512;
     private static final int MIN_PREMATURE_SELECTOR_RETURNS = 3;
-    private Selector selector;
-    private SelectorWorker selectorWorker;
-    private volatile boolean running = false;
-
     private static boolean isLinuxPlatform = false;
 
     static {
@@ -53,6 +49,10 @@ public class NioSelectorLoop {
             }
         }
     }
+
+    private Selector selector;
+    private SelectorWorker selectorWorker;
+    private volatile boolean running = false;
 
     public NioSelectorLoop(String name, NioProcessor processor) {
         this.selector = openSelector();

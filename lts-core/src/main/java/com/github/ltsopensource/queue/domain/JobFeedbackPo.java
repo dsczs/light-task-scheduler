@@ -6,7 +6,7 @@ import com.github.ltsopensource.core.domain.JobRunResult;
 /**
  * @author Robert HG (254963746@qq.com) on 3/3/15.
  */
-public class JobFeedbackPo{
+public class JobFeedbackPo {
 
     private String id;
 

@@ -27,6 +27,7 @@ import java.util.List;
 public class MongoExecutableJobQueue extends AbstractMongoJobQueue implements ExecutableJobQueue {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MongoExecutableJobQueue.class);
+    private ConcurrentHashSet<String> EXIST_TABLE = new ConcurrentHashSet<String>();
 
     public MongoExecutableJobQueue(Config config) {
         super(config);
@@ -39,8 +40,6 @@ public class MongoExecutableJobQueue extends AbstractMongoJobQueue implements Ex
         }
         return JobQueueUtils.getExecutableQueueName(taskTrackerNodeGroup);
     }
-
-    private ConcurrentHashSet<String> EXIST_TABLE = new ConcurrentHashSet<String>();
 
     @Override
     public boolean createQueue(String taskTrackerNodeGroup) {

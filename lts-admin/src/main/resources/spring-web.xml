@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/aop
@@ -12,7 +12,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.0.xsd"
-        >
+>
 
     <context:component-scan base-package="com.github.ltsopensource.admin.web"/>
     <aop:aspectj-autoproxy proxy-target-class="true"/>
@@ -45,10 +45,10 @@
         <property name="prefix" value="/templates/"/>
         <property name="layoutUrl" value="/layout/main.vm"/>
         <property name="suffix" value=".vm"/>
-        <property name="exposeSpringMacroHelpers" value="true" />
-        <property name="contentType" value="text/html;charset=UTF-8" />
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
         <property name="viewClass"
-                  value="org.springframework.web.servlet.view.velocity.VelocityLayoutView" />
+                  value="org.springframework.web.servlet.view.velocity.VelocityLayoutView"/>
     </bean>
 
     <bean class="com.github.ltsopensource.admin.web.support.ExceptionHandlerResolver"/>

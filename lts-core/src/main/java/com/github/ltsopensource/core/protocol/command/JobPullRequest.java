@@ -6,9 +6,9 @@ package com.github.ltsopensource.core.protocol.command;
  */
 public class JobPullRequest extends AbstractRemotingCommandBody {
 
-	private static final long serialVersionUID = 9222159289387747395L;
-	
-	private Integer availableThreads;
+    private static final long serialVersionUID = 9222159289387747395L;
+
+    private Integer availableThreads;
 
     public Integer getAvailableThreads() {
         return availableThreads;

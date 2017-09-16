@@ -32,8 +32,10 @@ public class NetUtils {
         InetAddress address = getLocalAddress();
         return address == null ? LOCALHOST : address.getHostAddress();
     }
+
     /**
      * 遍历本地网卡，返回第一个合理的IP。
+     *
      * @return 本地网卡IP
      */
     public static InetAddress getLocalAddress() {

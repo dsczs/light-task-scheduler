@@ -221,7 +221,7 @@ public interface ExtConfig {
     String MAIL_SSL_ENABLED = "mail.sslEnabled";
     String JOB_RETRY_TIME_GENERATOR = "jobtracker.retry.time.generator";
 
-    String M_STAT_REPORTER_CLOSED  = "mStatReporterClosed";
+    String M_STAT_REPORTER_CLOSED = "mStatReporterClosed";
 
     String JOB_TRACKER_PUSHER_THREAD_NUM = "lts.job.tracker.pusher.thread.num";
 

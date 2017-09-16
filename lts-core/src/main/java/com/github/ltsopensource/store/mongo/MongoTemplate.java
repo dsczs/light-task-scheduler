@@ -171,7 +171,7 @@ public class MongoTemplate {
         return ds.updateFirst(query, ops);
     }
 
-    public <T> long getCount(Query<T> query){
+    public <T> long getCount(Query<T> query) {
         return ds.getCount(query);
     }
 }

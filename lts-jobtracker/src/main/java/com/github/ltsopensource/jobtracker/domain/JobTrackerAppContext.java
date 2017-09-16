@@ -50,7 +50,7 @@ public class JobTrackerAppContext extends AppContext {
     private CronJobQueue cronJobQueue;
     // feedback queue
     private JobFeedbackQueue jobFeedbackQueue;
-	private SuspendJobQueue suspendJobQueue;
+    private SuspendJobQueue suspendJobQueue;
     private RepeatJobQueue repeatJobQueue;
     private PreLoader preLoader;
     private JobReceiver jobReceiver;
@@ -178,13 +178,13 @@ public class JobTrackerAppContext extends AppContext {
         this.nodeGroupStore = nodeGroupStore;
     }
 
-	public SuspendJobQueue getSuspendJobQueue() {
-		return suspendJobQueue;
-	}
+    public SuspendJobQueue getSuspendJobQueue() {
+        return suspendJobQueue;
+    }
 
-	public void setSuspendJobQueue(SuspendJobQueue suspendJobQueue) {
-		this.suspendJobQueue = suspendJobQueue;
-	}
+    public void setSuspendJobQueue(SuspendJobQueue suspendJobQueue) {
+        this.suspendJobQueue = suspendJobQueue;
+    }
 
     public RepeatJobQueue getRepeatJobQueue() {
         return repeatJobQueue;

@@ -32,11 +32,11 @@ public class MysqlBackendJobTrackerMAccess extends MysqlJobTrackerMAccess implem
                 .select()
                 .columns("timestamp",
                         "SUM(receive_job_num) AS receive_job_num",
-                        "SUM(push_job_num) AS push_job_num" ,
-                        "SUM(exe_success_num) AS exe_success_num" ,
-                        "SUM(exe_failed_num) AS exe_failed_num" ,
-                        "SUM(exe_later_num) AS exe_later_num" ,
-                        "SUM(exe_exception_num) AS exe_exception_num" ,
+                        "SUM(push_job_num) AS push_job_num",
+                        "SUM(exe_success_num) AS exe_success_num",
+                        "SUM(exe_failed_num) AS exe_failed_num",
+                        "SUM(exe_later_num) AS exe_later_num",
+                        "SUM(exe_exception_num) AS exe_exception_num",
                         "SUM(fix_executing_job_num) AS fix_executing_job_num")
                 .from()
                 .table(getTableName())

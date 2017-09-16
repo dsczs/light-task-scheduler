@@ -29,6 +29,7 @@ public class MemIndexSnapshot<K, V> extends AbstractIndexSnapshot<K, V> {
 
     private TxLogReplay<K, V> txLogReplay;
     private AtomicBoolean snapshoting = new AtomicBoolean(false);
+    private StoreTxLogPosition lastStoreTxLogPosition;
 
     public MemIndexSnapshot(TxLogReplay<K, V> txLogReplay, Index<K, V> index, StoreConfig storeConfig, StoreSerializer serializer) {
         super(index, storeConfig, serializer);
@@ -142,8 +143,6 @@ public class MemIndexSnapshot<K, V> extends AbstractIndexSnapshot<K, V> {
 
         txLogReplay.replay(replayTxLog);
     }
-
-    private StoreTxLogPosition lastStoreTxLogPosition;
 
     @Override
     public void snapshot() throws IOException {

@@ -15,6 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Config implements Serializable {
 
     private static final long serialVersionUID = -8283382582968938472L;
+    private final Map<String, String> parameters = new HashMap<String, String>();
+    // 内部使用
+    private final Map<String, Object> internalData = new ConcurrentHashMap<String, Object>();
     // 节点是否可用
     private boolean available = true;
     // 应用节点组
@@ -36,13 +39,7 @@ public class Config implements Serializable {
     private String dataPath;
     // 集群名字
     private String clusterName;
-
     private volatile transient Map<String, Number> numbers;
-
-    private final Map<String, String> parameters = new HashMap<String, String>();
-
-    // 内部使用
-    private final Map<String, Object> internalData = new ConcurrentHashMap<String, Object>();
 
     public String getClusterName() {
         return clusterName;

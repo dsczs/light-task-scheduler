@@ -1,7 +1,7 @@
 package com.github.ltsopensource.ec;
 
-import com.github.ltsopensource.core.spi.SPI;
 import com.github.ltsopensource.core.constant.ExtConfig;
+import com.github.ltsopensource.core.spi.SPI;
 
 /**
  * 事件中心接口

@@ -18,9 +18,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class JobSubmitProtector {
 
-    private int maxQPS;
     // 用信号量进行过载保护
     RateLimiter rateLimiter;
+    private int maxQPS;
     private int acquireTimeout = 100;
     private String errorMsg;
 

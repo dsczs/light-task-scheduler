@@ -1,9 +1,9 @@
 package com.github.ltsopensource.kv.data;
 
+import com.github.ltsopensource.core.logger.Logger;
 import com.github.ltsopensource.kv.DB;
 import com.github.ltsopensource.kv.StoreConfig;
 import com.github.ltsopensource.kv.index.Index;
-import com.github.ltsopensource.core.logger.Logger;
 
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;

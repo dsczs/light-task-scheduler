@@ -1,8 +1,8 @@
 package com.github.ltsopensource.store.jdbc.datasource;
 
 import com.github.ltsopensource.core.cluster.Config;
-import com.github.ltsopensource.core.spi.SPI;
 import com.github.ltsopensource.core.constant.ExtConfig;
+import com.github.ltsopensource.core.spi.SPI;
 
 import javax.sql.DataSource;
 

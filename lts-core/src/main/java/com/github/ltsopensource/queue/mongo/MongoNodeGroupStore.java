@@ -1,5 +1,6 @@
 package com.github.ltsopensource.queue.mongo;
 
+import com.github.ltsopensource.admin.response.PaginationRsp;
 import com.github.ltsopensource.core.cluster.Config;
 import com.github.ltsopensource.core.cluster.NodeType;
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
@@ -10,7 +11,6 @@ import com.github.ltsopensource.core.support.SystemClock;
 import com.github.ltsopensource.queue.NodeGroupStore;
 import com.github.ltsopensource.queue.domain.NodeGroupPo;
 import com.github.ltsopensource.store.mongo.MongoRepository;
-import com.github.ltsopensource.admin.response.PaginationRsp;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.DuplicateKeyException;

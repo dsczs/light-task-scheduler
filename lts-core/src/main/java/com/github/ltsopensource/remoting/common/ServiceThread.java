@@ -9,11 +9,11 @@ import com.github.ltsopensource.core.logger.LoggerFactory;
  */
 public abstract class ServiceThread implements Runnable {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     // 线程回收时间，默认90S
     private static final long JoinTime = 90 * 1000;
     // 执行线程
     protected final Thread thread;
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     // 是否已经被Notify过
     protected volatile boolean hasNotified = false;
     // 线程是否已经停止

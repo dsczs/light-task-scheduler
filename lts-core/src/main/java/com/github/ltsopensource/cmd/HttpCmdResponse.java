@@ -12,6 +12,13 @@ public class HttpCmdResponse implements Serializable {
     private String code;
     private String obj;
 
+    public static HttpCmdResponse newResponse(boolean success, String msg) {
+        HttpCmdResponse response = new HttpCmdResponse();
+        response.setSuccess(success);
+        response.setMsg(msg);
+        return response;
+    }
+
     public boolean isSuccess() {
         return success;
     }
@@ -42,12 +49,5 @@ public class HttpCmdResponse implements Serializable {
 
     public void setObj(String obj) {
         this.obj = obj;
-    }
-
-    public static HttpCmdResponse newResponse(boolean success, String msg) {
-        HttpCmdResponse response = new HttpCmdResponse();
-        response.setSuccess(success);
-        response.setMsg(msg);
-        return response;
     }
 }

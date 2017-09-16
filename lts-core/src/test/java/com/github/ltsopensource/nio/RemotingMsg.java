@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author Robert HG (254963746@qq.com) on 2/3/16.
  */
-public class RemotingMsg implements Serializable{
+public class RemotingMsg implements Serializable {
 
     private String name;
     private boolean b;

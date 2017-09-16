@@ -11,15 +11,15 @@ import java.util.List;
  */
 public class JobPushRequest extends AbstractRemotingCommandBody {
 
-	private static final long serialVersionUID = 2986743693237022215L;
-	
-	@NotNull
+    private static final long serialVersionUID = 2986743693237022215L;
+
+    @NotNull
     private List<JobMeta> jobMetaList;
 
     /**
-     *  jobClient(lts-1.7.0) deserialize  message from jobTracker (lts-1.6.9)
+     * jobClient(lts-1.7.0) deserialize  message from jobTracker (lts-1.6.9)
      */
-	@Deprecated
+    @Deprecated
     public void setJobMeta(JobMeta jobMeta) {
         this.jobMetaList = Arrays.asList(jobMeta);
     }

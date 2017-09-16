@@ -10,10 +10,10 @@ import java.util.List;
  */
 public class WhereSql {
 
+    private static final String PREFIX = " WHERE ";
     private StringBuilder sql = new StringBuilder();
     private List<Object> params = new LinkedList<Object>();
     private boolean isFirstCondition = true;
-    private static final String PREFIX = " WHERE ";
 
     public WhereSql() {
         sql.append(PREFIX);

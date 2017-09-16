@@ -8,12 +8,12 @@ import java.util.List;
 
 /**
  * @author Robert HG (254963746@qq.com) on 8/16/14.
- * TaskTracker Job completed request command body
+ *         TaskTracker Job completed request command body
  */
 public class JobCompletedRequest extends AbstractRemotingCommandBody {
-	private static final long serialVersionUID = 3034213298501228160L;
+    private static final long serialVersionUID = 3034213298501228160L;
 
-	/**
+    /**
      * 是否接受新任务
      */
     private boolean receiveNewJob = false;

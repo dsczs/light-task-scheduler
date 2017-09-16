@@ -60,6 +60,10 @@ public class JobRunnerDelegate implements Runnable {
         };
     }
 
+    private static void blockedOn(Interruptible interruptible) {
+        sun.misc.SharedSecrets.getJavaLangAccess().blockedOn(Thread.currentThread(), interruptible);
+    }
+
     @Override
     public void run() {
 
@@ -184,19 +188,6 @@ public class JobRunnerDelegate implements Runnable {
         }
     }
 
-    private static void blockedOn(Interruptible interruptible) {
-        sun.misc.SharedSecrets.getJavaLangAccess().blockedOn(Thread.currentThread(), interruptible);
-    }
-
-    private abstract class InterruptibleAdapter implements Interruptible {
-        // for > jdk7
-        public void interrupt(Thread thread) {
-            interrupt();
-        }
-
-        public abstract void interrupt();
-    }
-
     private boolean isStopToGetNewJob() {
         if (isInterrupted()) {
             // 如果当前线程被阻断了,那么也就不接受新任务了
@@ -222,5 +213,14 @@ public class JobRunnerDelegate implements Runnable {
 
     public JobMeta currentJob() {
         return jobMeta;
+    }
+
+    private abstract class InterruptibleAdapter implements Interruptible {
+        // for > jdk7
+        public void interrupt(Thread thread) {
+            interrupt();
+        }
+
+        public abstract void interrupt();
     }
 }

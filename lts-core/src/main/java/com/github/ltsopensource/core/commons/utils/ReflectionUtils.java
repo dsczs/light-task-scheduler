@@ -61,9 +61,9 @@ public class ReflectionUtils {
 
     public static Method findMethod(Class<?> clazz, String name, Class<?> parameterTypes) {
         try {
-            if(parameterTypes != null){
+            if (parameterTypes != null) {
                 return clazz.getDeclaredMethod(name, parameterTypes);
-            }else{
+            } else {
                 return clazz.getDeclaredMethod(name);
             }
         } catch (NoSuchMethodException e) {

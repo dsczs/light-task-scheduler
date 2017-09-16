@@ -227,15 +227,6 @@ public class MinaLogger extends IoFilterAdapter {
     }
 
     /**
-     * Set the LogLevel for the ExceptionCaught event.
-     *
-     * @param level The LogLevel to set
-     */
-    public void setExceptionCaughtLogLevel(LogLevel level) {
-        exceptionCaughtLevel = level;
-    }
-
-    /**
      * Get the LogLevel for the ExceptionCaught event.
      *
      * @return The LogLevel for the ExceptionCaught eventType
@@ -245,12 +236,12 @@ public class MinaLogger extends IoFilterAdapter {
     }
 
     /**
-     * Set the LogLevel for the MessageReceived event.
+     * Set the LogLevel for the ExceptionCaught event.
      *
      * @param level The LogLevel to set
      */
-    public void setMessageReceivedLogLevel(LogLevel level) {
-        messageReceivedLevel = level;
+    public void setExceptionCaughtLogLevel(LogLevel level) {
+        exceptionCaughtLevel = level;
     }
 
     /**
@@ -263,12 +254,12 @@ public class MinaLogger extends IoFilterAdapter {
     }
 
     /**
-     * Set the LogLevel for the MessageSent event.
+     * Set the LogLevel for the MessageReceived event.
      *
      * @param level The LogLevel to set
      */
-    public void setMessageSentLogLevel(LogLevel level) {
-        messageSentLevel = level;
+    public void setMessageReceivedLogLevel(LogLevel level) {
+        messageReceivedLevel = level;
     }
 
     /**
@@ -281,12 +272,12 @@ public class MinaLogger extends IoFilterAdapter {
     }
 
     /**
-     * Set the LogLevel for the SessionCreated event.
+     * Set the LogLevel for the MessageSent event.
      *
      * @param level The LogLevel to set
      */
-    public void setSessionCreatedLogLevel(LogLevel level) {
-        sessionCreatedLevel = level;
+    public void setMessageSentLogLevel(LogLevel level) {
+        messageSentLevel = level;
     }
 
     /**
@@ -299,12 +290,12 @@ public class MinaLogger extends IoFilterAdapter {
     }
 
     /**
-     * Set the LogLevel for the SessionOpened event.
+     * Set the LogLevel for the SessionCreated event.
      *
      * @param level The LogLevel to set
      */
-    public void setSessionOpenedLogLevel(LogLevel level) {
-        sessionOpenedLevel = level;
+    public void setSessionCreatedLogLevel(LogLevel level) {
+        sessionCreatedLevel = level;
     }
 
     /**
@@ -317,12 +308,12 @@ public class MinaLogger extends IoFilterAdapter {
     }
 
     /**
-     * Set the LogLevel for the SessionIdle event.
+     * Set the LogLevel for the SessionOpened event.
      *
      * @param level The LogLevel to set
      */
-    public void setSessionIdleLogLevel(LogLevel level) {
-        sessionIdleLevel = level;
+    public void setSessionOpenedLogLevel(LogLevel level) {
+        sessionOpenedLevel = level;
     }
 
     /**
@@ -335,12 +326,12 @@ public class MinaLogger extends IoFilterAdapter {
     }
 
     /**
-     * Set the LogLevel for the SessionClosed event.
+     * Set the LogLevel for the SessionIdle event.
      *
      * @param level The LogLevel to set
      */
-    public void setSessionClosedLogLevel(LogLevel level) {
-        sessionClosedLevel = level;
+    public void setSessionIdleLogLevel(LogLevel level) {
+        sessionIdleLevel = level;
     }
 
     /**
@@ -350,5 +341,14 @@ public class MinaLogger extends IoFilterAdapter {
      */
     public LogLevel getSessionClosedLogLevel() {
         return sessionClosedLevel;
+    }
+
+    /**
+     * Set the LogLevel for the SessionClosed event.
+     *
+     * @param level The LogLevel to set
+     */
+    public void setSessionClosedLogLevel(LogLevel level) {
+        sessionClosedLevel = level;
     }
 }

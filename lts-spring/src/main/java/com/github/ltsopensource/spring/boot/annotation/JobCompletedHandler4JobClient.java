@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * 用于JobClient的任务完成处理器
+ *
  * @author Robert HG (254963746@qq.com) on 4/9/16.
  */
 @Target({ElementType.TYPE})

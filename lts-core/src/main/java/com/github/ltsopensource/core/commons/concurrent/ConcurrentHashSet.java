@@ -11,10 +11,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E> {
 
-    private transient ConcurrentHashMap<E, Object> map;
-
     // Dummy value to associate with an Object in the backing Map
     private static final Object PRESENT = new Object();
+    private transient ConcurrentHashMap<E, Object> map;
 
     public ConcurrentHashSet() {
         map = new ConcurrentHashMap<E, Object>();

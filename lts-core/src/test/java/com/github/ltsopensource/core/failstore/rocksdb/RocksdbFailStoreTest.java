@@ -3,12 +3,12 @@ package com.github.ltsopensource.core.failstore.rocksdb;
 import com.github.ltsopensource.core.cluster.Config;
 import com.github.ltsopensource.core.cluster.NodeType;
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
-import com.github.ltsopensource.core.json.JSON;
 import com.github.ltsopensource.core.constant.Constants;
 import com.github.ltsopensource.core.domain.Job;
 import com.github.ltsopensource.core.domain.Pair;
 import com.github.ltsopensource.core.failstore.FailStore;
 import com.github.ltsopensource.core.failstore.FailStoreException;
+import com.github.ltsopensource.core.json.JSON;
 import org.junit.Before;
 import org.junit.Test;
 

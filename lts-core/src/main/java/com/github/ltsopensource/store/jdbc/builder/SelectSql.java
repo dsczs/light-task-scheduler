@@ -17,12 +17,11 @@ import java.util.List;
 public class SelectSql {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SelectSql.class);
-
+    private static final String ORDER_BY = " ORDER BY ";
     private SqlTemplate sqlTemplate;
     private StringBuilder sql = new StringBuilder();
     private List<Object> params = new LinkedList<Object>();
     private int curOrderByColumnSize = 0;
-    private static final String ORDER_BY = " ORDER BY ";
 
     public SelectSql(SqlTemplate sqlTemplate) {
         this.sqlTemplate = sqlTemplate;
@@ -72,7 +71,7 @@ public class SelectSql {
         return this;
     }
 
-    public SelectSql where(){
+    public SelectSql where() {
         sql.append(" WHERE ");
         return this;
     }

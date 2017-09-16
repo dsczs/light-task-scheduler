@@ -13,7 +13,7 @@ public class NetUtils {
 
     public static final String LOCALHOST = "127.0.0.1";
     public static final String ANYHOST = "0.0.0.0";
-//    private static final Logger logger = LoggerFactory.getLogger(NetUtils.class);
+    //    private static final Logger logger = LoggerFactory.getLogger(NetUtils.class);
     private static final int RND_PORT_START = 30000;
 
     private static final int RND_PORT_RANGE = 10000;
@@ -119,7 +119,7 @@ public class NetUtils {
                 && IP_PATTERN.matcher(name).matches());
     }
 
-    public static boolean isValidHost(String host){
+    public static boolean isValidHost(String host) {
         return IP_PATTERN.matcher(host).matches();
     }
 
@@ -128,9 +128,9 @@ public class NetUtils {
         return address == null ? LOCALHOST : address.getHostAddress();
     }
 
-    public static String getLocalHostName(){
+    public static String getLocalHostName() {
         InetAddress address = getLocalAddress();
-        if(address == null){
+        if (address == null) {
             return "localhost";
         }
         return address.getHostName();

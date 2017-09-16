@@ -17,15 +17,6 @@ public class MapEditor extends PropertyEditorSupport {
     }
 
     @Override
-    public void setAsText(String text) throws IllegalArgumentException {
-        if (!StringUtils.hasText(text)) {
-            setValue(null);
-        } else {
-            setValue(JSON.parse(text, new TypeReference<HashMap<String, String>>(){}));
-        }
-    }
-
-    @Override
     public String getAsText() {
         Map<?, ?> value = (Map<?, ?>) getValue();
 
@@ -33,5 +24,15 @@ public class MapEditor extends PropertyEditorSupport {
             return "";
         }
         return JSON.toJSONString(value);
+    }
+
+    @Override
+    public void setAsText(String text) throws IllegalArgumentException {
+        if (!StringUtils.hasText(text)) {
+            setValue(null);
+        } else {
+            setValue(JSON.parse(text, new TypeReference<HashMap<String, String>>() {
+            }));
+        }
     }
 }

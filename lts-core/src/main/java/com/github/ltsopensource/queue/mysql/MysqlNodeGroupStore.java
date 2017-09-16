@@ -1,5 +1,6 @@
 package com.github.ltsopensource.queue.mysql;
 
+import com.github.ltsopensource.admin.response.PaginationRsp;
 import com.github.ltsopensource.core.cluster.Config;
 import com.github.ltsopensource.core.cluster.NodeType;
 import com.github.ltsopensource.core.domain.NodeGroupGetReq;
@@ -10,7 +11,6 @@ import com.github.ltsopensource.queue.domain.NodeGroupPo;
 import com.github.ltsopensource.queue.mysql.support.RshHolder;
 import com.github.ltsopensource.store.jdbc.JdbcAbstractAccess;
 import com.github.ltsopensource.store.jdbc.builder.*;
-import com.github.ltsopensource.admin.response.PaginationRsp;
 
 import java.util.List;
 
@@ -78,8 +78,8 @@ public class MysqlNodeGroupStore extends JdbcAbstractAccess implements NodeGroup
                 .table(getTableName())
                 .whereSql(
                         new WhereSql()
-                        .andOnNotNull("node_type = ?", request.getNodeType() == null ? null : request.getNodeType().name())
-                        .andOnNotEmpty("name = ?", request.getNodeGroup())
+                                .andOnNotNull("node_type = ?", request.getNodeType() == null ? null : request.getNodeType().name())
+                                .andOnNotEmpty("name = ?", request.getNodeGroup())
                 )
                 .single();
         response.setResults(results.intValue());
@@ -94,8 +94,8 @@ public class MysqlNodeGroupStore extends JdbcAbstractAccess implements NodeGroup
                 .table(getTableName())
                 .whereSql(
                         new WhereSql()
-                        .andOnNotNull("node_type = ?", request.getNodeType() == null ? null : request.getNodeType().name())
-                        .andOnNotEmpty("name = ?", request.getNodeGroup())
+                                .andOnNotNull("node_type = ?", request.getNodeType() == null ? null : request.getNodeType().name())
+                                .andOnNotEmpty("name = ?", request.getNodeGroup())
                 )
                 .orderBy()
                 .column("gmt_created", OrderByType.DESC)

@@ -9,6 +9,9 @@ import java.io.File;
 
 public class LogbackLoggerAdapter implements LoggerAdapter {
 
+    private Level level;
+    private File file;
+
     public LogbackLoggerAdapter() {
         try {
             Class.forName("ch.qos.logback.classic.Logger");
@@ -25,16 +28,12 @@ public class LogbackLoggerAdapter implements LoggerAdapter {
         return new LogbackLogger((ch.qos.logback.classic.Logger) LoggerFactory.getLogger(key));
     }
 
-    private Level level;
-
-    private File file;
+    public Level getLevel() {
+        return level;
+    }
 
     public void setLevel(Level level) {
         this.level = level;
-    }
-
-    public Level getLevel() {
-        return level;
     }
 
     public File getFile() {

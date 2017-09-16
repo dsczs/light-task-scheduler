@@ -15,17 +15,15 @@ import java.util.concurrent.PriorityBlockingQueue;
  */
 public class MStatReportWorkerTest {
 
+    private final static int MAX_RETRY_RETAIN = 30;
+    private final static int BATCH_REPORT_SIZE = 10;
     protected final Logger LOGGER = LoggerFactory.getLogger(MStatReportWorker.class);
-
     private PriorityBlockingQueue<MData> queue = new PriorityBlockingQueue<MData>(16, new Comparator<MData>() {
         @Override
         public int compare(MData o1, MData o2) {
             return o1.getTimestamp().compareTo(o2.getTimestamp());
         }
     });
-
-    private final static int MAX_RETRY_RETAIN = 30;
-    private final static int BATCH_REPORT_SIZE = 10;
     private volatile boolean running = false;
 
     @Test

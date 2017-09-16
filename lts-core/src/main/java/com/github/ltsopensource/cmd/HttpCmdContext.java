@@ -12,9 +12,9 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class HttpCmdContext {
 
-    private ReentrantLock lock = new ReentrantLock();
     private final Map<String/*节点标识*/, Map<String/*cmd*/, HttpCmdProc>>
             NODE_PROCESSOR_MAP = new HashMap<String, Map<String, HttpCmdProc>>();
+    private ReentrantLock lock = new ReentrantLock();
 
     public void addCmdProcessor(HttpCmdProc proc) {
         if (proc == null) {

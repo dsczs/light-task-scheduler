@@ -5,9 +5,9 @@ package com.github.ltsopensource.startup.tasktracker;
  */
 public class CfgException extends Exception {
 
-	private static final long serialVersionUID = -661377294271386745L;
+    private static final long serialVersionUID = -661377294271386745L;
 
-	public CfgException() {
+    public CfgException() {
         super();
     }
 

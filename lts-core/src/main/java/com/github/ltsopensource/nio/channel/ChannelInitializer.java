@@ -9,7 +9,7 @@ import com.github.ltsopensource.nio.codec.Encoder;
 public abstract class ChannelInitializer {
 
     public void initChannel(NioChannel ch) {
-        NioChannelImpl channel = (NioChannelImpl)ch;
+        NioChannelImpl channel = (NioChannelImpl) ch;
         channel.setDecoder(getDecoder());
         channel.setEncoder(getEncoder());
     }

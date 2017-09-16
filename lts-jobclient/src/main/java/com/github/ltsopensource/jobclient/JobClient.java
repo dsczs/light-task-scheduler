@@ -43,10 +43,9 @@ public class JobClient<T extends JobClientNode, Context extends AppContext> exte
     protected static final Logger LOGGER = LoggerFactory.getLogger(JobClient.class);
 
     private static final int BATCH_SIZE = 10;
-
+    protected JobClientMStatReporter stat;
     // 过载保护的提交者
     private JobSubmitProtector protector;
-    protected JobClientMStatReporter stat;
 
     public JobClient() {
         this.stat = new JobClientMStatReporter(appContext);
@@ -273,14 +272,14 @@ public class JobClient<T extends JobClientNode, Context extends AppContext> exte
         appContext.setJobCompletedHandler(jobCompletedHandler);
     }
 
-    enum SubmitType {
-        SYNC,   // 同步
-        ASYNC   // 异步
-    }
-
     private void checkStart() {
         if (!started.get()) {
             throw new JobSubmitException("JobClient did not started");
         }
+    }
+
+    enum SubmitType {
+        SYNC,   // 同步
+        ASYNC   // 异步
     }
 }

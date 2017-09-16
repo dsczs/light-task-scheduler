@@ -13,14 +13,16 @@
                     <span class="label label-info pull-right">推荐</span></a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-server"></i> <span class="nav-label">节点管理</span><span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-server"></i> <span class="nav-label">节点管理</span><span
+                        class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li><a href="${contextPath}/node-manager.htm">节点管理</a></li>
                     <li><a href="${contextPath}/node-group-manager.htm">节点组管理</a></li>
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-random"></i> <span class="nav-label">任务队列管理</span><span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-random"></i> <span class="nav-label">任务队列管理</span><span
+                        class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li><a href="${contextPath}/job-add.htm">任务添加</a></li>
                     <li><a href="${contextPath}/cron-job-queue.htm">Cron任务</a></li>
@@ -32,19 +34,21 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-file-text-o"></i> <span class="nav-label">日志</span><span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-file-text-o"></i> <span class="nav-label">日志</span><span
+                        class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li><a href="${contextPath}/job-logger.htm">任务日志</a></li>
                     <li><a href="${contextPath}/node-onoffline-log.htm">节点上下线日志</a></li>
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-bar-chart"></i> <span class="nav-label">监控报警</span><span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-bar-chart"></i> <span class="nav-label">监控报警</span><span
+                        class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li><a href="${contextPath}/monitor/jobtracker-monitor.htm">JobTracker数据监控</a></li>
                     <li><a href="${contextPath}/monitor/tasktracker-monitor.htm">TaskTracker数据监控</a></li>
                     <li><a href="${contextPath}/monitor/jobClient-monitor.htm">JobClient数据监控</a></li>
-##                    <li><a href="h2" target="_blank">H2-Console</a></li>
+                ##                    <li><a href="h2" target="_blank">H2-Console</a></li>
                 </ul>
             </li>
         </ul>

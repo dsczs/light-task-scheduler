@@ -16,6 +16,12 @@ import java.util.*;
  */
 public class HttpCmdExecutor implements Runnable {
 
+    public static final String HTTP_OK = "200 OK", HTTP_REDIRECT = "301 Moved Permanently",
+            HTTP_FORBIDDEN = "403 Forbidden", HTTP_NOTFOUND = "404 Not Found",
+            HTTP_BADREQUEST = "400 Bad Request", HTTP_INTERNALERROR = "500 Internal Server Error",
+            HTTP_NOTIMPLEMENTED = "501 Not Implemented";
+    public static final String MIME_PLAINTEXT = "text/plain", MIME_HTML = "text/html",
+            MIME_DEFAULT_BINARY = "application/octet-stream";
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpCmdExecutor.class);
     private HttpCmdContext context;
     private Socket socket;
@@ -23,6 +29,22 @@ public class HttpCmdExecutor implements Runnable {
     public HttpCmdExecutor(HttpCmdContext context, Socket socket) {
         this.context = context;
         this.socket = socket;
+    }
+
+    protected static HttpCmdRequest resolveRequest(String uri, Properties params) {
+
+        HttpCmdRequest request = new HttpCmdRequest();
+        String[] pathNode = uri.substring(1, uri.length()).split("/");
+        String nodeIdentity = pathNode[0];
+        String command = pathNode[1];
+        ;
+        request.setCommand(command);
+        request.setNodeIdentity(nodeIdentity);
+
+        for (Map.Entry<Object, Object> entry : params.entrySet()) {
+            request.addParam(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
+        }
+        return request;
     }
 
     @Override
@@ -110,31 +132,6 @@ public class HttpCmdExecutor implements Runnable {
         }
         return resolveRequest(uri, params);
     }
-
-
-    protected static HttpCmdRequest resolveRequest(String uri, Properties params) {
-
-        HttpCmdRequest request = new HttpCmdRequest();
-        String[] pathNode = uri.substring(1, uri.length()).split("/");
-        String nodeIdentity = pathNode[0];
-        String command = pathNode[1];
-        ;
-        request.setCommand(command);
-        request.setNodeIdentity(nodeIdentity);
-
-        for (Map.Entry<Object, Object> entry : params.entrySet()) {
-            request.addParam(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
-        }
-        return request;
-    }
-
-    public static final String HTTP_OK = "200 OK", HTTP_REDIRECT = "301 Moved Permanently",
-            HTTP_FORBIDDEN = "403 Forbidden", HTTP_NOTFOUND = "404 Not Found",
-            HTTP_BADREQUEST = "400 Bad Request", HTTP_INTERNALERROR = "500 Internal Server Error",
-            HTTP_NOTIMPLEMENTED = "501 Not Implemented";
-
-    public static final String MIME_PLAINTEXT = "text/plain", MIME_HTML = "text/html",
-            MIME_DEFAULT_BINARY = "application/octet-stream";
 
     private void sendError(String status, String msg) {
         sendError(status, msg, true);

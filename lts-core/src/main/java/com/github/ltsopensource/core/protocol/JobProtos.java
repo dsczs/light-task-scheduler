@@ -29,8 +29,7 @@ public class JobProtos {
         // 取消(删除)任务
         CANCEL_JOB(18),
         // 提交依赖任务
-        SUBMIT_DEP_JOB_GROUP(19),
-        ;
+        SUBMIT_DEP_JOB_GROUP(19),;
 
         private int code;
 

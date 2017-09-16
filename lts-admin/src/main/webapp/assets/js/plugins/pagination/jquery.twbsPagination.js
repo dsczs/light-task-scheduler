@@ -101,7 +101,7 @@
             }
 
             if (this.options.prev) {
-                var prev = pages.currentPage > 1 ? pages.currentPage - 1 : this.options.loop ? this.options.totalPages  : 1;
+                var prev = pages.currentPage > 1 ? pages.currentPage - 1 : this.options.loop ? this.options.totalPages : 1;
                 $listItems = $listItems.add(this.buildItem('prev', prev));
             }
 
@@ -245,7 +245,7 @@
         var options = typeof option === 'object' && option;
 
         if (!data) $this.data('twbs-pagination', (data = new TwbsPagination(this, options) ));
-        if (typeof option === 'string') methodReturn = data[ option ].apply(data, args);
+        if (typeof option === 'string') methodReturn = data[option].apply(data, args);
 
         return ( methodReturn === undefined ) ? $this : methodReturn;
     };

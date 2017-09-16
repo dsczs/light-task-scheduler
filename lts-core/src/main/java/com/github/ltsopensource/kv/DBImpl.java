@@ -53,6 +53,15 @@ public class DBImpl<K, V> implements DB<K, V>, Closeable {
         }
     }
 
+    public static <K> IndexItem<K> convertToIndex(K key, DataAppendResult result) {
+        IndexItem<K> index = new IndexItem<K>();
+        index.setKey(key);
+        index.setFileId(result.getFileId());
+        index.setFromIndex(result.getFromIndex());
+        index.setLength(result.getLength());
+        return index;
+    }
+
     public void init() throws DBException {
         try {
             FileUtils.createDirIfNotExist(storeConfig.getDbPath());
@@ -127,15 +136,6 @@ public class DBImpl<K, V> implements DB<K, V>, Closeable {
     @Override
     public void close() {
         dataCache.clear();
-    }
-
-    public static <K> IndexItem<K> convertToIndex(K key, DataAppendResult result) {
-        IndexItem<K> index = new IndexItem<K>();
-        index.setKey(key);
-        index.setFileId(result.getFileId());
-        index.setFromIndex(result.getFromIndex());
-        index.setLength(result.getLength());
-        return index;
     }
 
 }

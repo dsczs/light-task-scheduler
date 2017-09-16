@@ -27,12 +27,23 @@ public final class RelaxedNames implements Iterable<String> {
 
     /**
      * Create a new {@link RelaxedNames} instance.
+     *
      * @param name the source name. For the maximum number of variations specify the name
-     * using dashed notation (e.g. {@literal my-property-name}
+     *             using dashed notation (e.g. {@literal my-property-name}
      */
     public RelaxedNames(String name) {
         this.name = (name == null ? "" : name);
         initialize(RelaxedNames.this.name, this.values);
+    }
+
+    /**
+     * Return a {@link RelaxedNames} for the given source camelCase source name.
+     *
+     * @param name the source name in camelCase
+     * @return the relaxed names
+     */
+    public static RelaxedNames forCamelCase(String name) {
+        return new RelaxedNames(Manipulation.CAMELCASE_TO_HYPHEN.apply(name));
     }
 
     @Override
@@ -160,8 +171,6 @@ public final class RelaxedNames implements Iterable<String> {
             }
         };
 
-        public abstract String apply(String value);
-
         private static String separatedToCamelCase(String value,
                                                    boolean caseInsensitive) {
             StringBuilder builder = new StringBuilder();
@@ -170,7 +179,7 @@ public final class RelaxedNames implements Iterable<String> {
                 builder.append(
                         builder.length() == 0 ? field : StringUtils.capitalize(field));
             }
-            for (String suffix : new String[] { "_", "-", "." }) {
+            for (String suffix : new String[]{"_", "-", "."}) {
                 if (value.endsWith(suffix)) {
                     builder.append(suffix);
                 }
@@ -178,15 +187,8 @@ public final class RelaxedNames implements Iterable<String> {
             return builder.toString();
 
         }
-    }
 
-    /**
-     * Return a {@link RelaxedNames} for the given source camelCase source name.
-     * @param name the source name in camelCase
-     * @return the relaxed names
-     */
-    public static RelaxedNames forCamelCase(String name) {
-        return new RelaxedNames(Manipulation.CAMELCASE_TO_HYPHEN.apply(name));
+        public abstract String apply(String value);
     }
 
 }

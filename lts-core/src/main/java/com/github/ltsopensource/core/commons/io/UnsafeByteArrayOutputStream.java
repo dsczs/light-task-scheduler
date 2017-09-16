@@ -10,8 +10,8 @@ import java.util.Arrays;
  */
 public class UnsafeByteArrayOutputStream extends OutputStream {
 
+    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     protected byte buf[];
-
     protected int count;
 
     public UnsafeByteArrayOutputStream() {
@@ -26,13 +26,19 @@ public class UnsafeByteArrayOutputStream extends OutputStream {
         buf = new byte[size];
     }
 
+    private static int hugeCapacity(int minCapacity) {
+        if (minCapacity < 0) // overflow
+            throw new OutOfMemoryError();
+        return (minCapacity > MAX_ARRAY_SIZE) ?
+                Integer.MAX_VALUE :
+                MAX_ARRAY_SIZE;
+    }
+
     private void ensureCapacity(int minCapacity) {
         // overflow-conscious code
         if (minCapacity - buf.length > 0)
             grow(minCapacity);
     }
-
-    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
     private void grow(int minCapacity) {
         // overflow-conscious code
@@ -43,14 +49,6 @@ public class UnsafeByteArrayOutputStream extends OutputStream {
         if (newCapacity - MAX_ARRAY_SIZE > 0)
             newCapacity = hugeCapacity(minCapacity);
         buf = Arrays.copyOf(buf, newCapacity);
-    }
-
-    private static int hugeCapacity(int minCapacity) {
-        if (minCapacity < 0) // overflow
-            throw new OutOfMemoryError();
-        return (minCapacity > MAX_ARRAY_SIZE) ?
-                Integer.MAX_VALUE :
-                MAX_ARRAY_SIZE;
     }
 
     public void write(int b) {
@@ -72,6 +70,7 @@ public class UnsafeByteArrayOutputStream extends OutputStream {
     public void writeTo(OutputStream out) throws IOException {
         out.write(buf, 0, count);
     }
+
     public void reset() {
         count = 0;
     }

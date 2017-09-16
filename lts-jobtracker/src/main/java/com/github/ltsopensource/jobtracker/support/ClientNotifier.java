@@ -28,11 +28,11 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Robert HG (254963746@qq.com) on 3/2/15.
  */
-@SuppressWarnings({"rawtypes","unchecked"})
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ClientNotifier {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientNotifier.class.getSimpleName());
-	private ClientNotifyHandler clientNotifyHandler;
+    private ClientNotifyHandler clientNotifyHandler;
     private JobTrackerAppContext appContext;
 
     public ClientNotifier(JobTrackerAppContext appContext, ClientNotifyHandler clientNotifyHandler) {
@@ -42,9 +42,10 @@ public class ClientNotifier {
 
     /**
      * 发送给客户端
+     *
      * @return 返回成功的个数
      */
-	public <T extends JobRunResult> int send(List<T> jobResults) {
+    public <T extends JobRunResult> int send(List<T> jobResults) {
         if (CollectionUtils.isEmpty(jobResults)) {
             return 0;
         }

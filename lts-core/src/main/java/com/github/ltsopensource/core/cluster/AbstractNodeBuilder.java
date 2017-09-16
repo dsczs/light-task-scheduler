@@ -13,8 +13,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class AbstractNodeBuilder<T extends AbstractJobNode, B extends NodeBuilder> implements NodeBuilder<T> {
 
     protected List<MasterChangeListener> masterChangeListeners;
-    private AtomicBoolean built = new AtomicBoolean(false);
     protected String[] locations;
+    private AtomicBoolean built = new AtomicBoolean(false);
 
     public final B setPropertiesConfigure(String... locations) {
         if (locations == null || locations.length == 0) {

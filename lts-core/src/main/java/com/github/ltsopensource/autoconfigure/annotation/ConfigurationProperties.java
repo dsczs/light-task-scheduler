@@ -4,6 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * 和SpringBoot的类似
+ *
  * @author Robert HG (254963746@qq.com) on 4/18/16.
  */
 @Target({ElementType.TYPE, ElementType.METHOD})

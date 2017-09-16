@@ -26,20 +26,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class NioChannelImpl implements NioChannel {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NioChannelImpl.class);
-
-    private final long id;
     private static final AtomicInteger CONN_ID = new AtomicInteger(0);
+    private final long id;
+    private final long hashCode = ThreadLocalRandom.current().nextLong();
+    protected Futures.CloseFuture closeFuture = Futures.newCloseFuture();
+    protected SocketChannel channel;
     private NioProcessor processor;
     private NioSelectorLoop selectorLoop;
-    protected Futures.CloseFuture closeFuture = Futures.newCloseFuture();
     private IdleInfo idleInfo;
     private NioConfig config;
     private Decoder decoder;
     private Encoder encoder;
-    private final long hashCode = ThreadLocalRandom.current().nextLong();
-
-    protected SocketChannel channel;
-
     private NioHandler eventHandler;
 
     public NioChannelImpl(NioSelectorLoop selectorLoop, NioProcessor processor, SocketChannel channel, NioHandler eventHandler, NioConfig config) {

@@ -49,13 +49,14 @@ import java.util.Arrays;
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @version 2.2
  * @author Mikael Grev Date: 2004-aug-02 Time: 11:31:11
+ * @version 2.2
  */
 public class Base64 {
 
     public static final char[] CA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
-    public static final int[]  IA = new int[256];
+    public static final int[] IA = new int[256];
+
     static {
         Arrays.fill(IA, -1);
         for (int i = 0, iS = CA.length; i < iS; i++)
@@ -100,7 +101,7 @@ public class Base64 {
 
         // Decode all but the last 0 - 2 bytes.
         int d = 0;
-        for (int cc = 0, eLen = (len / 3) * 3; d < eLen;) {
+        for (int cc = 0, eLen = (len / 3) * 3; d < eLen; ) {
             // Assemble three bytes into an int from four "valid" characters.
             int i = IA[chars[sIx++]] << 18 | IA[chars[sIx++]] << 12 | IA[chars[sIx++]] << 6 | IA[chars[sIx++]];
 
@@ -155,7 +156,7 @@ public class Base64 {
 
         // Decode all but the last 0 - 2 bytes.
         int d = 0;
-        for (int cc = 0, eLen = (len / 3) * 3; d < eLen;) {
+        for (int cc = 0, eLen = (len / 3) * 3; d < eLen; ) {
             // Assemble three bytes into an int from four "valid" characters.
             int i = IA[chars.charAt(sIx++)] << 18 | IA[chars.charAt(sIx++)] << 12 | IA[chars.charAt(sIx++)] << 6 | IA[chars.charAt(sIx++)];
 
@@ -222,7 +223,7 @@ public class Base64 {
 
         // Decode all but the last 0 - 2 bytes.
         int d = 0;
-        for (int cc = 0, eLen = (len / 3) * 3; d < eLen;) {
+        for (int cc = 0, eLen = (len / 3) * 3; d < eLen; ) {
             // Assemble three bytes into an int from four "valid" characters.
             int i = IA[s.charAt(sIx++)] << 18 | IA[s.charAt(sIx++)] << 12 | IA[s.charAt(sIx++)] << 6
                     | IA[s.charAt(sIx++)];

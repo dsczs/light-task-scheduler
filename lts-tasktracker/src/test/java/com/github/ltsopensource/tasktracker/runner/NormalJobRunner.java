@@ -10,9 +10,8 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class NormalJobRunner implements JobRunner {
 
-    protected boolean stop = false;
-
     public static AtomicLong l = new AtomicLong(0);
+    protected boolean stop = false;
 
     @Override
     public Result run(JobContext jobContext) throws Throwable {

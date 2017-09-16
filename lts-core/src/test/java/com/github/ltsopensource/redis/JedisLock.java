@@ -9,14 +9,11 @@ import java.util.UUID;
  */
 public class JedisLock {
 
+    public static final int DEFAULT_ACQUIRY_RESOLUTION_MILLIS = 100;
     private static final Lock NO_LOCK = new Lock(new UUID(0l, 0l), 0l);
-
     private static final int ONE_SECOND = 1000;
-
     public static final int DEFAULT_EXPIRY_TIME_MILLIS = 60 * ONE_SECOND;
     public static final int DEFAULT_ACQUIRE_TIMEOUT_MILLIS = 10 * ONE_SECOND;
-    public static final int DEFAULT_ACQUIRY_RESOLUTION_MILLIS = 100;
-
     private final Jedis jedis;
 
     private final String lockKeyPath;
@@ -26,49 +23,6 @@ public class JedisLock {
     private final UUID lockUUID;
 
     private Lock lock = null;
-
-    protected static class Lock {
-        private UUID uuid;
-        private long expiryTime;
-
-        protected Lock(UUID uuid, long expiryTimeInMillis) {
-            this.uuid = uuid;
-            this.expiryTime = expiryTimeInMillis;
-        }
-
-        protected static Lock fromString(String text) {
-            try {
-                String[] parts = text.split(":");
-                UUID theUUID = UUID.fromString(parts[0]);
-                long theTime = Long.parseLong(parts[1]);
-                return new Lock(theUUID, theTime);
-            } catch (Exception any) {
-                return NO_LOCK;
-            }
-        }
-
-        public UUID getUUID() {
-            return uuid;
-        }
-
-        public long getExpiryTime() {
-            return expiryTime;
-        }
-
-        @Override
-        public String toString() {
-            return uuid.toString() + ":" + expiryTime;
-        }
-
-        boolean isExpired() {
-            return getExpiryTime() < System.currentTimeMillis();
-        }
-
-        boolean isExpiredOrMine(UUID otherUUID) {
-            return this.isExpired() || this.getUUID().equals(otherUUID);
-        }
-    }
-
 
     /**
      * Detailed constructor with default acquire timeout 10000 msecs and lock
@@ -80,6 +34,7 @@ public class JedisLock {
     public JedisLock(Jedis jedis, String lockKey) {
         this(jedis, lockKey, DEFAULT_ACQUIRE_TIMEOUT_MILLIS, DEFAULT_EXPIRY_TIME_MILLIS);
     }
+
 
     /**
      * Detailed constructor with default lock expiration of 60000 msecs.
@@ -232,9 +187,50 @@ public class JedisLock {
         return this.lock.getExpiryTime();
     }
 
-
     private Lock asLock(long expires) {
         return new Lock(lockUUID, expires);
+    }
+
+    protected static class Lock {
+        private UUID uuid;
+        private long expiryTime;
+
+        protected Lock(UUID uuid, long expiryTimeInMillis) {
+            this.uuid = uuid;
+            this.expiryTime = expiryTimeInMillis;
+        }
+
+        protected static Lock fromString(String text) {
+            try {
+                String[] parts = text.split(":");
+                UUID theUUID = UUID.fromString(parts[0]);
+                long theTime = Long.parseLong(parts[1]);
+                return new Lock(theUUID, theTime);
+            } catch (Exception any) {
+                return NO_LOCK;
+            }
+        }
+
+        public UUID getUUID() {
+            return uuid;
+        }
+
+        public long getExpiryTime() {
+            return expiryTime;
+        }
+
+        @Override
+        public String toString() {
+            return uuid.toString() + ":" + expiryTime;
+        }
+
+        boolean isExpired() {
+            return getExpiryTime() < System.currentTimeMillis();
+        }
+
+        boolean isExpiredOrMine(UUID otherUUID) {
+            return this.isExpired() || this.getUUID().equals(otherUUID);
+        }
     }
 
 
